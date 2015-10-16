@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="fileid.cpp" />
+    <ClCompile Include="oless\pole.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="build.cmd" />
+    <None Include="build.sh" />
+    <None Include="Create-Headers.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.hpp" />
+    <ClInclude Include="magic.h" />
+    <ClInclude Include="details.hpp" />
+    <ClInclude Include="exe\Exec.hpp" />
+    <ClInclude Include="oless\OleCommon.hpp" />
+    <ClInclude Include="oless\MSExcel.hpp" />
+    <ClInclude Include="oless\MSPowerPoint.hpp" />
+    <ClInclude Include="oless\MSPublisher.hpp" />
+    <ClInclude Include="oless\MSVisio.hpp" />
+    <ClInclude Include="oless\MSWord.hpp" />
+    <ClInclude Include="oless\oless.hpp" />
+    <ClInclude Include="oless\pole.h" />
+    <ClInclude Include="oless\olessoffice.hpp" />
+    <ClInclude Include="oless\vbahelper.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="data.xml" />
+  </ItemGroup>
+</Project>
