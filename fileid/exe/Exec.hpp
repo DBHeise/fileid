@@ -39,7 +39,7 @@ namespace Exec {
             str << ",\"Characteristics\": [";
             for (std::vector<std::string>::const_iterator i = this->Characteristics.begin(); i != this->Characteristics.end(); i++) {
 					if (i != this->Characteristics.begin()) str << ",";
-               str << "\"" << i << "\"";
+               str << "\"" << *i << "\"";
 				}
             str << "]";
          }
