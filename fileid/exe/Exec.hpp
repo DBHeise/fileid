@@ -225,6 +225,9 @@ namespace Exec {
       } 
       return ans;
    }
+   bool checkContains(std::vector<std::string> v, std::string item) {
+      return std::find(v.begin(), v.end(), item) != v.end();
+   }
    
    std::string BuildVersionString(unsigned short major, unsigned short minor) {
       std::string ans;
@@ -256,6 +259,14 @@ namespace Exec {
       info->SubsystemVersion = BuildVersionString(optHeader->MajorSubsystemVersion, optHeader->MinorSubsystemVersion);
       info->Win32Version = optHeader->Win32VersionValue;
       info->Characteristics = BuildVectorFromMap(CharacteristicsMap, coffHeader->Characteristics);
+      if (checkContains(info->Characteristics, CharacteristicsMap[0x2000])) {
+         info->Extension = "dll";
+         info->VersionName = "Dynamic Link Library";
+      }    
+      if (checkContains(info->Characteristics, CharacteristicsMap[0x1000])) {
+         info->Extension = "sys";
+         info->VersionName = "Kernal Mode Executable";
+      }    
 		info->DllCharacteristics = BuildVectorFromMap(DllCharacteristicsMap, optHeader->DllCharacteristics);
 		ans.push_back(info);
 		return ans;
