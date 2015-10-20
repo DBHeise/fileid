@@ -3,9 +3,9 @@ Generic file identifier (for linux and windows)
 
 Like the linux utility "file", this tool will take an arbirtrary blob and attempt to identify the file type/extension based on magic numbers. In addition it will attempt to pull as much pertinant details as it knows from the file about its format.
 
-It will identify specific formats in container formats. For example it will identify Office file types specifically for OLE Structured Storage files
+It will identify specific formats in container formats. For example it will identify Microsoft Office file types specifically for OLE Structured Storage files (doc, xls, ppt, pub, vsd, etc)
 
-Build scripts are included for both gcc and MSVS builds
+Build scripts are included for both gcc (4.4.7) and Microsoft Visual Studio (2015) builds
 
 # Usage
 ```
