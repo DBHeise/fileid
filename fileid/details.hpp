@@ -60,6 +60,39 @@ namespace details {
 		ans.push_back(ei);
 		return ans;
 	}
+	std::vector<common::ExtensionInfo*> ASFHelper(const std::string file, std::vector<unsigned char> buffer) {
+		std::vector<common::ExtensionInfo*> ans;
+		common::ExtensionInfo* ei = new common::ExtensionInfo();
+		ei->Extension = "asf";
+		ans.push_back(ei);
+		return ans;
+	}
+	std::vector<common::ExtensionInfo*> RIFFHelper(const std::string file, std::vector<unsigned char> buffer) {
+		std::vector<common::ExtensionInfo*> ans;
+		unsigned char magic_cda[8] = { 0x43, 0x44, 0x44, 0x41, 0x66, 0x6D, 0x74, 0x20 }; //at offset 8, only if magic_riff
+		unsigned char magic_wav[8] = { 0x57, 0x41, 0x56, 0x45, 0x66, 0x6D, 0x74, 0x20 }; //at offset 8, only if magic_riff
+		unsigned char magic_avi[8] = { 0x41, 0x56, 0x49, 0x20, 0x4C, 0x49, 0x53, 0x54 }; //at offset 8, only if magic_riff
+		unsigned char magic_qcp[8] = { 0x51, 0x4C, 0x43, 0x4D, 0x66, 0x6D, 0x74, 0x20 }; //at offset 8, only if magic_riff
+		unsigned char magic_rmi[8] = { 0x52, 0x4D, 0x49, 0x44, 0x64, 0x61, 0x74, 0x61 }; //at offset 8, only if magic_riff
+		common::ExtensionInfo* ei = new common::ExtensionInfo();
+
+		if (common::checkMagic(buffer.data(), 8, magic_cda, 8, 8))
+			ei->Extension = "cda";
+		else if (common::checkMagic(buffer.data(), 8, magic_wav, 8, 8))
+			ei->Extension = "wav";
+		else if (common::checkMagic(buffer.data(), 8, magic_avi, 8, 8))
+			ei->Extension = "avi";
+		else if (common::checkMagic(buffer.data(), 8, magic_qcp, 8, 8))
+			ei->Extension = "qcp";
+		else if (common::checkMagic(buffer.data(), 8, magic_rmi, 8, 8))
+			ei->Extension = "rmi";
+		else
+			ei->Extension = "riff";
+
+		ans.push_back(ei);
+		return ans;
+	}
+		
 	std::vector<common::ExtensionInfo*> Mp4Helper(const std::string file, std::vector<unsigned char> buffer) {
 		std::vector<common::ExtensionInfo*> ans;
 		common::ExtensionInfo* ei = new common::ExtensionInfo();
