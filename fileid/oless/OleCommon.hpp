@@ -2,7 +2,8 @@
 #include <string>
 #include <ostream>
 #include <sstream>
-#include "..\common.hpp"
+#include <stdexcept>
+#include "../common.hpp"
 
 namespace OleStructuredStorage {
 	class OleSummary : public common::IExportable {
@@ -44,7 +45,7 @@ namespace OleStructuredStorage {
 
 			POLE::uint64 read = stream->read(bytes, size);
 			if (read > size) {
-				throw std::exception("WTF");
+				throw std::runtime_error("how is this even possible!");
 			}
 			T* s = (T *)bytes;
 

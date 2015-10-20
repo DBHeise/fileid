@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <iterator>
 #include "pole.h"
-#include "..\common.hpp"
+#include "../common.hpp"
 #include "OleCommon.hpp"
 #include "olessoffice.hpp"
 

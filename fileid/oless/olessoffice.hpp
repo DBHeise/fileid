@@ -6,7 +6,7 @@
 #include "MSExcel.hpp"
 #include "MSVisio.hpp"
 #include "MSPublisher.hpp"
-#include "..\common.hpp"
+#include "../common.hpp"
 #include "olessoffice.hpp"
 
 namespace OleStructuredStorage {

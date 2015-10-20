@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "..\common.hpp"
+#include "../common.hpp"
 
 
 namespace Exec {
@@ -12,14 +12,14 @@ namespace Exec {
 		std::string MachineType;
 		std::string Subsystem;
 		
-      std::string LinkerVersion;
-      std::string OsVersion;
-      std::string ImageVersion;      
-      std::string SubsystemVersion;
-      unsigned int Win32Version;
-      std::vector<std::string> Characteristics;
-      std::vector<std::string> DllCharacteristics;
-      
+		std::string LinkerVersion;
+		std::string OsVersion;
+		std::string ImageVersion;      
+		std::string SubsystemVersion;
+		unsigned int Win32Version;
+		std::vector<std::string> Characteristics;
+		std::vector<std::string> DllCharacteristics;
+		
 		ExecExtensionInfo() {
 			this->Extension = "exe";
 			this->VersionName = "Executable";
@@ -35,14 +35,14 @@ namespace Exec {
 			if (this->OsVersion.size() > 0) { str << ", \"OsVersion\" : \"" << this->OsVersion << "\"";}
 			if (this->ImageVersion.size() > 0) { str << ", \"ImageVersion\" : \"" << this->ImageVersion << "\"";}
 
-         if (this->Characteristics.size() > 0) {
-            str << ",\"Characteristics\": [";
-            for (std::vector<std::string>::const_iterator i = this->Characteristics.begin(); i != this->Characteristics.end(); i++) {
+			if (this->Characteristics.size() > 0) {
+				str << ",\"Characteristics\": [";
+				for (std::vector<std::string>::const_iterator i = this->Characteristics.begin(); i != this->Characteristics.end(); i++) {
 					if (i != this->Characteristics.begin()) str << ",";
-               str << "\"" << *i << "\"";
+					str << "\"" << *i << "\"";
 				}
-            str << "]";
-         }
+				str << "]";
+			}
 			
 			str << "}";
 			return str.str();
@@ -108,84 +108,84 @@ namespace Exec {
 		unsigned short SizeOfOptionalHeader;
 		unsigned short Characteristics;
 	} COFF_FILE_HEADER;
-   
-   std::map<unsigned int, std::string> CharacteristicsMap = {
-      {0x0001,"Relocs Stripped"},
-      {0x0002,"Executable Image"},
-      {0x0004,"LINE_NUMS_STRIPPED"},
-      {0x0008,"LOCAL_SYMS_STRIPPED"},
-      {0x0010,"AGGRESSIVE_WS_TRIM"},
-      {0x0020,"LARGE_ADDRESS_AWARE"},
-      {0x0040,"REMOVABLE_RUN_FROM_SWAP"},
-      {0x0080,"BYTES_REVERSED_LO"},
-      {0x0100,"32BIT_MACHINE"},
-      {0x0200,"DEBUG_STRIPPED"},
-      {0x0400,"REMOVABLE_RUN_FROM_SWAP"},
-      {0x0800,"NET_RUN_FROM_SWAP"},
-      {0x1000,"SYSTEM"},
-      {0x2000,"DLL"},
-      {0x4000,"UP_SYSTEM_ONLY"},
-      {0x8000,"BYTES_REVERSED_HI"}
-   };
+	
+	std::map<unsigned int, std::string> CharacteristicsMap = {
+		{0x0001,"Relocs Stripped"},
+		{0x0002,"Executable Image"},
+		{0x0004,"LINE_NUMS_STRIPPED"},
+		{0x0008,"LOCAL_SYMS_STRIPPED"},
+		{0x0010,"AGGRESSIVE_WS_TRIM"},
+		{0x0020,"LARGE_ADDRESS_AWARE"},
+		{0x0040,"REMOVABLE_RUN_FROM_SWAP"},
+		{0x0080,"BYTES_REVERSED_LO"},
+		{0x0100,"32BIT_MACHINE"},
+		{0x0200,"DEBUG_STRIPPED"},
+		{0x0400,"REMOVABLE_RUN_FROM_SWAP"},
+		{0x0800,"NET_RUN_FROM_SWAP"},
+		{0x1000,"SYSTEM"},
+		{0x2000,"DLL"},
+		{0x4000,"UP_SYSTEM_ONLY"},
+		{0x8000,"BYTES_REVERSED_HI"}
+	};
  std::map<unsigned int, std::string> DllCharacteristicsMap = {
-      {0x0040, "DYNAMIC_BASE"},
-      {0x0080, "FORCE_INTEGRITY"},
-      {0x0100, "NX_COMPAT"},
-      {0x0200, "NO_ISOLATION"},
-      {0x0400, "NO_SEH"},
-      {0x0800, "NO_BIND"},
-      {0x2000, "WDM_DRIVER"},
-      {0x8000, "TERMINAL_SERVER_AWARE"}
+		{0x0040, "DYNAMIC_BASE"},
+		{0x0080, "FORCE_INTEGRITY"},
+		{0x0100, "NX_COMPAT"},
+		{0x0200, "NO_ISOLATION"},
+		{0x0400, "NO_SEH"},
+		{0x0800, "NO_BIND"},
+		{0x2000, "WDM_DRIVER"},
+		{0x8000, "TERMINAL_SERVER_AWARE"}
 };
-   typedef struct _OPTIONAL_HEADER {
-      unsigned short Magic;
-      unsigned char MajorLinkerVersion;
-      unsigned char MinorLinkerVersion;
-      unsigned int SizeOfCode;
-      unsigned int SizeOfInitializedData;
-      unsigned int SizeOfUninitializedData;
-      unsigned int AddressOfEntryPoint;
-      unsigned int BaseOfCode;
-      union {
-         struct {
-            unsigned int BaseOfData;
-            unsigned int ImageBase;
-         } pe32;
-         unsigned long ImageBase_PE32p;
-      } ImageBase;
-      unsigned int SectionAlignment;
-      unsigned int FileAlignment;
-      unsigned short MajorOperatingSystemVersion;
-      unsigned short MinorOperatingSystemVersion;
-      unsigned short MajorImageVersion;
-      unsigned short MinorImageVersion;
-      unsigned short MajorSubsystemVersion;
-      unsigned short MinorSubsystemVersion;
-      unsigned int Win32VersionValue;
-      unsigned int SizeOfImage;
-      unsigned int SizeOfHeaders;
-      unsigned int CheckSum;
-      unsigned int Subsystem;
-      unsigned int DllCharacteristics;
-   } OPTIONAL_HEADER;
-   
-   std::string GetSubsystemString(unsigned int subsystem) {
-      std::string ans;
-      switch(subsystem) {
-         case 0x0: ans = "Unknown Subsystem"; break;
-         case 0x1: ans = "Device Driver"; break;
-         case 0x2: ans = "Windows GUI"; break;
-         case 0x3: ans = "Windows CUI"; break;
-         case 0x7: ans = "Posix CUI"; break;
-         case 0x9: ans = "Windows CE"; break;
-         case 0x10: ans = "EFI Application"; break;
-         case 0x11: ans = "EFI Service Driver"; break;
-         case 0x12: ans = "EFI Runtime Driver"; break;
-         case 0x13: ans = "EFI ROM Image"; break;
-         case 0x14: ans = "XBOX"; break;
-      }
-      return ans;
-   }
+	typedef struct _OPTIONAL_HEADER {
+		unsigned short Magic;
+		unsigned char MajorLinkerVersion;
+		unsigned char MinorLinkerVersion;
+		unsigned int SizeOfCode;
+		unsigned int SizeOfInitializedData;
+		unsigned int SizeOfUninitializedData;
+		unsigned int AddressOfEntryPoint;
+		unsigned int BaseOfCode;
+		union {
+			struct {
+				unsigned int BaseOfData;
+				unsigned int ImageBase;
+			} pe32;
+			unsigned long ImageBase_PE32p;
+		} ImageBase;
+		unsigned int SectionAlignment;
+		unsigned int FileAlignment;
+		unsigned short MajorOperatingSystemVersion;
+		unsigned short MinorOperatingSystemVersion;
+		unsigned short MajorImageVersion;
+		unsigned short MinorImageVersion;
+		unsigned short MajorSubsystemVersion;
+		unsigned short MinorSubsystemVersion;
+		unsigned int Win32VersionValue;
+		unsigned int SizeOfImage;
+		unsigned int SizeOfHeaders;
+		unsigned int CheckSum;
+		unsigned int Subsystem;
+		unsigned int DllCharacteristics;
+	} OPTIONAL_HEADER;
+	
+	std::string GetSubsystemString(unsigned int subsystem) {
+		std::string ans;
+		switch(subsystem) {
+			case 0x0: ans = "Unknown Subsystem"; break;
+			case 0x1: ans = "Device Driver"; break;
+			case 0x2: ans = "Windows GUI"; break;
+			case 0x3: ans = "Windows CUI"; break;
+			case 0x7: ans = "Posix CUI"; break;
+			case 0x9: ans = "Windows CE"; break;
+			case 0x10: ans = "EFI Application"; break;
+			case 0x11: ans = "EFI Service Driver"; break;
+			case 0x12: ans = "EFI Runtime Driver"; break;
+			case 0x13: ans = "EFI ROM Image"; break;
+			case 0x14: ans = "XBOX"; break;
+		}
+		return ans;
+	}
 
 	std::string GetMachineTypeString(unsigned short machineType) {
 		std::string ans;
@@ -215,27 +215,26 @@ namespace Exec {
 		}
 		return ans;
 	}
-   
-   std::vector<std::string> BuildVectorFromMap(std::map<unsigned int, std::string> map, unsigned int key) {
-      std::vector<std::string> ans;
-      for(auto const &it: map) {
-         if (it.first & key) {
-            ans.push_back(it.second);
-         }
-      } 
-      return ans;
-   }
-   bool checkContains(std::vector<std::string> v, std::string item) {
-      return std::find(v.begin(), v.end(), item) != v.end();
-   }
-   
-   std::string BuildVersionString(unsigned short major, unsigned short minor) {
-      std::string ans;
-      ans += std::to_string(major);
-      ans += ".";
-      ans += std::to_string(minor);
-      return ans;
-   }
+	
+	std::vector<std::string> BuildVectorFromMap(std::map<unsigned int, std::string> map, unsigned int key) {
+		std::vector<std::string> ans;
+		for (std::map<unsigned int, std::string>::iterator i = map.begin(); i != map.end(); i++) {
+			if (i->first & key)
+				ans.push_back(i->second);
+		}
+		return ans;
+	}
+	bool checkContains(std::vector<std::string> v, std::string item) {
+		return std::find(v.begin(), v.end(), item) != v.end();
+	}
+	
+	std::string BuildVersionString(unsigned short major, unsigned short minor) {
+		std::string ans;
+		ans += std::to_string(static_cast<unsigned long long>(major));
+		ans += ".";
+		ans += std::to_string(static_cast<unsigned long long>(minor));
+		return ans;
+	}
 
 	std::vector<common::ExtensionInfo*> Detailer(const std::string file, std::vector<unsigned char> buffer) {
 		std::vector<common::ExtensionInfo*> ans;
@@ -248,25 +247,25 @@ namespace Exec {
 		long peHeaderStart = dosHeader->e_lfanew;
 		COFF_FILE_HEADER* coffHeader = (COFF_FILE_HEADER*)(rawBuffer + peHeaderStart);
 
-      OPTIONAL_HEADER* optHeader = (OPTIONAL_HEADER*)(rawBuffer + peHeaderStart + sizeof(COFF_FILE_HEADER));
-    
+		OPTIONAL_HEADER* optHeader = (OPTIONAL_HEADER*)(rawBuffer + peHeaderStart + sizeof(COFF_FILE_HEADER));
+	 
 		ExecExtensionInfo* info = new ExecExtensionInfo();		
 		info->MachineType = GetMachineTypeString(coffHeader->Machine);
 		info->Subsystem = GetSubsystemString(optHeader->Subsystem);
 		info->LinkerVersion = BuildVersionString(optHeader->MajorLinkerVersion, optHeader->MinorLinkerVersion);
 		info->OsVersion = BuildVersionString(optHeader->MajorOperatingSystemVersion, optHeader->MinorOperatingSystemVersion);
-      info->ImageVersion = BuildVersionString(optHeader->MajorImageVersion, optHeader->MinorImageVersion);
-      info->SubsystemVersion = BuildVersionString(optHeader->MajorSubsystemVersion, optHeader->MinorSubsystemVersion);
-      info->Win32Version = optHeader->Win32VersionValue;
-      info->Characteristics = BuildVectorFromMap(CharacteristicsMap, coffHeader->Characteristics);
-      if (checkContains(info->Characteristics, CharacteristicsMap[0x2000])) {
-         info->Extension = "dll";
-         info->VersionName = "Dynamic Link Library";
-      }    
-      if (checkContains(info->Characteristics, CharacteristicsMap[0x1000])) {
-         info->Extension = "sys";
-         info->VersionName = "Kernal Mode Executable";
-      }    
+		info->ImageVersion = BuildVersionString(optHeader->MajorImageVersion, optHeader->MinorImageVersion);
+		info->SubsystemVersion = BuildVersionString(optHeader->MajorSubsystemVersion, optHeader->MinorSubsystemVersion);
+		info->Win32Version = optHeader->Win32VersionValue;
+		info->Characteristics = BuildVectorFromMap(CharacteristicsMap, coffHeader->Characteristics);
+		if (checkContains(info->Characteristics, CharacteristicsMap[0x2000])) {
+			info->Extension = "dll";
+			info->VersionName = "Dynamic Link Library";
+		}    
+		if (checkContains(info->Characteristics, CharacteristicsMap[0x1000])) {
+			info->Extension = "sys";
+			info->VersionName = "Kernal Mode Executable";
+		}    
 		info->DllCharacteristics = BuildVectorFromMap(DllCharacteristicsMap, optHeader->DllCharacteristics);
 		ans.push_back(info);
 		return ans;

@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 #include "common.hpp"
-#include "oless\oless.hpp"
-#include "exe\Exec.hpp"
+#include "oless/oless.hpp"
+#include "exe/Exec.hpp"
 
 
 namespace details {

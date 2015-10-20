@@ -1,32 +1,34 @@
 # FileId
-Generic file identifier
+Generic file identifier (for linux and windows)
 
 Like the linux utility "file", this tool will take an arbirtrary blob and attempt to identify the file type/extension based on magic numbers. In addition it will attempt to pull as much pertinant details as it knows from the file about its format.
 
 It will identify specific formats in container formats. For example it will identify Office file types specifically for OLE Structured Storage files
 
+Build scripts are included for both gcc and MSVS builds
+
 # Usage
 ```
   fileid {file} [format]
-    {file} - required path the file in question
-    [format] - optional output format (TEXT [default], CSV, JSON, XML)
+	 {file} - required path the file in question
+	 [format] - optional output format (TEXT [default], CSV, JSON, XML)
 ```
 
 # Examples
 * Exe with JSON output
 ```
-   fileid c:\windows\notepad.exe json
-   {
-    "name": "C:\\Windows\\notepad.exe",
-    "extensions": [
-        { "extension": "exe", "name": "Executable", "machinetype": "x64", "LinkerVersion": "12.10", "OsVersion": "10.0", "ImageVersion": "10.0", "Characteristics": [ "Executable Image","LARGE_ADDRESS_AWARE"]}
-    ]
-   }
+	fileid c:\windows\notepad.exe json
+	{
+	 "name": "C:\\Windows\\notepad.exe",
+	 "extensions": [
+		  { "extension": "exe", "name": "Executable", "machinetype": "x64", "LinkerVersion": "12.10", "OsVersion": "10.0", "ImageVersion": "10.0", "Characteristics": [ "Executable Image","LARGE_ADDRESS_AWARE"]}
+	 ]
+	}
 ```
 * XLS with XML output
 ```
-   fileid C:\TestFiles\Sample\Good.macro.xls xml
-   <file>
+	fileid C:\TestFiles\Sample\Good.macro.xls xml
+	<file>
 	<name>C:\TestFiles\Sample\Good.macro.xls</name>
 	<extensions>
 		<item><extension>.xls</extension><version>1536</version><name>BIFF8</name></item>
@@ -52,7 +54,7 @@ Attribute Macro1.VB_ProcData.VB_Invoke_Func = " \n14"
 
 
 
-    Selection.Font.Bold = True
+	 Selection.Font.Bold = True
 
 End Sub
 

@@ -118,7 +118,7 @@ namespace common {
 		unsigned int size;
 		unsigned char* magic;
 		std::string extraName;
-		MagicInfo(char* ext, char* n, char* ver, unsigned int offset, unsigned int size, unsigned char* m, char* ename) {
+		MagicInfo(const char* ext, const char* n, const char* ver, unsigned int offset, unsigned int size, unsigned char* m, const char* ename) {
 			std::string t(ext);
 			this->Extension = t;
 			std::string n2(n);
@@ -196,50 +196,6 @@ namespace common {
 	}
 
 
-
-	template<class T>
-	void Output(OutputFormat format, std::string file, std::string headerName, std::vector<T*> summary) {
-		typename std::vector<T*>::iterator it;
-		switch (format) {
-		case OutputFormat::TEXT:
-			std::cout << file << std::endl;
-			for (it = summary.begin(); it != summary.end(); it++) {
-				std::cout << "\t" << (*it)->ToText() << std::endl;
-			}
-			break;
-		case OutputFormat::XML:
-			std::cout << "<file>" << std::endl;
-			std::cout << "\t<name>" << file << "</name>" << std::endl;
-			std::cout << "\t<" << headerName << ">" << std::endl;
-			for (it = summary.begin(); it != summary.end(); it++) {
-				std::cout << "\t\t" << (*it)->ToXml() << std::endl;
-			}
-			std::cout << "\t</" << headerName << ">" << std::endl;
-			std::cout << "</file>" << std::endl;
-			break;
-		case OutputFormat::JSON:
-			std::cout << "{ \"name\" : \"" << helper::JsonEscape(file) << "\"," << std::endl;
-			std::cout << "\t \"" << headerName << "\": [" << std::endl;
-			for (it = summary.begin(); it != summary.end(); it++) {
-				if (it != summary.begin()) {
-					std::cout << "," << std::endl;
-				}
-				std::cout << "\t\t" << (*it)->ToJson() << std::endl;
-			}
-			std::cout << "\n\t]\n}" << std::endl;
-			break;
-			break;
-		case OutputFormat::CSV:
-			for (it = summary.begin(); it != summary.end(); it++) {
-				std::cout << (*it)->ToCsv() << std::endl;
-			}
-			break;
-		default:
-			std::cout << "Unknown Output Format!" << std::endl;
-		}
-	}
-
-
 	std::string const base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 	class helper
@@ -309,7 +265,7 @@ namespace common {
 		}
 		static unsigned int GetItem4Byte(const unsigned char* data, unsigned int index) {
 			return
-				(((unsigned __int64)data[index + 3]) << 32) |
+				(((unsigned long long)data[index + 3]) << 32) |
 				(((unsigned int)data[index + 2]) << 16) |
 				(((unsigned int)data[index + 1]) << 8) |
 				data[index + 0];
@@ -409,4 +365,46 @@ namespace common {
 			return ret;
 		}
 	};
+
+	template<class T>
+	void Output(OutputFormat format, std::string file, std::string headerName, std::vector<T*> summary) {
+		typename std::vector<T*>::iterator it;
+		switch (format) {
+		case OutputFormat::TEXT:
+			std::cout << file << std::endl;
+			for (it = summary.begin(); it != summary.end(); it++) {
+				std::cout << "\t" << (*it)->ToText() << std::endl;
+			}
+			break;
+		case OutputFormat::XML:
+			std::cout << "<file>" << std::endl;
+			std::cout << "\t<name>" << file << "</name>" << std::endl;
+			std::cout << "\t<" << headerName << ">" << std::endl;
+			for (it = summary.begin(); it != summary.end(); it++) {
+				std::cout << "\t\t" << (*it)->ToXml() << std::endl;
+			}
+			std::cout << "\t</" << headerName << ">" << std::endl;
+			std::cout << "</file>" << std::endl;
+			break;
+		case OutputFormat::JSON:
+			std::cout << "{ \"name\" : \"" << helper::JsonEscape(file) << "\"," << std::endl;
+			std::cout << "\t \"" << headerName << "\": [" << std::endl;
+			for (it = summary.begin(); it != summary.end(); it++) {
+				if (it != summary.begin()) {
+					std::cout << "," << std::endl;
+				}
+				std::cout << "\t\t" << (*it)->ToJson() << std::endl;
+			}
+			std::cout << "\n\t]\n}" << std::endl;
+			break;
+			break;
+		case OutputFormat::CSV:
+			for (it = summary.begin(); it != summary.end(); it++) {
+				std::cout << (*it)->ToCsv() << std::endl;
+			}
+			break;
+		default:
+			std::cout << "Unknown Output Format!" << std::endl;
+		}
+	}
 }

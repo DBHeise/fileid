@@ -8,6 +8,7 @@
 #include <fstream>
 #include <vector>
 #include <unordered_map>
+#include <stdexcept>
 #include "common.hpp"
 #include "magic.h"
 #include "details.hpp"
@@ -44,7 +45,7 @@ common::ExtraDataFunc GetExtraDataFunction(std::string name) {
 		ans = details::ZipHelper;
 	}
 	else {
-		throw std::exception("Unknown Extra Data Funcion (bad dev)");
+		throw std::logic_error("Unknown Extra Data Funcion (bad dev)");
 	}
 
 	return ans;
@@ -56,13 +57,14 @@ std::vector<common::ExtensionInfo*> guessExtension(std::string file) {
 	std::vector<common::ExtensionInfo*> ans;
 	std::vector<unsigned char> buffer = common::readFile(file, 512);
 
-	for (common::MagicInfo &mi : list) {
+	for (std::vector<common::MagicInfo>::const_iterator i = list.begin(); i != list.end(); i++) {
+		common::MagicInfo mi = *i;
 		if (common::checkMagic(buffer.data(), (unsigned int)buffer.size(), mi.magic, mi.size, mi.offset)) {
 			if (mi.extraName.size() > 0) {
 				common::ExtraDataFunc func = GetExtraDataFunction(mi.extraName);
 				std::vector<common::ExtensionInfo*> list2 = func(file, buffer);
-				for (common::ExtensionInfo* i : list2) {
-					ans.push_back(i);
+				for (std::vector<common::ExtensionInfo*>::const_iterator n = list2.begin(); n != list2.end(); n++) {	
+					ans.push_back(*n);
 				}
 			}
 			else {

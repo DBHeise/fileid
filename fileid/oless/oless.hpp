@@ -9,7 +9,7 @@
 #include <fstream>
 #include <unordered_map>
 #include "pole.h"
-#include "..\common.hpp"
+#include "../common.hpp"
 #include "OleCommon.hpp"
 #include "olessoffice.hpp"
 #include "vbahelper.hpp"
