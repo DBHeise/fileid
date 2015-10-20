@@ -50,35 +50,14 @@ common::ExtraDataFunc GetExtraDataFunction(std::string name) {
 	return ans;
 }
 
-bool checkMagic(const unsigned char* actual, unsigned int actualLength, const unsigned char* expected, unsigned int expectedLength, unsigned int offset) {
-	bool ans = true;
 
-	unsigned int min = expectedLength;
-	unsigned int max = actualLength;
-	const unsigned char* minner = expected;
-	const unsigned char* maxxer = actual;
-	if (expectedLength > actualLength) {
-		min = actualLength;
-		max = expectedLength;
-		minner = actual;
-		maxxer = expected;
-	}
-
-	if (offset + min > max)
-		return false;
-
-	for (unsigned int i = offset; i < (min + offset) && ans; i++)
-		ans &= maxxer[i] == minner[i - offset];
-
-	return ans;
-}
 
 std::vector<common::ExtensionInfo*> guessExtension(std::string file) {
 	std::vector<common::ExtensionInfo*> ans;
 	std::vector<unsigned char> buffer = common::readFile(file, 512);
 
 	for (common::MagicInfo &mi : list) {
-		if (checkMagic(buffer.data(), (unsigned int)buffer.size(), mi.magic, mi.size, mi.offset)) {
+		if (common::checkMagic(buffer.data(), (unsigned int)buffer.size(), mi.magic, mi.size, mi.offset)) {
 			if (mi.extraName.size() > 0) {
 				common::ExtraDataFunc func = GetExtraDataFunction(mi.extraName);
 				std::vector<common::ExtensionInfo*> list2 = func(file, buffer);

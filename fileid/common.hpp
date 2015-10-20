@@ -1,7 +1,4 @@
 #pragma once
-#ifndef fileidcommon_h
-#define fileidcommon_h
-
 
 #include <string>
 #include <list>
@@ -32,6 +29,28 @@ namespace common {
 		return std::vector<unsigned char>(buffer, buffer + size);
 	}
 
+	bool checkMagic(const unsigned char* actual, unsigned int actualLength, const unsigned char* expected, unsigned int expectedLength, unsigned int offset) {
+		bool ans = true;
+
+		unsigned int min = expectedLength;
+		unsigned int max = actualLength;
+		const unsigned char* minner = expected;
+		const unsigned char* maxxer = actual;
+		if (expectedLength > actualLength) {
+			min = actualLength;
+			max = expectedLength;
+			minner = actual;
+			maxxer = expected;
+		}
+
+		if (offset + min > max)
+			return false;
+
+		for (unsigned int i = offset; i < (min + offset) && ans; i++)
+			ans &= maxxer[i] == minner[i - offset];
+
+		return ans;
+	}
 
 	class IExportable {
 	public:
@@ -391,4 +410,3 @@ namespace common {
 		}
 	};
 }
-#endif

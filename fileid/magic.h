@@ -1,5 +1,5 @@
 // magic.h
-// Generated on: 10/15/2015 16:22:48
+// Generated on: 10/19/2015 19:50:55
 
 #pragma once
 #include <string>
@@ -7,7 +7,9 @@
 
 unsigned char magic_dosexe[2] = {0x4D,0x5A};
 unsigned char magic_elf[4] = {0x7F,0x45,0x4C,0x46};
-unsigned char magic_[8] = {0x64,0x65,0x78,0x0A,0x30,0x33,0x35,0x00};
+unsigned char magic_dex[8] = {0x64,0x65,0x78,0x0A,0x30,0x33,0x35,0x00};
+unsigned char magic_lib[8] = {0x21,0x3C,0x61,0x72,0x63,0x68,0x3E,0x0A};
+unsigned char magic_obj[2] = {0x4C,0x01};
 unsigned char magic_zip[2] = {0x50,0x4B};
 unsigned char magic_rar[6] = {0x52,0x61,0x72,0x21,0x1A,0x07};
 unsigned char magic_7z[6] = {0x37,0x7A,0xBC,0xAF,0x27,0x1C};
@@ -86,7 +88,9 @@ unsigned char magic_utf32[4] = {0xFF,0xFE,0x00,0x00};
 std::vector<common::MagicInfo> list = {
   {"exe", "DOS Executable", "", 0, 2, magic_dosexe, "ExeHelper"},
   {"elf", "ELF Executable", "", 0, 4, magic_elf, NULL},
-  {"dex", "Dalvik Executable", "", 0, 8, magic_, NULL},
+  {"dex", "Dalvik Executable", "", 0, 8, magic_dex, NULL},
+  {"lib", "Microsoft Program Library Common Object File Format", "", 0, 8, magic_lib, NULL},
+  {"obj", "Microsoft Common Object File Format relocatable object code", "", 0, 2, magic_obj, NULL},
   {"zip", "Zip Archive", "", 0, 2, magic_zip, "ZipHelper"},
   {"rar", "Rar Archive", "", 0, 6, magic_rar, NULL},
   {"7z", "7z Archive", "", 0, 6, magic_7z, NULL},
@@ -144,19 +148,19 @@ std::vector<common::MagicInfo> list = {
   {"dmp", "Windows Dump File", "64-bit", 0, 8, magic_dmp64, NULL},
   {"hdmp", "Windows Dump File", "with heap", 0, 6, magic_hdmp, NULL},
   {"mp4", "Mp4 Container", "", 4, 4, magic_mp4, "Mp4Helper"},
-  {"asf", "ASF Container", "", 0, 16, magic_asf, NULL},
-  {"riff", "Riff file", "", 0, 4, magic_riff, NULL},
+  {"asf", "ASF Container", "", 0, 16, magic_asf, "ASFHelper"},
+  {"riff", "Riff file", "", 0, 4, magic_riff, "RIFFHelper"},
   {"mp3", "MPEG-1 Layer 3 file", "", 0, 2, magic_mp3, NULL},
   {"mp3", "MPEG-1 Layer 3 file", "ID3v2 Tag", 0, 3, magic_mp3id3v2, NULL},
   {"flv", "Flash Video", "", 0, 3, magic_flv, NULL},
   {"swf", "Shockwave Flash File", "", 0, 3, magic_swf, NULL},
   {"swf", "Shockwave Flash File", "compressed", 0, 3, magic_cwf, NULL},
   {"script", "*nix script", "", 0, 2, magic_sh, NULL},
-  {"xml", "XML (Ansi)", "", 0, 5, magic_xml, NULL},
-  {"xml", "XML (Unicode)", "", 0, 12, magic_xmluni, NULL},
+  {"xml", "XML", "ASCII", 0, 5, magic_xml, NULL},
+  {"xml", "XML", "Unicode", 0, 12, magic_xmluni, NULL},
   {"html", "HTML Document", "", 0, 5, magic_html, NULL},
-  {"html", "HTML Document (Unicode)", "", 0, 12, magic_htmluni, NULL},
-  {"html", "HTML Document (by DocType)", "", 0, 9, magic_dtd, NULL},
+  {"html", "HTML Document", "Unicode", 0, 12, magic_htmluni, NULL},
+  {"html", "HTML Document", "DocType", 0, 9, magic_dtd, NULL},
   {"rtf", "Rich Text Format", "", 0, 6, magic_rtf, NULL},
   {"txt", "Text File", "UTF8", 0, 3, magic_utf8, NULL},
   {"txt", "Text File", "UTF16", 0, 2, magic_utf16, NULL},
