@@ -28,7 +28,16 @@ namespace common {
 		stream.close();
 		return std::vector<unsigned char>(buffer, buffer + size);
 	}
-
+	int ConvertToIntLE(unsigned char* block, int offset) {
+		int ans = 0;
+		ans = ((int)block[offset] << 24) | ((int)block[offset + 1] << 16) | ((int)block[offset + 2] << 8) | ((int)block[offset + 3]);
+		return ans;
+	}
+	int ConvertToIntBE(unsigned char* block, int offset) {
+		int ans = 0;
+		ans = ((int)block[offset + 3] << 24) | ((int)block[offset + 2] << 16) | ((int)block[offset + 1] << 8) | ((int)block[offset]);
+		return ans;
+	}
 	bool checkMagic(const unsigned char* actual, unsigned int actualLength, const unsigned char* expected, unsigned int expectedLength, unsigned int offset) {
 		bool ans = true;
 

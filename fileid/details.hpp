@@ -5,7 +5,7 @@
 #include "common.hpp"
 #include "oless/oless.hpp"
 #include "exe/Exec.hpp"
-
+#include "mp4/mp4.hpp"
 
 namespace details {
 
@@ -95,8 +95,7 @@ namespace details {
 		
 	std::vector<common::ExtensionInfo*> Mp4Helper(const std::string file, std::vector<unsigned char> buffer) {
 		std::vector<common::ExtensionInfo*> ans;
-		common::ExtensionInfo* ei = new common::ExtensionInfo();
-		ei->Extension = "mp4";
+		common::ExtensionInfo* ei = mp4::Detailer(file, buffer);
 		ans.push_back(ei);
 		return ans;
 	}
