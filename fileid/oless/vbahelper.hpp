@@ -130,36 +130,52 @@ namespace OleStructuredStorage {
 			unsigned int VBAVersionMajor;
 			unsigned short VBAVersionMinor;
 			VbaExtensionInfo() {
-				this->Extension = ".vba";
-				this->VersionName = "Visual Basic for Applications";
+				this->Extension = "vba";
+				this->Name = "Visual Basic for Applications";
 			};
 			virtual std::string ToJson() {
 				std::ostringstream str;
-				str << "{";
-				str << "\"extension\" : \"" << this->Extension << "\"";
-				str << ", \"name\" : \"" << this->VersionName << "\"";
-				str << ", \"ProjectName\" : \"" << this->ProjectName << "\"";
-				str << ", \"ProjectVersion\" : " << this->Version;
-				str << ", \"VBAVersionMajor\" : " << this->VBAVersionMajor;
-				str << ", \"VBAVersionMinor\" : " << this->VBAVersionMinor;
-
-				str << ", \"References\" : [" << common::helper::vector_join(this->References, ",", true) << "]";
-
-				str << ", \"Modules\" : [";
-				for (std::vector<ProjectModule*>::const_iterator i = this->Modules.begin(); i != this->Modules.end(); i++) {
-					if (i != this->Modules.begin()) str << ",";
-					str << "{";
-					str << "\"Name\":\"" << (*i)->Name << "\"";
-					str << ",\"StreamName\":\"" << (*i)->StreamName << "\"";
-					str << ",\"Offset\":" << (*i)->Offset;
-					str << ",\"isPrivate\":" << (*i)->isPrivate;
-					str << ",\"isReadOnly\":" << (*i)->isReadOnly;
-					std::string code = (*i)->Code;
-					str << ",\"Code\":\"" << common::helper::JsonEscape((*i)->Code) << "\"";
-					str << "}";
+				str << "{ \"extension\" : \"" << this->Extension << "\"";
+				if (this->Name.size() > 0) {
+					str << ", \"name\":\"" << this->Name << "\"";
 				}
-				str << "]";
-
+				if (this->SubType.size() > 0) {
+					str << ", \"subtype\":\"" << this->SubType << "\"";
+				}
+				if (this->Version > 0) {
+					str << ", \"version\" : " << this->Version;
+				}
+				if (this->VersionName.size() > 0) {
+					str << ", \"versionname\" : \"" << this->VersionName << "\"";
+				}
+				if (this->ProjectName.size() > 0) {
+					str << ", \"projectname\":\"" << this->ProjectName << "\"";
+				}
+				if (this->VBAVersionMajor > 0) {
+					str << ", \"VBAVersionMajor\" : " << this->VBAVersionMajor;
+				}
+				if (this->VBAVersionMinor > 0) {
+					str << ", \"VBAVersionMinor\" : " << this->VBAVersionMinor;
+				}
+				if (this->References.size() > 0) {
+					str << ", \"References\" : [" << common::helper::vector_join(this->References, ",", true) << "]";
+				}
+				if (this->Modules.size() > 0) {
+					str << ", \"Modules\" : [";
+					for (std::vector<ProjectModule*>::const_iterator i = this->Modules.begin(); i != this->Modules.end(); i++) {
+						if (i != this->Modules.begin()) str << ",";
+						str << "{";
+						str << "\"Name\":\"" << (*i)->Name << "\"";
+						str << ",\"StreamName\":\"" << (*i)->StreamName << "\"";
+						str << ",\"Offset\":" << (*i)->Offset;
+						str << ",\"isPrivate\":" << (*i)->isPrivate;
+						str << ",\"isReadOnly\":" << (*i)->isReadOnly;
+						std::string code = (*i)->Code;
+						str << ",\"Code\":\"" << common::helper::JsonEscape((*i)->Code) << "\"";
+						str << "}";
+					}
+					str << "]";
+				}
 				str << "}";
 				return str.str();
 			}
@@ -167,49 +183,73 @@ namespace OleStructuredStorage {
 				std::ostringstream str;
 				str << "<item>";
 				str << "<extension>" << this->Extension << "</extension>";
-				str << "<name>" << this->VersionName << "</name>";
-				str << "<ProjectName>" << this->ProjectName << "</ProjectName>";
-				str << "<ProjectVersion>" << this->Version << "</ProjectVersion>";
-				str << "<VBAVersionMajor>" << this->VBAVersionMajor << "</VBAVersionMajor>";
-				str << "<VBAVersionMinor>" << this->VBAVersionMinor << "</VBAVersionMinor>";
-
-				str << "<References>";
-				for (std::vector<std::string>::const_iterator i = this->References.begin(); i != this->References.end(); i++) {
-					str << "<Reference>" << *i << "</Reference>";
+				if (this->Name.size() > 0) {
+					str << "<name>" << this->Name << "</name>";
 				}
-				str << "</References>";
-
-
-				str << "<Modules>";
-				for (std::vector<ProjectModule*>::const_iterator i = this->Modules.begin(); i != this->Modules.end(); i++) {
-					if (i != this->Modules.begin()) str << ",";
-					str << "<Module>";
-					str << "<Name>" << (*i)->Name << "</Name>";
-					str << "<StreamName>" << (*i)->StreamName << "</StreamName>";
-					str << "<Offset>" << (*i)->Offset << "</Offset>";
-					str << "<isPrivate>" << (*i)->isPrivate << "</isPrivate>";
-					str << "<isReadOnly>" << (*i)->isReadOnly << "</isReadOnly>";
-					str << "<Code><![CDATA[" << (*i)->Code << "]]></Code>";
-					str << "</Module>";
+				if (this->SubType.size() > 0) {
+					str << "<subtype>" << this->SubType << "</subtype>";
 				}
-				str << "</Modules>";
+				if (this->Version > 0) {
+					str << "<version>" << this->Version << "</version>";
+				}
+				if (this->VersionName.size() > 0) {
+					str << "<versionname>" << this->VersionName << "</versionname>";
+				}
+				if (this->ProjectName.size() > 0) {
+					str << "<projectname>" << this->ProjectName << "</projectname>";
+				}
+				if (this->VBAVersionMajor > 0) {
+					str << "<VBAVersionMajor>" << this->VBAVersionMajor << "</VBAVersionMajor>";
+				}
+				if (this->VBAVersionMinor > 0) {
+					str << "<VBAVersionMinor>" << this->VBAVersionMinor << "</VBAVersionMinor>";
+				}
+				if (this->References.size() > 0) {
+					str << "<References>";
+					for (std::vector<std::string>::const_iterator i = this->References.begin(); i != this->References.end(); i++) {
+						str << "<Reference>" << *i << "</Reference>";
+					}
+					str << "</References>";
+				}
+
+				if (this->Modules.size() > 0) {
+					str << "<Modules>";
+					for (std::vector<ProjectModule*>::const_iterator i = this->Modules.begin(); i != this->Modules.end(); i++) {
+						if (i != this->Modules.begin()) str << ",";
+						str << "<Module>";
+						str << "<Name>" << (*i)->Name << "</Name>";
+						str << "<StreamName>" << (*i)->StreamName << "</StreamName>";
+						str << "<Offset>" << (*i)->Offset << "</Offset>";
+						str << "<isPrivate>" << (*i)->isPrivate << "</isPrivate>";
+						str << "<isReadOnly>" << (*i)->isReadOnly << "</isReadOnly>";
+						str << "<Code><![CDATA[" << (*i)->Code << "]]></Code>";
+						str << "</Module>";
+					}
+					str << "</Modules>";
+				}
 				str << "</item>";
 				return str.str();
 			}
 			virtual std::string ToText() {
 				std::ostringstream str;
-				str << this->Extension << "\t" << this->Version << "\t" << this->VersionName;
-				str << "\t" << this->ProjectName;
+				str << this->Extension;
+				str << "\t" << this->Name;
+				str << "\t" << this->SubType;
 				str << "\t" << this->Version;
+				str << "\t" << this->VersionName;
+				str << "\t" << this->ProjectName;
 				str << "\t" << this->VBAVersionMajor;
 				str << "\t" << this->VBAVersionMinor;
 				return str.str();
 			}
 			virtual std::string ToCsv() {
 				std::ostringstream str;
-				str << this->Extension << "," << this->Version << "," << this->VersionName;
-				str << "," << this->ProjectName;
+				str << this->Extension;
+				str << "," << this->Name;
+				str << "," << this->SubType;
 				str << "," << this->Version;
+				str << "," << this->VersionName;
+				str << "," << this->ProjectName;
 				str << "," << this->VBAVersionMajor;
 				str << "," << this->VBAVersionMinor;
 				return str.str();
@@ -217,7 +257,7 @@ namespace OleStructuredStorage {
 
 		};
 
-		
+
 
 
 		class vbahelper
@@ -433,8 +473,8 @@ namespace OleStructuredStorage {
 					if (!(mod->StreamName.empty())) {
 						std::string newStreamName = fullname + "/VBA/" + (std::string)(mod->StreamName);
 						mod->Code = GetCode(vbaStorage, newStreamName, (unsigned int)(mod->Offset));
-					}
-					ans->Modules.push_back(mod);
+						ans->Modules.push_back(mod);
+					}					
 				}
 				return ans;
 			}

@@ -76,16 +76,26 @@ namespace common {
 	class ExtensionInfo : public IExportable {
 	public:
 		std::string Extension;
+		std::string Name;
+		std::string SubType;
 		unsigned short Version;
 		std::string VersionName;
 	public:
 		virtual std::string ToJson() {
 			std::ostringstream str;
 			str << "{ \"extension\" : \"" << this->Extension << "\"";
+			if (this->Name.size() > 0) {
+				str << ", \"name\":\"" << this->Name << "\"";
+			}
+			if (this->SubType.size() > 0) {
+				str << ", \"subtype\":\"" << this->SubType << "\"";
+			}
 			if (this->Version > 0) {
 				str << ", \"version\" : \"" << this->Version << "\"";
 			}
-			str << ", \"name\" : \"" << this->VersionName << "\"";
+			if (this->VersionName.size() > 0 ) {
+				str << ", \"versionname\" : \"" << this->VersionName << "\"";
+			}
 			str << "}";
 			return str.str();
 		}
@@ -93,21 +103,37 @@ namespace common {
 			std::ostringstream str;
 			str << "<item>";
 			str << "<extension>" << this->Extension << "</extension>";
+			if (this->Name.size() > 0) {
+				str << "<name>" << this->Name << "</name>";
+			}
+			if (this->SubType.size() > 0) {
+				str << "<subtype>" << this->SubType << "</subtype>";
+			}
 			if (this->Version > 0) {
 				str << "<version>" << this->Version << "</version>";
 			}
-			str << "<name>" << this->VersionName << "</name>";
+			if (this->VersionName.size() > 0) {
+				str << "<versionname>" << this->VersionName << "</versionname>";
+			}
 			str << "</item>";
 			return str.str();
 		}
 		virtual std::string ToText() {
 			std::ostringstream str;
-			str << this->Extension << "\t" << this->Version << "\t" << this->VersionName;
+			str << this->Extension;
+			str << "\t" << this->Name;
+			str << "\t" << this->SubType;
+			str << "\t" << this->Version;
+			str << "\t" << this->VersionName;
 			return str.str();
 		}
 		virtual std::string ToCsv() {
 			std::ostringstream str;
-			str << this->Extension << "," << this->Version << "," << this->VersionName;
+			str << this->Extension;
+			str << "," << this->Name;
+			str << "," << this->SubType;
+			str << "," << this->Version;
+			str << "," << this->VersionName;
 			return str.str();
 		}
 	};
@@ -258,10 +284,10 @@ namespace common {
 					result += "\\t";
 					break;
 				default:
-					if (iscntrl(*c)) {
+					unsigned char ci = static_cast<unsigned char>(*c);
+					if (iscntrl(ci) || ci > 127) {
 						std::ostringstream oss;
-						oss << "\\u" << std::hex << std::uppercase << std::setfill('0')
-							<< std::setw(4) << static_cast<int>(*c);
+						oss << "\\u" << std::hex << std::uppercase << std::setfill('0') << std::setw(4) << ((static_cast<unsigned int>(*c) << 24) >> 24); //ugh!
 						result += oss.str();
 					}
 					else {

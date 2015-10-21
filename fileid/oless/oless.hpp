@@ -70,41 +70,54 @@ namespace OleStructuredStorage {
 				//Stream Analysis
 				POLE::Stream *stream = new POLE::Stream(storage, fullname);
 				if (fullname == "/\011DRMContent") {
-					ei->Extension = ".irm";
-					ei->VersionName = "Information Rights Managed file (drm)";
+					ei->Extension = "irm";
+					ei->Name = "Microsoft Office Information Rights Managed File";
+					ei->SubType = "drm";
 				}
 				else if (fullname == "/PowerPoint Document") {
-					ei->Extension = ".ppt";
+					ei->Extension = "ppt";
+					ei->Name = "Microsoft Office PowerPoint Document";
 					ei->Version = oo->GetPptVersion(storage, stream);
 					ei->VersionName = oo->GetVersion_Powerpoint(ei->Version);
+					ei->SubType = ei->VersionName;
 				}
 				else if (fullname == "/PP40") {
-					ei->Extension = ".ppt";
+					ei->Extension = "ppt";
+					ei->Name = "Microsoft Office PowerPoint Document";
 					ei->Version = 4;
 					ei->VersionName = "PowerPoint 4.0";
+					ei->SubType = ei->VersionName;
 				}
 				else if (fullname == "/Workbook" || fullname == "/Book") {
-					ei->Extension = ".xls";
+					ei->Extension = "xls";
+					ei->Name = "Microsoft Office Excel Workbook";
 					ei->Version = oo->GetXlsVersion(stream);
 					ei->VersionName = oo->GetVersion_Excel(ei->Version);
+					ei->SubType = ei->VersionName;
 				}
 				else if (fullname == "/WordDocument") {
-					ei->Extension = ".doc";
+					ei->Extension = "doc";
+					ei->Name = "Microsoft Office Word Document";
 					ei->Version = oo->GetnFib(stream);
 					ei->VersionName = oo->GetVersion_Word(ei->Version);
+					ei->SubType = ei->VersionName;
 				}
 				else if (fullname == "/Contents") {
-					ei->Extension = ".pub";
+					ei->Extension = "pub";
+					ei->Name = "Microsoft Office Publisher Document";
 					ei->Version = oo->GetPubVersion(stream);
 					ei->VersionName = oo->GetVersion_Publisher(ei->Version);
+					ei->SubType = ei->VersionName;
 				}
 				else if (fullname == "/VisioDocument") {
-					ei->Extension = ".vsd";
+					ei->Extension = "vsd";
+					ei->Name = "Microsoft Office Visio Document";
 					ei->Version = oo->GetVisoVersion(stream);
 					ei->VersionName = oo->GetVersion_Visio(ei->Version);
+					ei->SubType = ei->VersionName;
 				}
 				else if (fullname == "/Details") {
-					ei->Extension = ".bup";
+					ei->Extension = "bup";
 				}
 
 				delete stream;
