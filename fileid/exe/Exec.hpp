@@ -238,35 +238,42 @@ namespace Exec {
 
 	std::vector<common::ExtensionInfo*> Detailer(const std::string file, std::vector<unsigned char> buffer) {
 		std::vector<common::ExtensionInfo*> ans;
+		ExecExtensionInfo* info = new ExecExtensionInfo();
 
-		std::vector<unsigned char> buf2 = common::readFile(file, 2048);
-		unsigned char* rawBuffer = buf2.data();
+	/*	try {
+			std::vector<unsigned char> buf2 = common::readFile(file, 2048);
+			unsigned char* rawBuffer = buf2.data();
 
-		IMAGE_DOS_HEADER* dosHeader = (IMAGE_DOS_HEADER*)rawBuffer;
+			IMAGE_DOS_HEADER* dosHeader = (IMAGE_DOS_HEADER*)rawBuffer;
 
-		long peHeaderStart = dosHeader->e_lfanew;
-		COFF_FILE_HEADER* coffHeader = (COFF_FILE_HEADER*)(rawBuffer + peHeaderStart);
+			long peHeaderStart = dosHeader->e_lfanew;
+			COFF_FILE_HEADER* coffHeader = (COFF_FILE_HEADER*)(rawBuffer + peHeaderStart);
 
-		OPTIONAL_HEADER* optHeader = (OPTIONAL_HEADER*)(rawBuffer + peHeaderStart + sizeof(COFF_FILE_HEADER));
-	 
-		ExecExtensionInfo* info = new ExecExtensionInfo();		
-		info->MachineType = GetMachineTypeString(coffHeader->Machine);
-		info->Subsystem = GetSubsystemString(optHeader->Subsystem);
-		info->LinkerVersion = BuildVersionString(optHeader->MajorLinkerVersion, optHeader->MinorLinkerVersion);
-		info->OsVersion = BuildVersionString(optHeader->MajorOperatingSystemVersion, optHeader->MinorOperatingSystemVersion);
-		info->ImageVersion = BuildVersionString(optHeader->MajorImageVersion, optHeader->MinorImageVersion);
-		info->SubsystemVersion = BuildVersionString(optHeader->MajorSubsystemVersion, optHeader->MinorSubsystemVersion);
-		info->Win32Version = optHeader->Win32VersionValue;
-		info->Characteristics = BuildVectorFromMap(CharacteristicsMap, coffHeader->Characteristics);
-		if (checkContains(info->Characteristics, CharacteristicsMap[0x2000])) {
-			info->Extension = "dll";
-			info->VersionName = "Dynamic Link Library";
-		}    
-		if (checkContains(info->Characteristics, CharacteristicsMap[0x1000])) {
-			info->Extension = "sys";
-			info->VersionName = "Kernal Mode Executable";
-		}    
-		info->DllCharacteristics = BuildVectorFromMap(DllCharacteristicsMap, optHeader->DllCharacteristics);
+			OPTIONAL_HEADER* optHeader = (OPTIONAL_HEADER*)(rawBuffer + peHeaderStart + sizeof(COFF_FILE_HEADER));
+
+			info->MachineType = GetMachineTypeString(coffHeader->Machine);
+			info->Subsystem = GetSubsystemString(optHeader->Subsystem);
+			info->LinkerVersion = BuildVersionString(optHeader->MajorLinkerVersion, optHeader->MinorLinkerVersion);
+			info->OsVersion = BuildVersionString(optHeader->MajorOperatingSystemVersion, optHeader->MinorOperatingSystemVersion);
+			info->ImageVersion = BuildVersionString(optHeader->MajorImageVersion, optHeader->MinorImageVersion);
+			info->SubsystemVersion = BuildVersionString(optHeader->MajorSubsystemVersion, optHeader->MinorSubsystemVersion);
+			info->Win32Version = optHeader->Win32VersionValue;
+			info->Characteristics = BuildVectorFromMap(CharacteristicsMap, coffHeader->Characteristics);
+			if (checkContains(info->Characteristics, CharacteristicsMap[0x2000])) {
+				info->Extension = "dll";
+				info->VersionName = "Dynamic Link Library";
+			}
+			if (checkContains(info->Characteristics, CharacteristicsMap[0x1000])) {
+				info->Extension = "sys";
+				info->VersionName = "Kernal Mode Executable";
+			}
+			info->DllCharacteristics = BuildVectorFromMap(DllCharacteristicsMap, optHeader->DllCharacteristics);
+		}
+		catch (std::exception)
+		{
+			std::cerr << "Error parsing EXE" << std::endl;
+		}*/
+
 		ans.push_back(info);
 		return ans;
 	}

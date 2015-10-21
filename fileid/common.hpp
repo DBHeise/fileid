@@ -16,17 +16,21 @@
 namespace common {
 
 	std::vector<unsigned char> readFile(std::string file, unsigned int max) {
-		std::basic_ifstream<unsigned char> stream(file, std::ios::in | std::ios::binary | std::ifstream::ate);
-		unsigned int size = max;
-		unsigned int fileSize = (unsigned int)stream.tellg();
-		if (fileSize < size) {
-			size = fileSize;
+		std::vector<unsigned char> ans;
+		std::ifstream stream(file, std::ios::binary|std::ios::ate);
+		if (stream) {
+			unsigned int fileSize = static_cast<unsigned int>(stream.tellg());
+			stream.seekg(0, std::ios::beg);
+			
+			unsigned int size = max;
+			if (fileSize < max) {
+				size = fileSize;
+			}
+			ans.resize(size);
+			stream.read(reinterpret_cast<char*>(ans.data()), size);
+			stream.close();
 		}
-		unsigned char* buffer = new unsigned char[size];
-		stream.seekg(0, std::ios::beg);
-		stream.read(buffer, size);
-		stream.close();
-		return std::vector<unsigned char>(buffer, buffer + size);
+		return ans;
 	}
 	int ConvertToIntLE(unsigned char* block, int offset) {
 		int ans = 0;
