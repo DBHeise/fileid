@@ -78,29 +78,29 @@ namespace Exec {
 
 	typedef struct _IMAGE_DOS_HEADER {  // DOS .EXE header
 		unsigned short MagicNumber;         // Magic number
-		unsigned short BytesOnLastPage;          // Bytes on last page of file
-		unsigned short PageCount;            // Pages in file
-		unsigned short Relocations;          // Relocations
-		unsigned short HeaderSizeParagraphs;       // Size of header in paragraphs
-		unsigned short MinExtraPara;      // Minimum extra paragraphs needed
-		unsigned short MaxExtraPara;      // Maximum extra paragraphs needed
-		unsigned short InitialSS;            // Initial (relative) SS value
-		unsigned short InitialSP;            // Initial SP value
-		unsigned short Checksum;          // Checksum
-		unsigned short InitialIP;            // Initial IP value
-		unsigned short InitialCS;            // Initial (relative) CS value
-		unsigned short RelocationAddress;        // File address of relocation table
-		unsigned short Overlay;          // Overlay number
-		unsigned short Reserved[4];        // Reserved words
-		unsigned short OEMIdentifier;         // OEM identifier
-		unsigned short OEMInfo;       // OEM information
-		unsigned short Reserved2[10];      // Reserved words
+		unsigned short BytesOnLastPage;     // Bytes on last page of file
+		unsigned short PageCount;           // Pages in file
+		unsigned short Relocations;         // Relocations
+		unsigned short HeaderSizeParagraphs;// Size of header in paragraphs
+		unsigned short MinExtraPara;			// Minimum extra paragraphs needed
+		unsigned short MaxExtraPara;			// Maximum extra paragraphs needed
+		unsigned short InitialSS;           // Initial (relative) SS value
+		unsigned short InitialSP;           // Initial SP value
+		unsigned short Checksum;				// Checksum
+		unsigned short InitialIP;           // Initial IP value
+		unsigned short InitialCS;           // Initial (relative) CS value
+		unsigned short RelocationAddress;   // File address of relocation table
+		unsigned short Overlay;					// Overlay number
+		unsigned short Reserved[4];			// Reserved words
+		unsigned short OEMIdentifier;       // OEM identifier
+		unsigned short OEMInfo;					// OEM information
+		unsigned short Reserved2[10];       // Reserved words
 		unsigned int NewExeAddress;        // File address of new exe header
 	} IMAGE_DOS_HEADER;
 
 
 	typedef struct _COFF_FILE_HEADER {
-		unsigned long Signature;
+		unsigned int Signature;
 		unsigned short Machine;
 		unsigned short NumberOfSections;
 		unsigned int TimeDateStamp;
@@ -263,11 +263,11 @@ namespace Exec {
 		info->SubsystemVersion = BuildVersionString(optHeader->MajorSubsystemVersion, optHeader->MinorSubsystemVersion);
 		info->Win32Version = optHeader->Win32VersionValue;
 		info->Characteristics = BuildVectorFromMap(CharacteristicsMap, coffHeader->Characteristics);
-		if (checkContains(info->Characteristics, CharacteristicsMap[0x2000])) {
+		if (coffHeader->Characteristics & 0x2000) {
 			info->Extension = "dll";
 			info->VersionName = "Dynamic Link Library";
 		}
-		if (checkContains(info->Characteristics, CharacteristicsMap[0x1000])) {
+		if (coffHeader->Characteristics & 0x1000) {
 			info->Extension = "sys";
 			info->VersionName = "Kernal Mode Executable";
 		}
