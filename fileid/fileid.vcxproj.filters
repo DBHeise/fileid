@@ -24,6 +24,7 @@
     <ClInclude Include="oless\pole.h" />
     <ClInclude Include="oless\olessoffice.hpp" />
     <ClInclude Include="oless\vbahelper.hpp" />
+    <ClInclude Include="mp4\mp4.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="data.xml" />

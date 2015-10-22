@@ -20,7 +20,7 @@ namespace Exec {
 		std::vector<std::string> Characteristics;
 		std::vector<std::string> DllCharacteristics;
 		
-		ExecExtensionInfo() {
+		ExecExtensionInfo() : ExtensionInfo() {
 			this->Extension = "exe";
 			this->VersionName = "Executable";
 		};

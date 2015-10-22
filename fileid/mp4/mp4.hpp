@@ -12,7 +12,7 @@ namespace mp4 {
 		std::string Brand;
 		std::string BrandCode;		
 
-		Mp4ExtensionInfo() {
+		Mp4ExtensionInfo() : ExtensionInfo() {
 			this->Extension = "mp4";
 			this->VersionName = "MPEG-4 Media File";
 		};

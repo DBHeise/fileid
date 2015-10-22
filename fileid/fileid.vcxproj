@@ -153,6 +153,7 @@
     <ClInclude Include="details.hpp" />
     <ClInclude Include="exe\Exec.hpp" />
     <ClInclude Include="magic.h" />
+    <ClInclude Include="mp4\mp4.hpp" />
     <ClInclude Include="oless\MSExcel.hpp" />
     <ClInclude Include="oless\MSPowerPoint.hpp" />
     <ClInclude Include="oless\MSPublisher.hpp" />

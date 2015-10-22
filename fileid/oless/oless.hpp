@@ -71,7 +71,7 @@ namespace OleStructuredStorage {
 					catch (std::exception ex) {
 						ei = new VBA::VbaExtensionInfo();
 						((VBA::VbaExtensionInfo*)ei)->ProjectName = ex.what();
-						((VBA::VbaExtensionInfo*)ei)->SubType = "ERROR reading VBA Project";
+						((VBA::VbaExtensionInfo*)ei)->SubType = "ERROR";
 					}
 				}
 			}

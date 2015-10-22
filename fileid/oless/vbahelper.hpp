@@ -129,9 +129,11 @@ namespace OleStructuredStorage {
 			std::vector<ProjectModule*> Modules;
 			unsigned int VBAVersionMajor;
 			unsigned short VBAVersionMinor;
-			VbaExtensionInfo() {
+			VbaExtensionInfo() : ExtensionInfo() {
 				this->Extension = "vba";
 				this->Name = "Visual Basic for Applications";
+				this->VBAVersionMajor = 0;
+				this->VBAVersionMinor = 0;
 			};
 			virtual std::string ToJson() {
 				std::ostringstream str;

@@ -122,6 +122,9 @@ namespace common {
 		unsigned short Version;
 		std::string VersionName;
 	public:
+		ExtensionInfo() {
+			this->Version = 0;
+		}
 		virtual std::string ToJson() {
 			std::ostringstream str;
 			str << "{ \"extension\" : \"" << this->Extension << "\"";
