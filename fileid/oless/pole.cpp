@@ -50,7 +50,7 @@
 #include <vector>
 #include <queue>
 #include <limits>
-
+#include <algorithm>
 #include <cstring>
 
 #include "pole.h"
