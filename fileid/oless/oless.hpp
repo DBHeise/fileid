@@ -20,11 +20,13 @@ namespace OleStructuredStorage {
 		storage->open();
 		if (storage->result() != POLE::Storage::Ok)
 		{
-			storage->close();
-			std::cerr << "Unable to open OLESS file" << std::endl;
+			storage->close();			
 			delete storage;
+			return NULL;
 		}
-		return storage;
+		else {
+			return storage;
+		}		
 	}
 
 
@@ -63,7 +65,12 @@ namespace OleStructuredStorage {
 				if (name == "Macros" || name == "_VBA_PROJECT_CUR") {
 					VBA::vbahelper* vba = new VBA::vbahelper();
 					delete ei;
-					ei = vba->Analyze(fullname, storage);
+					try {
+						ei = vba->Analyze(fullname, storage);
+					}
+					catch (std::exception) {
+						//ignore??
+					}
 				}
 			}
 			else {
@@ -158,6 +165,14 @@ namespace OleStructuredStorage {
 				storage->close();
 				delete storage;
 			}
+			if (this->m_results.size() == 0) {
+				common::ExtensionInfo* ei = new common::ExtensionInfo();
+				ei->Extension = "oless";
+				ei->Name = "OLE Structured Storage";
+				ei->SubType = "Unknown";
+				this->m_results.push_back((common::IExportable*)ei);
+			}
+
 			return convert<common::ExtensionInfo>(this->m_results);
 		}
 		std::vector<OleSummary*> List() {

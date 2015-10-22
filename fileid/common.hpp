@@ -64,6 +64,47 @@ namespace common {
 
 		return ans;
 	}
+	
+	static std::string JsonEscape(const std::string &source) {
+		std::string result;
+		for (const char* c = source.c_str(); *c != 0; ++c) {
+			switch (*c) {
+			case '\"':
+				result += "\\\"";
+				break;
+			case '\\':
+				result += "\\\\";
+				break;
+			case '\b':
+				result += "\\b";
+				break;
+			case '\f':
+				result += "\\f";
+				break;
+			case '\n':
+				result += "\\n";
+				break;
+			case '\r':
+				result += "\\r";
+				break;
+			case '\t':
+				result += "\\t";
+				break;
+			default:
+				unsigned char ci = static_cast<unsigned char>(*c);
+				if (iscntrl(ci) || ci > 127) {
+					std::ostringstream oss;
+					oss << "\\u" << std::hex << std::uppercase << std::setfill('0') << std::setw(4) << ((static_cast<unsigned int>(*c) << 24) >> 24); //ugh!
+					result += oss.str();
+				}
+				else {
+					result += *c;
+				}
+				break;
+			}
+		}
+		return result;
+	}
 
 	class IExportable {
 	public:
@@ -88,7 +129,7 @@ namespace common {
 				str << ", \"name\":\"" << this->Name << "\"";
 			}
 			if (this->SubType.size() > 0) {
-				str << ", \"subtype\":\"" << this->SubType << "\"";
+				str << ", \"subtype\":\"" << common::JsonEscape(this->SubType) << "\"";
 			}
 			if (this->Version > 0) {
 				str << ", \"version\" : \"" << this->Version << "\"";
@@ -256,48 +297,7 @@ namespace common {
 					result << *i;
 			}
 			return result.str();
-		}
-
-		static std::string JsonEscape(const std::string &source) {
-			std::string result;
-			for (const char* c = source.c_str(); *c != 0; ++c) {
-				switch (*c) {
-				case '\"':
-					result += "\\\"";
-					break;
-				case '\\':
-					result += "\\\\";
-					break;
-				case '\b':
-					result += "\\b";
-					break;
-				case '\f':
-					result += "\\f";
-					break;
-				case '\n':
-					result += "\\n";
-					break;
-				case '\r':
-					result += "\\r";
-					break;
-				case '\t':
-					result += "\\t";
-					break;
-				default:
-					unsigned char ci = static_cast<unsigned char>(*c);
-					if (iscntrl(ci) || ci > 127) {
-						std::ostringstream oss;
-						oss << "\\u" << std::hex << std::uppercase << std::setfill('0') << std::setw(4) << ((static_cast<unsigned int>(*c) << 24) >> 24); //ugh!
-						result += oss.str();
-					}
-					else {
-						result += *c;
-					}
-					break;
-				}
-			}
-			return result;
-		}
+		}	
 
 		static unsigned short GetItem2Byte(const unsigned char* data, unsigned int index) {
 			return (data[index + 1] << 8) | data[index + 0];
@@ -426,7 +426,7 @@ namespace common {
 			std::cout << "</file>" << std::endl;
 			break;
 		case OutputFormat::JSON:
-			std::cout << "{ \"name\" : \"" << helper::JsonEscape(file) << "\"," << std::endl;
+			std::cout << "{ \"name\" : \"" << common::JsonEscape(file) << "\"," << std::endl;
 			std::cout << "\t \"" << headerName << "\": [" << std::endl;
 			for (it = summary.begin(); it != summary.end(); it++) {
 				if (it != summary.begin()) {

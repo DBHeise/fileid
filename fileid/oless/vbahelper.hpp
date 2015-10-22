@@ -171,7 +171,7 @@ namespace OleStructuredStorage {
 						str << ",\"isPrivate\":" << (*i)->isPrivate;
 						str << ",\"isReadOnly\":" << (*i)->isReadOnly;
 						std::string code = (*i)->Code;
-						str << ",\"Code\":\"" << common::helper::JsonEscape((*i)->Code) << "\"";
+						str << ",\"Code\":\"" << common::JsonEscape((*i)->Code) << "\"";
 						str << "}";
 					}
 					str << "]";

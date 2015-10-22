@@ -13,7 +13,7 @@ namespace OleStructuredStorage {
 
 		virtual std::string ToJson() {
 			std::ostringstream str;
-			str << "{ \"path\" : \"" << common::helper::JsonEscape(this->FullName) << "\", \"size\" : \"" << this->Size << "\"}";
+			str << "{ \"path\" : \"" << common::JsonEscape(this->FullName) << "\", \"size\" : \"" << this->Size << "\"}";
 			return str.str();
 		}
 		virtual std::string ToXml() {

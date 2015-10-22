@@ -44,6 +44,12 @@ common::ExtraDataFunc GetExtraDataFunction(std::string name) {
 	else if (name == "ZipHelper") {
 		ans = details::ZipHelper;
 	}
+	else if (name == "RIFFHelper") {
+		ans = details::RIFFHelper;
+	}
+	else if (name == "ASFHelper") {
+		ans = details::ASFHelper;
+	}
 	else {
 		throw std::logic_error("Unknown Extra Data Funcion (bad dev)");
 	}
@@ -57,37 +63,46 @@ std::vector<common::ExtensionInfo*> guessExtension(std::string file) {
 	std::vector<common::ExtensionInfo*> ans;
 	std::vector<unsigned char> buffer = common::readFile(file, 512);
 
-	for (std::vector<common::MagicInfo>::const_iterator i = list.begin(); i != list.end(); i++) {
-		common::MagicInfo mi = *i;
-		if (common::checkMagic(buffer.data(), (unsigned int)buffer.size(), mi.magic, mi.size, mi.offset)) {
-			if (mi.extraName.size() > 0) {
-				common::ExtraDataFunc func = GetExtraDataFunction(mi.extraName);
-				std::vector<common::ExtensionInfo*> list2 = func(file, buffer);
-				for (std::vector<common::ExtensionInfo*>::const_iterator n = list2.begin(); n != list2.end(); n++) {	
-					ans.push_back(*n);
+	if (buffer.size() > 0) {
+		for (std::vector<common::MagicInfo>::const_iterator i = list.begin(); i != list.end(); i++) {
+			common::MagicInfo mi = *i;
+			if (common::checkMagic(buffer.data(), (unsigned int)buffer.size(), mi.magic, mi.size, mi.offset)) {
+				if (mi.extraName.size() > 0) {
+					common::ExtraDataFunc func = GetExtraDataFunction(mi.extraName);
+					std::vector<common::ExtensionInfo*> list2 = func(file, buffer);
+					for (std::vector<common::ExtensionInfo*>::const_iterator n = list2.begin(); n != list2.end(); n++) {
+						ans.push_back(*n);
+					}
 				}
-			}
-			else {
-				common::ExtensionInfo* ei = new common::ExtensionInfo();
-				ei->Extension = mi.Extension;
-				ei->VersionName += mi.Name;
-				if (mi.Version.size() > 0) {
-					ei->VersionName += " (";
-					ei->VersionName += mi.Version;
-					ei->VersionName += ")";
+				else {
+					common::ExtensionInfo* ei = new common::ExtensionInfo();
+					ei->Extension = mi.Extension;
+					ei->Name += mi.Name;
+					if (mi.Version.size() > 0) {
+						ei->SubType = mi.Version;
+					}
+					ans.push_back(ei);
 				}
-				ans.push_back(ei);
 			}
 		}
-	}
-	return ans;
+	}	return ans;
 }
 
 common::ExtensionInfo* UnknownExtension(std::string file) {
 	common::ExtensionInfo* ei = new common::ExtensionInfo();
-	ei->Extension = "unknown";
-	ei->VersionName = "Unknown";
-	//get dump
+	std::vector<unsigned char> buffer = common::readFile(file, 512);
+
+	if (buffer.size() > 0) {
+		ei->Extension = "unknown";
+		ei->Name = "Unknown";
+		std::string start(reinterpret_cast<char*>(&buffer[0]), buffer.size());
+		ei->SubType = start;
+	}
+	else {
+		ei->Extension = "empty";
+		ei->Name = "Empty File";
+	}
+
 	return ei;
 }
 
