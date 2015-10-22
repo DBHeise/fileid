@@ -495,7 +495,8 @@ namespace OleStructuredStorage {
 				unsigned int compressedChunkStart = 0;
 				unsigned int compressedEnd = 0;
 
-				unsigned char* decompressedBuffer = new unsigned char[compressedBufferLength * 1024];
+				unsigned int decompressedBufferLength = compressedBufferLength * 1024;
+				unsigned char* decompressedBuffer = new unsigned char[decompressedBufferLength];
 
 				if (compressedBuffer[compressedCurrent] != 0x01) {
 					return std::make_tuple<unsigned int, unsigned char*>(0, NULL);
@@ -548,7 +549,7 @@ namespace OleStructuredStorage {
 
 											unsigned int copySource = decompressedCurrent - copyTokenOffset;
 
-											for (unsigned int n = copySource; n < (copySource + copyTokenLength); n++) {
+											for (unsigned int n = copySource; n < (copySource + copyTokenLength) && n < decompressedBufferLength; n++) {
 												decompressedBuffer[decompressedCurrent] = decompressedBuffer[n];
 												decompressedCurrent++;
 											}
