@@ -315,8 +315,13 @@ namespace OleStructuredStorage {
 				return ans;
 			}
 
-			static std::pair<unsigned int, std::string> ReadString(unsigned char* buffer, unsigned int startIndex) {
+			static std::pair<unsigned int, std::string> ReadString(unsigned char* buffer, unsigned int bufferLen, unsigned int startIndex) {
+				
+				if (startIndex + 4 > bufferLen)
+					throw std::runtime_error("Attempted to read past end of buffer");
 				unsigned int len = common::helper::GetItem4Byte(buffer, startIndex);
+				if (startIndex + 4 + len > bufferLen)
+					throw std::runtime_error("Attempted to read past end of buffer");
 				std::string  str = common::helper::GetItemString(buffer, startIndex + 4, len);
 				return std::make_pair(startIndex + len + 4, str);
 			}
@@ -357,52 +362,52 @@ namespace OleStructuredStorage {
 
 				std::string tmpStr;
 				std::wstring tmpwStr;
-				std::tie(index, tmpStr) = ReadString(buffer, index); //Project Name
+				std::tie(index, tmpStr) = ReadString(buffer, len, index); //Project Name
 				ans->ProjectName = tmpStr;
-				std::tie(index, tmpStr) = ReadString(buffer, index + 2); //DocString
-				std::tie(index, tmpStr) = ReadString(buffer, index + 2); //DocStringUnicode
-				std::tie(index, tmpStr) = ReadString(buffer, index + 2); //ProjectHelpFilePath1
-				std::tie(index, tmpStr) = ReadString(buffer, index + 2); //ProjectHelpFilePath2
+				std::tie(index, tmpStr) = ReadString(buffer, len, index + 2); //DocString
+				std::tie(index, tmpStr) = ReadString(buffer, len, index + 2); //DocStringUnicode
+				std::tie(index, tmpStr) = ReadString(buffer, len, index + 2); //ProjectHelpFilePath1
+				std::tie(index, tmpStr) = ReadString(buffer, len, index + 2); //ProjectHelpFilePath2
 				index += 10; //ProjectHelpContext
 				index += 10; //ProjectLibFlags
 				ProjectVersion* pVersion = (ProjectVersion*)&buffer[index];
 				ans->VBAVersionMajor = pVersion->VersionMajor;
 				ans->VBAVersionMinor = pVersion->VersionMinor;
 				index += 12; //ProjectVersion
-				std::tie(index, tmpStr) = ReadString(buffer, index + 2); //ProjectConstants
-				std::tie(index, tmpStr) = ReadString(buffer, index + 2); //ProjectConstants Unicode
+				std::tie(index, tmpStr) = ReadString(buffer, len, index + 2); //ProjectConstants
+				std::tie(index, tmpStr) = ReadString(buffer, len, index + 2); //ProjectConstants Unicode
 
 																							//Read References
 				while (common::helper::GetItem2Byte(buffer, index) == 0x16) {
-					std::tie(index, tmpStr) = ReadString(buffer, index + 2); //Reference Name
+					std::tie(index, tmpStr) = ReadString(buffer, len, index + 2); //Reference Name
 					ans->References.push_back(tmpStr);
-					std::tie(index, tmpStr) = ReadString(buffer, index + 2); //Reference Unicode Name
+					std::tie(index, tmpStr) = ReadString(buffer, len, index + 2); //Reference Unicode Name
 
 					unsigned short recordType = common::helper::GetItem2Byte(buffer, index);
 					index += 2;
 					switch (recordType) {
 					case 0x33://REFRENCECONTROL		
-						std::tie(index, tmpStr) = ReadString(buffer, index); //LibTwiddled
+						std::tie(index, tmpStr) = ReadString(buffer, len, index); //LibTwiddled
 						break;
 					case 0x2f://REFRENCECONTROL		
 						index += 4;
-						std::tie(index, tmpStr) = ReadString(buffer, index); //LibTwiddled
+						std::tie(index, tmpStr) = ReadString(buffer, len, index); //LibTwiddled
 						index += 6;
-						std::tie(index, tmpStr) = ReadString(buffer, index + 2); //Reference Name
-						std::tie(index, tmpStr) = ReadString(buffer, index + 2); //Reference Unicode Name
+						std::tie(index, tmpStr) = ReadString(buffer, len, index + 2); //Reference Name
+						std::tie(index, tmpStr) = ReadString(buffer, len, index + 2); //Reference Unicode Name
 						index += 6;
-						std::tie(index, tmpStr) = ReadString(buffer, index + 2); //LibExtended
+						std::tie(index, tmpStr) = ReadString(buffer, len, index + 2); //LibExtended
 						index += 26;
 						break;
 					case 0x0d: //REFERENCEREGISTERED
 						index += 4;
-						std::tie(index, tmpStr) = ReadString(buffer, index); //Libid
+						std::tie(index, tmpStr) = ReadString(buffer, len, index); //Libid
 						index += 6;
 						break;
 					case 0x0e: //REFERENCEPROJECT
 						index += 4;
-						std::tie(index, tmpStr) = ReadString(buffer, index); //LibidAbsolute
-						std::tie(index, tmpStr) = ReadString(buffer, index); //LibidRelative
+						std::tie(index, tmpStr) = ReadString(buffer, len, index); //LibidAbsolute
+						std::tie(index, tmpStr) = ReadString(buffer, len, index); //LibidRelative
 						index += 6;
 						break;
 					default:
@@ -427,22 +432,22 @@ namespace OleStructuredStorage {
 						index += 2;
 						switch (id) {
 						case 0x19: //ModuleName
-							std::tie(index, tmpStr) = ReadString(buffer, index);
+							std::tie(index, tmpStr) = ReadString(buffer, len, index);
 							mod->Name = tmpStr;
 							break;
 						case 0x47: //ModuleNameUnicode
-							std::tie(index, tmpStr) = ReadString(buffer, index);
+							std::tie(index, tmpStr) = ReadString(buffer, len, index);
 							break;
 						case 0x1A: //ModuleStreamName
-							std::tie(index, tmpStr) = ReadString(buffer, index);
+							std::tie(index, tmpStr) = ReadString(buffer, len, index);
 							mod->StreamName = tmpStr;
 							index += 2;
-							std::tie(index, tmpStr) = ReadString(buffer, index);
+							std::tie(index, tmpStr) = ReadString(buffer, len, index);
 							break;
 						case 0x1C: //ModuleDocString
-							std::tie(index, tmpStr) = ReadString(buffer, index);
+							std::tie(index, tmpStr) = ReadString(buffer, len, index);
 							index += 2;
-							std::tie(index, tmpStr) = ReadString(buffer, index);
+							std::tie(index, tmpStr) = ReadString(buffer, len, index);
 							break;
 						case 0x31: //ModuleOffset
 							index += 4;

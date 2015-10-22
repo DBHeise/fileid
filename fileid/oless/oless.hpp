@@ -68,8 +68,10 @@ namespace OleStructuredStorage {
 					try {
 						ei = vba->Analyze(fullname, storage);
 					}
-					catch (std::exception) {
-						//ignore??
+					catch (std::exception ex) {
+						ei = new VBA::VbaExtensionInfo();
+						((VBA::VbaExtensionInfo*)ei)->ProjectName = ex.what();
+						((VBA::VbaExtensionInfo*)ei)->SubType = "ERROR reading VBA Project";
 					}
 				}
 			}
