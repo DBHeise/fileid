@@ -67,6 +67,7 @@ std::vector<common::ExtensionInfo*> guessExtension(std::string file) {
 		for (std::vector<common::MagicInfo>::const_iterator i = list.begin(); i != list.end(); i++) {
 			common::MagicInfo mi = *i;
 			if (common::checkMagic(buffer.data(), (unsigned int)buffer.size(), mi.magic, mi.size, mi.offset)) {
+				//std::cout << "Magic Match: " << mi.Name << ":" << mi.extraName << std::endl;
 				if (mi.extraName.size() > 0) {
 					common::ExtraDataFunc func = GetExtraDataFunction(mi.extraName);
 					std::vector<common::ExtensionInfo*> list2 = func(file, buffer);

@@ -56,7 +56,7 @@ namespace common {
 			maxxer = expected;
 		}
 
-		if (offset + min > max)
+		if (offset + min > max || actualLength < expectedLength)
 			return false;
 
 		for (unsigned int i = offset; i < (min + offset) && ans; i++)

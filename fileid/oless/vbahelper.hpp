@@ -148,10 +148,10 @@ namespace OleStructuredStorage {
 					str << ", \"version\" : " << this->Version;
 				}
 				if (this->VersionName.size() > 0) {
-					str << ", \"versionname\" : \"" << this->VersionName << "\"";
+					str << ", \"versionname\" : \"" << common::JsonEscape(this->VersionName) << "\"";
 				}
 				if (this->ProjectName.size() > 0) {
-					str << ", \"projectname\":\"" << this->ProjectName << "\"";
+					str << ", \"projectname\":\"" << common::JsonEscape(this->ProjectName) << "\"";
 				}
 				if (this->VBAVersionMajor > 0) {
 					str << ", \"VBAVersionMajor\" : " << this->VBAVersionMajor;
@@ -167,8 +167,8 @@ namespace OleStructuredStorage {
 					for (std::vector<ProjectModule*>::const_iterator i = this->Modules.begin(); i != this->Modules.end(); i++) {
 						if (i != this->Modules.begin()) str << ",";
 						str << "{";
-						str << "\"Name\":\"" << (*i)->Name << "\"";
-						str << ",\"StreamName\":\"" << (*i)->StreamName << "\"";
+						str << "\"Name\":\"" << common::JsonEscape((*i)->Name) << "\"";
+						str << ",\"StreamName\":\"" << common::JsonEscape((*i)->StreamName) << "\"";
 						str << ",\"Offset\":" << (*i)->Offset;
 						str << ",\"isPrivate\":" << (*i)->isPrivate;
 						str << ",\"isReadOnly\":" << (*i)->isReadOnly;

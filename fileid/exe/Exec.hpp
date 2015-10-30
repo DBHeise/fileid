@@ -245,36 +245,49 @@ namespace Exec {
 
 		IMAGE_DOS_HEADER* dosHeader = new IMAGE_DOS_HEADER();
 		std::memcpy(dosHeader, &buf2[0], sizeof(IMAGE_DOS_HEADER));
-
+		
 		unsigned int peHeaderStart = dosHeader->NewExeAddress;
 
-		COFF_FILE_HEADER* coffHeader = new COFF_FILE_HEADER();
-		std::memcpy(coffHeader, &buf2[peHeaderStart], sizeof(COFF_FILE_HEADER));
 
-		OPTIONAL_HEADER* optHeader = new OPTIONAL_HEADER;
-		std::memcpy(optHeader, &buf2[peHeaderStart + sizeof(COFF_FILE_HEADER)], sizeof(OPTIONAL_HEADER));
-
-
-		info->MachineType = GetMachineTypeString(coffHeader->Machine);
-		info->Subsystem = GetSubsystemString(optHeader->Subsystem);
-		info->LinkerVersion = BuildVersionString(optHeader->MajorLinkerVersion, optHeader->MinorLinkerVersion);
-		info->OsVersion = BuildVersionString(optHeader->MajorOperatingSystemVersion, optHeader->MinorOperatingSystemVersion);
-		info->ImageVersion = BuildVersionString(optHeader->MajorImageVersion, optHeader->MinorImageVersion);
-		info->SubsystemVersion = BuildVersionString(optHeader->MajorSubsystemVersion, optHeader->MinorSubsystemVersion);
-		info->Win32Version = optHeader->Win32VersionValue;
-		info->Characteristics = BuildVectorFromMap(CharacteristicsMap, coffHeader->Characteristics);
-		if (coffHeader->Characteristics & 0x2000) {
-			info->Extension = "dll";
-			info->VersionName = "Dynamic Link Library";
+		unsigned int totalSizeNeeded = peHeaderStart + sizeof(COFF_FILE_HEADER) + sizeof(OPTIONAL_HEADER);
+		if (buf2.size() < totalSizeNeeded) {
+			buf2 = common::readFile(file, totalSizeNeeded);
 		}
-		if (coffHeader->Characteristics & 0x1000) {
-			info->Extension = "sys";
-			info->VersionName = "Kernal Mode Executable";
-		}
-		info->DllCharacteristics = BuildVectorFromMap(DllCharacteristicsMap, optHeader->DllCharacteristics);
 
-		delete optHeader;
-		delete coffHeader;
+		if (dosHeader->NewExeAddress + sizeof(COFF_FILE_HEADER) < buf2.size() ) {
+			COFF_FILE_HEADER* coffHeader = new COFF_FILE_HEADER();
+			std::memcpy(coffHeader, &buf2[peHeaderStart], sizeof(COFF_FILE_HEADER));
+
+			info->MachineType = GetMachineTypeString(coffHeader->Machine);
+			info->Characteristics = BuildVectorFromMap(CharacteristicsMap, coffHeader->Characteristics);
+			if (coffHeader->Characteristics & 0x2000) {
+				info->Extension = "dll";
+				info->VersionName = "Dynamic Link Library";
+			}
+			if (coffHeader->Characteristics & 0x1000) {
+				info->Extension = "sys";
+				info->VersionName = "Kernal Mode Executable";
+			}
+
+		
+			if (peHeaderStart + sizeof(COFF_FILE_HEADER) + sizeof(OPTIONAL_HEADER) < buf2.size()) {
+				OPTIONAL_HEADER* optHeader = new OPTIONAL_HEADER;
+				std::memcpy(optHeader, &buf2[peHeaderStart + sizeof(COFF_FILE_HEADER)], sizeof(OPTIONAL_HEADER));
+
+
+				info->Subsystem = GetSubsystemString(optHeader->Subsystem);
+				info->LinkerVersion = BuildVersionString(optHeader->MajorLinkerVersion, optHeader->MinorLinkerVersion);
+				info->OsVersion = BuildVersionString(optHeader->MajorOperatingSystemVersion, optHeader->MinorOperatingSystemVersion);
+				info->ImageVersion = BuildVersionString(optHeader->MajorImageVersion, optHeader->MinorImageVersion);
+				info->SubsystemVersion = BuildVersionString(optHeader->MajorSubsystemVersion, optHeader->MinorSubsystemVersion);
+				info->Win32Version = optHeader->Win32VersionValue;
+				info->DllCharacteristics = BuildVectorFromMap(DllCharacteristicsMap, optHeader->DllCharacteristics);
+			
+				delete optHeader;
+			}
+
+			delete coffHeader;
+		}
 		delete dosHeader;
 
 		ans.push_back(info);
