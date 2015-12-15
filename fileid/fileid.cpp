@@ -53,7 +53,6 @@ common::ExtraDataFunc GetExtraDataFunction(std::string name) {
 	else {
 		throw std::logic_error("Unknown Extra Data Funcion (bad dev)");
 	}
-
 	return ans;
 }
 

@@ -3,6 +3,13 @@
   <ItemGroup>
     <ClCompile Include="fileid.cpp" />
     <ClCompile Include="oless\pole.cpp" />
+    <ClCompile Include="zip\ZipLib\detail\EndOfCentralDirectoryBlock.cpp" />
+    <ClCompile Include="zip\ZipLib\detail\ZipCentralDirectoryFileHeader.cpp" />
+    <ClCompile Include="zip\ZipLib\detail\ZipGenericExtraField.cpp" />
+    <ClCompile Include="zip\ZipLib\detail\ZipLocalFileHeader.cpp" />
+    <ClCompile Include="zip\ZipLib\ZipArchive.cpp" />
+    <ClCompile Include="zip\ZipLib\ZipArchiveEntry.cpp" />
+    <ClCompile Include="zip\ZipLib\ZipFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="build.cmd" />
@@ -25,6 +32,63 @@
     <ClInclude Include="oless\olessoffice.hpp" />
     <ClInclude Include="oless\vbahelper.hpp" />
     <ClInclude Include="mp4\mp4.hpp" />
+    <ClInclude Include="zip\ZipLib\compression\bzip2\bzip2_decoder_properties.h" />
+    <ClInclude Include="zip\ZipLib\compression\bzip2\bzip2_encoder.h" />
+    <ClInclude Include="zip\ZipLib\compression\bzip2\bzip2_encoder_properties.h" />
+    <ClInclude Include="zip\ZipLib\compression\deflate\deflate_decoder.h" />
+    <ClInclude Include="zip\ZipLib\compression\deflate\deflate_decoder_properties.h" />
+    <ClInclude Include="zip\ZipLib\compression\deflate\deflate_encoder.h" />
+    <ClInclude Include="zip\ZipLib\compression\deflate\deflate_encoder_properties.h" />
+    <ClInclude Include="zip\ZipLib\compression\lzma\detail\lzma_alloc.h" />
+    <ClInclude Include="zip\ZipLib\compression\lzma\detail\lzma_handle.h" />
+    <ClInclude Include="zip\ZipLib\compression\lzma\detail\lzma_header.h" />
+    <ClInclude Include="zip\ZipLib\compression\lzma\detail\lzma_in_stream.h" />
+    <ClInclude Include="zip\ZipLib\compression\lzma\detail\lzma_out_stream.h" />
+    <ClInclude Include="zip\ZipLib\compression\lzma\lzma_decoder.h" />
+    <ClInclude Include="zip\ZipLib\compression\lzma\lzma_decoder_properties.h" />
+    <ClInclude Include="zip\ZipLib\compression\lzma\lzma_encoder.h" />
+    <ClInclude Include="zip\ZipLib\compression\lzma\lzma_encoder_properties.h" />
+    <ClInclude Include="zip\ZipLib\compression\store\store_decoder.h" />
+    <ClInclude Include="zip\ZipLib\compression\store\store_decoder_properties.h" />
+    <ClInclude Include="zip\ZipLib\compression\store\store_encoder.h" />
+    <ClInclude Include="zip\ZipLib\compression\store\store_encoder_properties.h" />
+    <ClInclude Include="zip\ZipLib\compression\compression_interface.h" />
+    <ClInclude Include="zip\ZipLib\detail\EndOfCentralDirectoryBlock.h" />
+    <ClInclude Include="zip\ZipLib\detail\ZipCentralDirectoryFileHeader.h" />
+    <ClInclude Include="zip\ZipLib\detail\ZipGenericExtraField.h" />
+    <ClInclude Include="zip\ZipLib\detail\ZipLocalFileHeader.h" />
+    <ClInclude Include="zip\ZipLib\methods\Bzip2Method.h" />
+    <ClInclude Include="zip\ZipLib\methods\DeflateMethod.h" />
+    <ClInclude Include="zip\ZipLib\methods\ICompressionMethod.h" />
+    <ClInclude Include="zip\ZipLib\methods\LzmaMethod.h" />
+    <ClInclude Include="zip\ZipLib\methods\StoreMethod.h" />
+    <ClInclude Include="zip\ZipLib\methods\ZipMethodResolver.h" />
+    <ClInclude Include="zip\ZipLib\streams\streambuffs\compression_decoder_streambuf.h" />
+    <ClInclude Include="zip\ZipLib\streams\streambuffs\compression_encoder_streambuf.h" />
+    <ClInclude Include="zip\ZipLib\streams\streambuffs\crc32_streambuf.h" />
+    <ClInclude Include="zip\ZipLib\streams\streambuffs\mem_streambuf.h" />
+    <ClInclude Include="zip\ZipLib\streams\streambuffs\null_streambuf.h" />
+    <ClInclude Include="zip\ZipLib\streams\streambuffs\sub_streambuf.h" />
+    <ClInclude Include="zip\ZipLib\streams\streambuffs\tee_streambuff.h" />
+    <ClInclude Include="zip\ZipLib\streams\streambuffs\zip_crypto_streambuf.h" />
+    <ClInclude Include="zip\ZipLib\streams\compression_decoder_stream.h" />
+    <ClInclude Include="zip\ZipLib\streams\compression_encoder_stream.h" />
+    <ClInclude Include="zip\ZipLib\streams\crc32stream.h" />
+    <ClInclude Include="zip\ZipLib\streams\memstream.h" />
+    <ClInclude Include="zip\ZipLib\streams\nullstream.h" />
+    <ClInclude Include="zip\ZipLib\streams\serialization.h" />
+    <ClInclude Include="zip\ZipLib\streams\substream.h" />
+    <ClInclude Include="zip\ZipLib\streams\teestream.h" />
+    <ClInclude Include="zip\ZipLib\streams\zip_cryptostream.h" />
+    <ClInclude Include="zip\ZipLib\utils\enum_utils.h" />
+    <ClInclude Include="zip\ZipLib\utils\stream_utils.h" />
+    <ClInclude Include="zip\ZipLib\utils\time_utils.h" />
+    <ClInclude Include="zip\ZipLib\ZipArchive.h" />
+    <ClInclude Include="zip\ZipLib\ZipArchiveEntry.h" />
+    <ClInclude Include="zip\ZipLib\ZipFile.h" />
+    <ClInclude Include="zip\ziphelper.hpp" />
+    <ClInclude Include="oless\DocumentSummary.hpp" />
+    <ClInclude Include="zip\ZipLib\compression\bzip2\bzip2_decoder.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="data.xml" />

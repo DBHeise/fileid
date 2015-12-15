@@ -6,6 +6,7 @@
 #include "oless/oless.hpp"
 #include "exe/Exec.hpp"
 #include "mp4/mp4.hpp"
+#include "zip/ziphelper.hpp"
 
 namespace details {
 
@@ -106,11 +107,7 @@ namespace details {
 		return o->Guess();		
 	}
 	std::vector<common::ExtensionInfo*> ZipHelper(const std::string file, std::vector<unsigned char> buffer) {
-		std::vector<common::ExtensionInfo*> ans;
-		common::ExtensionInfo* ei = new common::ExtensionInfo();
-		ei->Extension = "zip";
-		ans.push_back(ei);
-		return ans;
+		return zip::Detailer(file, buffer);
 	}
 
 
