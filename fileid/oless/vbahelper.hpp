@@ -8,6 +8,8 @@
 #include <sstream>
 #include <algorithm>
 #include <iterator>
+#include <locale>
+#include <codecvt>
 #include "pole.h"
 #include "../common.hpp"
 #include "OleCommon.hpp"
@@ -115,6 +117,8 @@ namespace OleStructuredStorage {
 		struct ProjectModule {
 			std::string Name;
 			std::string StreamName;
+			std::string StreamNamePole;
+			std::wstring StreamNameW;
 			unsigned int Offset;
 			std::string Code;
 			bool isPrivate;
@@ -318,7 +322,7 @@ namespace OleStructuredStorage {
 			}
 
 			static std::pair<unsigned int, std::string> ReadString(unsigned char* buffer, unsigned int bufferLen, unsigned int startIndex) {
-				
+
 				if (startIndex + 4 > bufferLen)
 					throw std::runtime_error("Attempted to read past end of buffer");
 				unsigned int len = common::helper::GetItem4Byte(buffer, startIndex);
@@ -328,11 +332,40 @@ namespace OleStructuredStorage {
 				return std::make_pair(startIndex + len + 4, str);
 			}
 
+			static std::wstring s2ws(const std::string& str)
+			{
+				typedef std::codecvt_utf8<wchar_t> convert_typeX;
+				std::wstring_convert<convert_typeX, wchar_t> converterX;
 
-			static std::pair<unsigned int, std::wstring> ReadStringW(unsigned char* buffer, unsigned int startIndex) {
+				return converterX.from_bytes(str);
+			}
+
+			static std::string ws2s(const std::wstring& wstr)
+			{
+				typedef std::codecvt_utf8<wchar_t> convert_typeX;
+				std::wstring_convert<convert_typeX, wchar_t> converterX;
+
+				return converterX.to_bytes(wstr);
+			}
+
+			static std::tuple<unsigned int, std::string, std::wstring> ReadStringW(unsigned char* buffer, unsigned int bufferLen, unsigned int startIndex) {
+
+				if (startIndex + 4 > bufferLen)
+					throw std::runtime_error("Attempted to read past end of buffer");
 				unsigned int len = common::helper::GetItem4Byte(buffer, startIndex);
-				std::wstring  str = common::helper::GetItemStringW(buffer, startIndex + 4, len);
-				return std::make_pair(startIndex + len + 4, str);
+				if (startIndex + 4 + len > bufferLen)
+					throw std::runtime_error("Attempted to read past end of buffer");
+				
+				std::string str;
+				for (unsigned int i = startIndex + 4; i < (startIndex + 4 + len); i+=2) {
+					str.append(1, buffer[i]);
+				}
+				wchar_t* wc = reinterpret_cast<wchar_t*>(&buffer[startIndex + 4]);
+				std::wstring ws(wc, static_cast<size_t>(len / sizeof(wchar_t)));
+
+				return std::make_tuple(startIndex + len + 4, str, ws);
+			/*	std::string str = ws2s(ws);
+				return std::make_pair(startIndex + len + 4, str);*/
 			}
 
 			static std::string GetCode(POLE::Storage* storage, std::string fullname, unsigned int offset) {
@@ -444,7 +477,9 @@ namespace OleStructuredStorage {
 							std::tie(index, tmpStr) = ReadString(buffer, len, index);
 							mod->StreamName = tmpStr;
 							index += 2;
-							std::tie(index, tmpStr) = ReadString(buffer, len, index);
+							std::tie(index, tmpStr, tmpwStr) = ReadStringW(buffer, len, index);
+							mod->StreamNamePole = tmpStr;
+							mod->StreamNameW = tmpwStr;
 							break;
 						case 0x1C: //ModuleDocString
 							std::tie(index, tmpStr) = ReadString(buffer, len, index);
@@ -478,10 +513,10 @@ namespace OleStructuredStorage {
 					}
 					index += 4;
 					if (!(mod->StreamName.empty())) {
-						std::string newStreamName = fullname + "/VBA/" + (std::string)(mod->StreamName);
+						std::string newStreamName = fullname + "/VBA/" + (std::string)(mod->StreamNamePole);
 						mod->Code = GetCode(vbaStorage, newStreamName, (unsigned int)(mod->Offset));
 						ans->Modules.push_back(mod);
-					}					
+					}
 				}
 				return ans;
 			}
