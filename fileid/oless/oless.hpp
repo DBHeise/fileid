@@ -128,7 +128,16 @@ namespace OleStructuredStorage {
 				else if (fullname == "/Details") {
 					ei->Extension = "bup";
 				}
-
+				else if (fullname == "/__properties_version1.0") {
+					ei->Extension = "msg";
+					ei->Name = "Mail Message";
+				}
+				else if (fullname == "/DataSpaces/DataSpaceMap") {
+					ei->Extension = "irm";
+					ei->Name = "Encrypted Office Document";
+					ei->SubType = "encrypted";
+				}
+				//TODO: msi, mpp, mpt 
 				delete stream;
 			}
 			if (!ei->Extension.empty()) {
