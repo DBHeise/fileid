@@ -80,6 +80,12 @@ namespace zip {
 			ext->Name = "Microsoft Office Open XML Presentation Template";
 			vlist->push_back(ext);
 		}
+		else if (contentType == "application/vnd.ms-powerpoint.addin.macroEnabled.main+xml") {
+			common::ExtensionInfo* ext = new common::ExtensionInfo();
+			ext->Extension = "ppam";
+			ext->Name = "Microsoft Office Open XML Presentation Macro-Enabled Addin";
+			vlist->push_back(ext);
+		}
 		else if (contentType == "application/vnd.openxmlformats-officedocument.presentationml.slideshow.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "ppsx";
@@ -257,6 +263,8 @@ namespace zip {
 	common::ExtensionInfo* GetVBA() {
 		OleStructuredStorage::VBA::vbahelper* vba = new OleStructuredStorage::VBA::vbahelper();
 		common::ExtensionInfo *ei = new common::ExtensionInfo();
+		ei->Extension = "vba";
+		ei->Name = "Visual Basic For Applications";
 		/*POLE::Storage *storage = new POLE::Storage();
 		try {
 			ei = vba->Analyze("/", storage);
