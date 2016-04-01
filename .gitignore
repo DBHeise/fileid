@@ -43,6 +43,7 @@ web/config/
 *.suo
 *.user
 *.sln.docstates
+*.VC.opendb
 
 # Build results
 
