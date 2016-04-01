@@ -9,7 +9,6 @@
 #include <algorithm>
 #include <iterator>
 #include <locale>
-#include <codecvt>
 #include "pole.h"
 #include "../common.hpp"
 #include "OleCommon.hpp"
@@ -332,22 +331,7 @@ namespace OleStructuredStorage {
 				return std::make_pair(startIndex + len + 4, str);
 			}
 
-			static std::wstring s2ws(const std::string& str)
-			{
-				typedef std::codecvt_utf8<wchar_t> convert_typeX;
-				std::wstring_convert<convert_typeX, wchar_t> converterX;
-
-				return converterX.from_bytes(str);
-			}
-
-			static std::string ws2s(const std::wstring& wstr)
-			{
-				typedef std::codecvt_utf8<wchar_t> convert_typeX;
-				std::wstring_convert<convert_typeX, wchar_t> converterX;
-
-				return converterX.to_bytes(wstr);
-			}
-
+		
 			static std::tuple<unsigned int, std::string, std::wstring> ReadStringW(unsigned char* buffer, unsigned int bufferLen, unsigned int startIndex) {
 
 				if (startIndex + 4 > bufferLen)

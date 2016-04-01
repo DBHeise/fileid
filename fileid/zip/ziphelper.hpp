@@ -14,19 +14,18 @@
 #include <streambuf>
 #include "../common.hpp"
 #include "../oless/vbahelper.hpp"
-#include "ZipLib/ZipArchive.h"
-#include "ZipLib/ZipFile.h"
-#include "ZipLib/streams/memstream.h"
-#include "ZipLib/methods/Bzip2Method.h"
+#include "../../ziplib/Source/ZipLib/ZipFile.h"
+#include "../../ziplib/Source/ZipLib/ZipArchive.h"
+#include "../../ziplib/Source/ZipLib/ZipArchiveEntry.h"
 
 namespace zip {
-	inline void CheckEntry(ZipArchive::Ptr archive, std::vector<common::ExtensionInfo*> vlist, std::string file, std::string extension, std::string name) {
+	inline void CheckEntry(ZipArchive::Ptr archive, std::vector<common::ExtensionInfo*>* vlist, std::string file, std::string extension, std::string name) {
 		ZipArchiveEntry::Ptr entry = archive->GetEntry(file);
 		if (entry) {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = extension;
 			ext->Name = name;
-			vlist.push_back(ext);
+			vlist->push_back(ext);
 		}
 	}
 
@@ -247,7 +246,6 @@ namespace zip {
 		}
 	}
 
-
 	std::string GetFile(ZipArchiveEntry::Ptr entry) {
 		std::string ans;
 		std::istream* decompStream = nullptr;
@@ -260,11 +258,16 @@ namespace zip {
 		return ans;
 	}
 
-	common::ExtensionInfo* GetVBA() {
+	common::ExtensionInfo* GetVBA(ZipArchive::Ptr archive) {
 		OleStructuredStorage::VBA::vbahelper* vba = new OleStructuredStorage::VBA::vbahelper();
 		common::ExtensionInfo *ei = new common::ExtensionInfo();
+		//temp fix
 		ei->Extension = "vba";
 		ei->Name = "Visual Basic For Applications";
+
+		//TODO: find vba binary in zip file, and decompress it in memory
+
+		//TODO: Modify POLE to take a stream
 		/*POLE::Storage *storage = new POLE::Storage();
 		try {
 			ei = vba->Analyze("/", storage);
@@ -283,12 +286,18 @@ namespace zip {
 		//archive->GetEntriesCount();
 		//archive->GetComment();
 
-		CheckEntry(archive, ans, "META-INF/MANIFEST.MF", "jar", "Java Archive");
-		CheckEntry(archive, ans, "WEB-INF/web.xml", "war", "Web Application Java Archive");
-		CheckEntry(archive, ans, "META-INF/application.xml", "ear", "Enterprise Java Archive");
-		CheckEntry(archive, ans, "AndroidManifest.xml", "apk", "Android Application Package");
-		CheckEntry(archive, ans, "install.js", "xpi", "Cross Platform Installer");
-		CheckEntry(archive, ans, "install.rdf", "xpi", "Cross Platform Installer");
+		CheckEntry(archive, &ans, "META-INF/MANIFEST.MF", "jar", "Java Archive");
+		CheckEntry(archive, &ans, "WEB-INF/web.xml", "war", "Web Application Java Archive");
+		CheckEntry(archive, &ans, "META-INF/application.xml", "ear", "Enterprise Java Archive");
+		CheckEntry(archive, &ans, "AndroidManifest.xml", "apk", "Android Application Package");
+		CheckEntry(archive, &ans, "install.js", "xpi", "Cross Platform Installer");
+		CheckEntry(archive, &ans, "install.rdf", "xpi", "Cross Platform Installer");
+		CheckEntry(archive, &ans, "AppManifest.xaml", "xap", "Silverlight Packaged Application");
+		CheckEntry(archive, &ans, "WMAppManifest.xml", "xap", "Silverlight Phone Application");
+		CheckEntry(archive, &ans, "Payload/Application.app", "ipa", "iOS Application Archive");
+		CheckEntry(archive, &ans, "imsmanifest.xml", "scorm_pif", "SCORM (Shareable Content Object Reference Model) Content Package");
+
+
 
 		/* TODO:
 		KWD     KWord document
@@ -310,7 +319,7 @@ namespace zip {
 						CheckContentType(&ans, ctype);
 
 						if (ctype == "application/vnd.ms-office.vbaProject") {
-							ans.push_back(GetVBA());
+							ans.push_back(GetVBA(archive));
 						}
 						start = contentType.find("ContentType=\"", end + 1);
 					}

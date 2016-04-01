@@ -104,11 +104,15 @@
       <AdditionalIncludeDirectories>C:\Lib\poco\1.6.0;C:\Lib\Boost\1.57.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -149,13 +153,6 @@
   <ItemGroup>
     <ClCompile Include="fileid.cpp" />
     <ClCompile Include="oless\pole.cpp" />
-    <ClCompile Include="zip\ZipLib\detail\EndOfCentralDirectoryBlock.cpp" />
-    <ClCompile Include="zip\ZipLib\detail\ZipCentralDirectoryFileHeader.cpp" />
-    <ClCompile Include="zip\ZipLib\detail\ZipGenericExtraField.cpp" />
-    <ClCompile Include="zip\ZipLib\detail\ZipLocalFileHeader.cpp" />
-    <ClCompile Include="zip\ZipLib\ZipArchive.cpp" />
-    <ClCompile Include="zip\ZipLib\ZipArchiveEntry.cpp" />
-    <ClCompile Include="zip\ZipLib\ZipFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.hpp" />
@@ -175,79 +172,16 @@
     <ClInclude Include="oless\pole.h" />
     <ClInclude Include="oless\vbahelper.hpp" />
     <ClInclude Include="zip\ziphelper.hpp" />
-    <ClInclude Include="zip\ZipLib\compression\bzip2\bzip2_decoder.h" />
-    <ClInclude Include="zip\ZipLib\compression\bzip2\bzip2_decoder_properties.h" />
-    <ClInclude Include="zip\ZipLib\compression\bzip2\bzip2_encoder.h" />
-    <ClInclude Include="zip\ZipLib\compression\bzip2\bzip2_encoder_properties.h" />
-    <ClInclude Include="zip\ZipLib\compression\compression_interface.h" />
-    <ClInclude Include="zip\ZipLib\compression\deflate\deflate_decoder.h" />
-    <ClInclude Include="zip\ZipLib\compression\deflate\deflate_decoder_properties.h" />
-    <ClInclude Include="zip\ZipLib\compression\deflate\deflate_encoder.h" />
-    <ClInclude Include="zip\ZipLib\compression\deflate\deflate_encoder_properties.h" />
-    <ClInclude Include="zip\ZipLib\compression\lzma\detail\lzma_alloc.h" />
-    <ClInclude Include="zip\ZipLib\compression\lzma\detail\lzma_handle.h" />
-    <ClInclude Include="zip\ZipLib\compression\lzma\detail\lzma_header.h" />
-    <ClInclude Include="zip\ZipLib\compression\lzma\detail\lzma_in_stream.h" />
-    <ClInclude Include="zip\ZipLib\compression\lzma\detail\lzma_out_stream.h" />
-    <ClInclude Include="zip\ZipLib\compression\lzma\lzma_decoder.h" />
-    <ClInclude Include="zip\ZipLib\compression\lzma\lzma_decoder_properties.h" />
-    <ClInclude Include="zip\ZipLib\compression\lzma\lzma_encoder.h" />
-    <ClInclude Include="zip\ZipLib\compression\lzma\lzma_encoder_properties.h" />
-    <ClInclude Include="zip\ZipLib\compression\store\store_decoder.h" />
-    <ClInclude Include="zip\ZipLib\compression\store\store_decoder_properties.h" />
-    <ClInclude Include="zip\ZipLib\compression\store\store_encoder.h" />
-    <ClInclude Include="zip\ZipLib\compression\store\store_encoder_properties.h" />
-    <ClInclude Include="zip\ZipLib\detail\EndOfCentralDirectoryBlock.h" />
-    <ClInclude Include="zip\ZipLib\detail\ZipCentralDirectoryFileHeader.h" />
-    <ClInclude Include="zip\ZipLib\detail\ZipGenericExtraField.h" />
-    <ClInclude Include="zip\ZipLib\detail\ZipLocalFileHeader.h" />
-    <ClInclude Include="zip\ZipLib\methods\Bzip2Method.h" />
-    <ClInclude Include="zip\ZipLib\methods\DeflateMethod.h" />
-    <ClInclude Include="zip\ZipLib\methods\ICompressionMethod.h" />
-    <ClInclude Include="zip\ZipLib\methods\LzmaMethod.h" />
-    <ClInclude Include="zip\ZipLib\methods\StoreMethod.h" />
-    <ClInclude Include="zip\ZipLib\methods\ZipMethodResolver.h" />
-    <ClInclude Include="zip\ZipLib\streams\compression_decoder_stream.h" />
-    <ClInclude Include="zip\ZipLib\streams\compression_encoder_stream.h" />
-    <ClInclude Include="zip\ZipLib\streams\crc32stream.h" />
-    <ClInclude Include="zip\ZipLib\streams\memstream.h" />
-    <ClInclude Include="zip\ZipLib\streams\nullstream.h" />
-    <ClInclude Include="zip\ZipLib\streams\serialization.h" />
-    <ClInclude Include="zip\ZipLib\streams\streambuffs\compression_decoder_streambuf.h" />
-    <ClInclude Include="zip\ZipLib\streams\streambuffs\compression_encoder_streambuf.h" />
-    <ClInclude Include="zip\ZipLib\streams\streambuffs\crc32_streambuf.h" />
-    <ClInclude Include="zip\ZipLib\streams\streambuffs\mem_streambuf.h" />
-    <ClInclude Include="zip\ZipLib\streams\streambuffs\null_streambuf.h" />
-    <ClInclude Include="zip\ZipLib\streams\streambuffs\sub_streambuf.h" />
-    <ClInclude Include="zip\ZipLib\streams\streambuffs\tee_streambuff.h" />
-    <ClInclude Include="zip\ZipLib\streams\streambuffs\zip_crypto_streambuf.h" />
-    <ClInclude Include="zip\ZipLib\streams\substream.h" />
-    <ClInclude Include="zip\ZipLib\streams\teestream.h" />
-    <ClInclude Include="zip\ZipLib\streams\zip_cryptostream.h" />
-    <ClInclude Include="zip\ZipLib\utils\enum_utils.h" />
-    <ClInclude Include="zip\ZipLib\utils\stream_utils.h" />
-    <ClInclude Include="zip\ZipLib\utils\time_utils.h" />
-    <ClInclude Include="zip\ZipLib\ZipArchive.h" />
-    <ClInclude Include="zip\ZipLib\ZipArchiveEntry.h" />
-    <ClInclude Include="zip\ZipLib\ZipFile.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="build.cmd" />
-    <None Include="build.sh" />
     <None Include="Create-Headers.ps1" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="data.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Externals\bzip2\bzip2.vcxproj">
-      <Project>{dbbf348d-c221-4f2e-8a0d-24efa0d98e71}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Externals\lzma\lzma.vcxproj">
-      <Project>{7ead1358-3e72-4fb6-a212-25d462b5c1e9}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Externals\zlib\zlib.vcxproj">
-      <Project>{baeb16b3-db4c-432f-9e6a-2acadea0691d}</Project>
+    <ProjectReference Include="..\ziplib\Source\ZipLib\ZipLib.vcxproj">
+      <Project>{5c9fd859-ddf9-4510-8397-b329b0ae8c48}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

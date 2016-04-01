@@ -13,6 +13,7 @@
 #include "OleCommon.hpp"
 #include "olessoffice.hpp"
 #include "vbahelper.hpp"
+#include "DocumentSummary.hpp"
 
 namespace OleStructuredStorage {
 	POLE::Storage* OpenFile(const char* file) {
@@ -62,7 +63,7 @@ namespace OleStructuredStorage {
 
 			if (storage->isDirectory(fullname)) {
 				//Storage Analysis
-				if (name == "Macros" || name == "_VBA_PROJECT_CUR") {
+				if (name == "Macros" || name == "_VBA_PROJECT_CUR" || fullname == "/VBA" || fullname == "/VBA_Project") {
 					VBA::vbahelper* vba = new VBA::vbahelper();
 					delete ei;
 					try {
@@ -78,7 +79,7 @@ namespace OleStructuredStorage {
 			else {
 				//Stream Analysis
 				POLE::Stream *stream = new POLE::Stream(storage, fullname);
-				if (fullname == "/\011DRMContent") {
+				if (fullname == "/DRMContent") {
 					ei->Extension = "irm";
 					ei->Name = "Microsoft Office Information Rights Managed File";
 					ei->SubType = "drm";
@@ -97,7 +98,7 @@ namespace OleStructuredStorage {
 					ei->VersionName = "PowerPoint 4.0";
 					ei->SubType = ei->VersionName;
 				}
-				else if (fullname == "/Workbook" || fullname == "/Book") {
+				else if (fullname == "/Workbook" || fullname == "/Book" || fullname =="/WorkBook") {
 					ei->Extension = "xls";
 					ei->Name = "Microsoft Office Excel Workbook";
 					ei->Version = oo->GetXlsVersion(stream);
@@ -137,7 +138,31 @@ namespace OleStructuredStorage {
 					ei->Name = "Encrypted Office Document";
 					ei->SubType = "encrypted";
 				}
-				//TODO: msi, mpp, mpt 
+				else if (fullname == "/Props9") {
+					ei->Extension = "mpp";
+					ei->Version = 9;
+					ei->VersionName = "Project 9";
+					ei->SubType = "Office 2003";
+					ei->Name = "Microsoft Project File";
+				}
+				else if (fullname == "/Props12") {
+					ei->Extension = "mpp";
+					ei->Version = 12;
+					ei->VersionName = "Project 12";
+					ei->SubType = "Office 2007";
+					ei->Name = "Microsoft Project File";
+				}
+				else if (fullname == "/Props14") {
+					ei->Extension = "mpp";
+					ei->Version = 14;
+					ei->VersionName = "Project 14";
+					ei->SubType = "Office 2010";
+					ei->Name = "Microsoft Project File";
+				}
+				else if (name == "DocumentSummaryInformation"  || name== "SummaryInformation" || name == "GlobalInfo" || name == "ImageContents" || name == "ImageInfo") {
+					//OlePropertySet::ParseStream(stream);
+				}
+				//TODO: msi, 
 				delete stream;
 			}
 			if (!ei->Extension.empty()) {
