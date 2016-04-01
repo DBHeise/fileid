@@ -2,23 +2,32 @@
 EXECUTABLE = fid
 SO_LIBRARY = fid.so
 
-CC = gcc
-CXX = g++
+CC        = gcc
+CXX       = g++
 CFLAGS    = -fPIC -Wno-enum-conversion -O3
-CXXFLAGS  = -fPIC -std=c++11 -O3
+CXXFLAGS  = -fPIC -std=c++11 -O3 -Wfatal-errors -Werror
+LDFLAGS   = -pthread
 
-SRC_ZLIB = $(wildcard Externals/zlib/*.c)
-SRC_LZMA = $(wildcard Externals/lzma/unix/*.c)
-SRC_BZIP2 = $(wildcard Externals/bzip2/*.c)
+SRC_ZLIB  = $(wildcard ziplib/Source/ZipLib/extlibs/zlib/*.c)
+SRC_LZMA  = $(wildcard ziplib/Source/ZipLib/extlibs/lzma/unix/*.c)
+SRC_BZIP2 = $(wildcard ziplib/Source/ZipLib/extlibs/bzip2/*.c)
+SRC_ZIPLIB = \
+		$(wildcard ziplib/Source/ZipLib/*.cpp)        \
+		$(wildcard ziplib/Source/ZipLib/detail/*.cpp)
 
-CPP_FILES=fileid/fileid.cpp fileid/oless/pole.cpp
+
+
+SRC_FILEID = \
+	fileid/fileid.cpp \
+	fileid/oless/pole.cpp
 
 
 # Object files			
 OBJS = \
-		$(SRC:.cpp=.o)	   \
-		$(SRC_ZLIB:.c=.o)  \
-		$(SRC_LZMA:.c=.o)  \
+		$(SRC_FILEID:.cpp=.o) \
+		$(SRC_ZIPLIB:.cpp=.o) \
+		$(SRC_ZLIB:.c=.o) \
+		$(SRC_LZMA:.c=.o) \
 		$(SRC_BZIP2:.c=.o)
 
 # Rules
@@ -37,13 +46,4 @@ $(SO_LIBRARY): $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf `find Source -name '*.o'` ziplib.tar.gz Bin/*.zip Bin/out* $(EXECUTABLE) $(SO_LIBRARY)
-
-#fid:
-#	g++ -Wfatal-errors -Werror -std=c++11 -lm -lstdc++ -llzma -lbz2 -lz $(CPP_FILES) -o $@
-
-
-.PHONY: clean
-
-clean:
-	rm -f $(ODIR)/*.o *~ core $(INCDIR)/*~ 
+	rm -rf `find Source -name '*.o'` $(EXECUTABLE) $(SO_LIBRARY)
