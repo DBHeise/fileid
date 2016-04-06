@@ -328,7 +328,7 @@ namespace zip {
 					}
 				}
 			}
-			ooxmlEntry->~ZipArchiveEntry();
+			//ooxmlEntry->~ZipArchiveEntry();
 		}
 
 		ZipArchiveEntry::Ptr odEntry = archive->GetEntry("mimetype");
@@ -337,7 +337,7 @@ namespace zip {
 			if (!mimeType.empty()) {
 				CheckMimeType(&ans, mimeType);
 			}
-			odEntry->~ZipArchiveEntry();
+			//odEntry->~ZipArchiveEntry();
 		}
 
 		if (ans.size() == 0) {
