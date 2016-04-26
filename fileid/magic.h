@@ -1,5 +1,5 @@
 // magic.h
-// Generated on: 10/21/2015 14:26:55
+// Generated on: 04/26/2016 18:33:24
 
 #pragma once
 #include <string>
@@ -27,6 +27,7 @@ unsigned char magic_iso3[5] = {0x43,0x44,0x30,0x30,0x31};
 unsigned char magic_vmdk[3] = {0x4B,0x44,0x4D};
 unsigned char magic_pcap[4] = {0xD4,0xC3,0xB2,0xA1};
 unsigned char magic_pcapn[4] = {0x4D,0x3C,0xB2,0xA1};
+unsigned char magic_rpm[4] = {0xED,0xAB,0xEE,0xDB};
 unsigned char magic_ico[4] = {0x00,0x00,0x01,0x00};
 unsigned char magic_gif87[6] = {0x47,0x49,0x46,0x38,0x37,0x61};
 unsigned char magic_gif89[6] = {0x47,0x49,0x46,0x38,0x39,0x61};
@@ -110,6 +111,7 @@ std::vector<common::MagicInfo> list = {
   {"vmdk", "VMWare Virtual Disk", "", 0, 3, magic_vmdk, NULL},
   {"pcap", "Network Packet Capture File", "", 0, 4, magic_pcap, NULL},
   {"pcap", "Network Packet Capture File", "Nanosecond-precision timestamps", 0, 4, magic_pcapn, NULL},
+  {"rpm", "Red Hat Package Manager File", "", 0, 4, magic_rpm, NULL},
   {"ico", "Icon File", "", 0, 4, magic_ico, NULL},
   {"gif", "GIF Image", "GIF87a", 0, 6, magic_gif87, NULL},
   {"gif", "GIF Image", "GIF89a", 0, 6, magic_gif89, NULL},
