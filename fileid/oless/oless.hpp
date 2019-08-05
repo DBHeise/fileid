@@ -128,6 +128,7 @@ namespace OleStructuredStorage {
 				}
 				else if (fullname == "/Details") {
 					ei->Extension = "bup";
+					//extract bup data!
 				}
 				else if (fullname == "/__properties_version1.0") {
 					ei->Extension = "msg";

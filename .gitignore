@@ -44,6 +44,7 @@ web/config/
 *.user
 *.sln.docstates
 *.VC.opendb
+*.VC.db
 
 # Build results
 
@@ -223,4 +224,4 @@ pip-log.txt
 ## Other
 ##############
 .ntvs_analysis.dat
-files
+.VC.db

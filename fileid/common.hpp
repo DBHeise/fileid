@@ -125,6 +125,12 @@ namespace common {
 		ExtensionInfo() {
 			this->Version = 0;
 		}
+		bool operator==(const ExtensionInfo *other) const {
+			return this->Extension.compare(other->Extension) == 0;
+		}
+		bool operator!=(const ExtensionInfo *other) const {
+			return this->Extension.compare(other->Extension) != 0;
+		}
 		virtual std::string ToJson() {
 			std::ostringstream str;
 			str << "{ \"extension\" : \"" << this->Extension << "\"";

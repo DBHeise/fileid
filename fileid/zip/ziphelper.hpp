@@ -12,13 +12,125 @@
 #include <map>
 #include <fstream>
 #include <streambuf>
+#include <cstdio>
 #include "../common.hpp"
 #include "../oless/vbahelper.hpp"
 #include "../../ziplib/Source/ZipLib/ZipFile.h"
 #include "../../ziplib/Source/ZipLib/ZipArchive.h"
 #include "../../ziplib/Source/ZipLib/ZipArchiveEntry.h"
+#include "../../ziplib/Source/ZipLib/utils/stream_utils.h"
 
 namespace zip {
+
+	struct ZipFileInfo {
+	public:
+		std::string Name;
+		int Size;
+		int CompressedSize;
+		bool IsPassworded;
+		std::string CompressionMethod;
+		std::string Comment;
+		unsigned int CRC32;
+
+	};
+
+	class ZipExtensionInfo : public common::ExtensionInfo {
+	public:
+		std::vector<ZipFileInfo*> children;
+		ZipExtensionInfo() : ExtensionInfo() {
+			this->Extension = "zip";
+			this->Name = "Zip File";
+			this->Version = 0;
+			this->VersionName = "";
+		};
+
+		virtual std::string ToJson() {
+			std::ostringstream str;
+			str << "{ \"extension\" : \"" << this->Extension << "\"";
+			if (this->Name.size() > 0) {
+				str << ", \"name\":\"" << this->Name << "\"";
+			}
+			if (this->SubType.size() > 0) {
+				str << ", \"subtype\":\"" << common::JsonEscape(this->SubType) << "\"";
+			}
+			if (this->children.size() > 0) {
+				str << ", \"children\":[";
+				for (std::vector<ZipFileInfo*>::const_iterator i = this->children.begin(); i != this->children.end(); i++) {
+					if (i != this->children.begin()) str << ",";
+					str << "{";
+					str << "\"Name\":\"" << (*i)->Name << "\"";
+					str << ", \"Size\":\"" << std::to_string((*i)->Size) << "\"";
+					str << ", \"CompressedSize\":\"" << std::to_string((*i)->CompressedSize) << "\"";
+					str << ", \"CompressionMethod\":\"" << (*i)->CompressionMethod << "\"";
+					str << ", \"IsPassworded\":\"" << (*i)->IsPassworded << "\"";
+					str << ", \"Comment\":\"" << (*i)->Comment << "\"";
+					str << ", \"CRC32\":\"" << std::to_string((*i)->CRC32) << "\"";
+					str << "}";
+				}
+				str << "]";
+			}
+
+			str << "}";
+			return str.str();
+		}
+		virtual std::string ToXml() {
+			std::ostringstream str;
+			str << "<item>";
+			str << "<extension>" << this->Extension << "</extension>";
+			if (this->Name.size() > 0) {
+				str << "<name>" << this->Name << "</name>";
+			}
+			if (this->SubType.size() > 0) {
+				str << "<subtype>" << this->SubType << "</subtype>";
+			}
+			if (this->children.size() > 0) {
+				str << "<children>";
+				for (std::vector<ZipFileInfo*>::const_iterator i = this->children.begin(); i != this->children.end(); i++) {
+					str << "<file>";
+					str << "<Name>" << (*i)->Name << "</Name>";
+					str << "<Size>" << std::to_string((*i)->Size) << "</Size>";
+					str << "<CompressedSize>" << std::to_string((*i)->CompressedSize) << "</CompressedSize>";
+					str << "<CompressionMethod>" << (*i)->CompressionMethod << "</CompressionMethod>";
+					str << "<IsPassworded>" << (*i)->IsPassworded << "</IsPassworded>";
+					str << "<Comment>" << (*i)->Comment << "</Comment>";
+					str << "<CRC32>" << std::to_string((*i)->CRC32) << "</CRC32>";
+					str << "</file>";
+				}
+				str << "</children>";
+			}
+			str << "</item>";
+			return str.str();
+		}
+		virtual std::string ToText() {
+			std::ostringstream str;
+			str << this->Extension;
+			str << "\t" << this->Name;
+			str << "\t" << this->SubType;
+			str << "\t" << this->Version;
+			str << "\t" << this->VersionName;
+			return str.str();
+		}
+		virtual std::string ToCsv() {
+			std::ostringstream str;
+			str << this->Extension;
+			str << "," << this->Name;
+			str << "," << this->SubType;
+			str << "," << this->Version;
+			str << "," << this->VersionName;
+			return str.str();
+		}
+
+	};
+	
+	bool hasEnding(std::string const &fullString, std::string const &ending) {
+		if (fullString.length() >= ending.length()) {
+			return (0 == fullString.compare(fullString.length() - ending.length(), ending.length(), ending));
+		}
+		else {
+			return false;
+		}
+	}
+
 	inline void CheckEntry(ZipArchive::Ptr archive, std::vector<common::ExtensionInfo*>* vlist, std::string file, std::string extension, std::string name) {
 		ZipArchiveEntry::Ptr entry = archive->GetEntry(file);
 		if (entry) {
@@ -28,6 +140,15 @@ namespace zip {
 			vlist->push_back(ext);
 		}
 	}
+	std::map<std::string, bool> extMap;
+	inline void addExtension(std::vector<common::ExtensionInfo*>* vlist, common::ExtensionInfo* item) {
+		auto it = extMap.find(item->Extension);
+		if (it == extMap.end()) {
+			vlist->push_back(item);
+			extMap[item->Extension] = true;
+		}
+	}
+
 
 	void CheckContentType(std::vector<common::ExtensionInfo*>* vlist, std::string contentType)
 	{
@@ -35,109 +156,109 @@ namespace zip {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "docm";
 			ext->Name = "Microsoft Office Open XML Macro-Enabled Document";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.ms-word.template.macroEnabledTemplate.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "dotm";
 			ext->Name = "Microsoft Office Open XML Macro-Enabled Document Template";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "docx";
 			ext->Name = "Microsoft Office Open XML Document";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.openxmlformats-officedocument.wordprocessingml.template.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "dotx";
 			ext->Name = "Microsoft Office Open XML Document Template";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.ms-powerpoint.template.macroEnabled.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "potm";
 			ext->Name = "Microsoft Office Open XML Macro-Enabled Presentation Template";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.ms-powerpoint.slideshow.macroEnabled.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "ppsm";
 			ext->Name = "Microsoft Office Open XML Macro-Enabled Presentation Slideshow";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.ms-powerpoint.presentation.macroEnabled.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "pptm";
 			ext->Name = "Microsoft Office Open XML Macro-Enabled Presentation";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.openxmlformats-officedocument.presentationml.template.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "potx";
 			ext->Name = "Microsoft Office Open XML Presentation Template";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.ms-powerpoint.addin.macroEnabled.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "ppam";
 			ext->Name = "Microsoft Office Open XML Presentation Macro-Enabled Addin";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.openxmlformats-officedocument.presentationml.slideshow.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "ppsx";
 			ext->Name = "Microsoft Office Open XML Presentation Slideshow";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "pptx";
 			ext->Name = "Microsoft Office Open XML Presentation";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.ms-excel.sheet.macroEnabled.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "xlsm";
 			ext->Name = "Microsoft Office Open XML Macro-Enabled Spreadsheet";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.ms-excel.template.macroEnabled.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "xltm";
 			ext->Name = "Microsoft Office Open XML Macro-Enabled Spreadsheet Template";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "xlsx";
 			ext->Name = "Microsoft Office Open XML Spreadsheet";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.ms-excel.addin.macroEnabled.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "xlam";
 			ext->Name = "Microsoft Office Open XML Macro-Enabled Addin";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.template.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "xltx";
 			ext->Name = "Microsoft Office Open XML Spreadsheet Template";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.ms-excel.worksheet" || contentType == "application/vnd.ms-excel.main") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "xlsb";
 			ext->Name = "Microsoft Office Excel Binary";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.ms-package.xps-fixeddocumentsequence+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "xps";
 			ext->Name = "Microsoft XML Paper Specfication";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 	}
 
@@ -146,103 +267,103 @@ namespace zip {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "odt";
 			ext->Name = "Open Document Text";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.oasis.opendocument.spreadsheet") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "ods";
 			ext->Name = "Open Document Spreadsheet";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.oasis.opendocument.presentation") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "opd";
 			ext->Name = "Open Document Presentation";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.oasis.opendocument.graphics") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "odg";
 			ext->Name = "Open Document Graphics";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.oasis.opendocument.chart") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "odc";
 			ext->Name = "Open Document Chart";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.oasis.opendocument.formula") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "odf";
 			ext->Name = "Open Document Formula";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.oasis.opendocument.image") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "odi";
 			ext->Name = "Open Document Image";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.oasis.opendocument.text-master") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "odm";
 			ext->Name = "Open Document Text-Master";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.sun.xml.base" || mimeType == "application/vnd.oasis.opendocument.base" || mimeType == "application/vnd.oasis.opendocument.database") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "odb";
 			ext->Name = "Open Document Database";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.oasis.opendocument.text-template") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "ott";
 			ext->Name = "Open Document Text Template";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.oasis.opendocument.spreadsheet-template") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "ots";
 			ext->Name = "Open Document Spreadsheet Template";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.oasis.opendocument.presentation-template") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "otp";
 			ext->Name = "Open Document Presentation Template";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.oasis.opendocument.graphics-template") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "otg";
 			ext->Name = "Open Document Graphics Template";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.oasis.opendocument.chart-template") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "otc";
 			ext->Name = "Open Document Chart Template";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.oasis.opendocument.formula-template") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "otf";
 			ext->Name = "Open Document Formula Template";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.oasis.opendocument.image-template") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "oti";
 			ext->Name = "Open Document Image Template";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 		else if (mimeType == "application/vnd.oasis.opendocument.text-web") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "oth";
 			ext->Name = "Open Document Webpage";
-			vlist->push_back(ext);
+			addExtension(vlist, ext);
 		}
 	}
 
@@ -258,33 +379,77 @@ namespace zip {
 		return ans;
 	}
 
-	common::ExtensionInfo* GetVBA(ZipArchive::Ptr archive) {
+
+
+	common::ExtensionInfo* GetVBA(ZipArchive::Ptr archive, ZipExtensionInfo* details) {
 		OleStructuredStorage::VBA::vbahelper* vba = new OleStructuredStorage::VBA::vbahelper();
 		common::ExtensionInfo *ei = new common::ExtensionInfo();
 		//temp fix
 		ei->Extension = "vba";
 		ei->Name = "Visual Basic For Applications";
 
-		//TODO: find vba binary in zip file, and decompress it in memory
-
-		//TODO: Modify POLE to take a stream
-		/*POLE::Storage *storage = new POLE::Storage();
-		try {
-			ei = vba->Analyze("/", storage);
+		//find vba binary in zip file
+		std::vector<std::string> binFiles;
+		for (std::vector<ZipFileInfo*>::const_iterator i = details->children.begin(); i != details->children.end(); i++) {
+			std::string file = (*i)->Name;
+			if (hasEnding(file, "bin")) { //TODO: read this extension from the XML
+				binFiles.push_back(file);
+			}
 		}
-		catch (std::exception ex) {
-			ei = new OleStructuredStorage::VBA::VbaExtensionInfo();
-			((OleStructuredStorage::VBA::VbaExtensionInfo*)ei)->ProjectName = ex.what();
-			((OleStructuredStorage::VBA::VbaExtensionInfo*)ei)->SubType = "ERROR";
-		}*/
+
+		for (std::vector<std::string>::const_iterator i = binFiles.begin(); i != binFiles.end(); i++) {
+			ZipArchiveEntry::Ptr entry = archive->GetEntry((*i));
+
+			//TODO: Modify POLE to take a stream
+
+			std::istream* stream = entry->GetDecompressionStream();
+			std::ofstream outFile;
+			const char* tmpFile = tmpnam(nullptr);
+			outFile.open(tmpFile);			
+			
+			utils::stream::copy(*stream, outFile);
+
+			outFile.flush();
+			outFile.close();
+
+			POLE::Storage *storage = new POLE::Storage(tmpFile);
+			try {
+				ei = vba->Analyze("/", storage);
+			}
+			catch (std::exception ex) {
+				ei = new OleStructuredStorage::VBA::VbaExtensionInfo();
+				((OleStructuredStorage::VBA::VbaExtensionInfo*)ei)->ProjectName = ex.what();
+				((OleStructuredStorage::VBA::VbaExtensionInfo*)ei)->SubType = "ERROR";
+			}
+
+			remove(tmpFile);
+		}
 		return ei;
+	}
+
+	ZipExtensionInfo* getZipDetails(ZipArchive::Ptr archive) {
+		ZipExtensionInfo* ans = new ZipExtensionInfo();
+		size_t entries = archive->GetEntriesCount();
+
+		for (size_t i = 0; i < entries; ++i) {
+			std::shared_ptr<ZipArchiveEntry> entry = archive->GetEntry(int(i));
+			ZipFileInfo* info = new ZipFileInfo();
+			info->Name = entry->GetFullName();
+			info->Size = entry->GetSize();
+			info->CompressedSize = entry->GetCompressedSize();
+			info->IsPassworded = entry->IsPasswordProtected();
+			info->CompressionMethod = entry->GetCompressionMethod() == DeflateMethod::CompressionMethod ? "DEFLATE" : "stored";
+			info->Comment = entry->GetComment();
+			info->CRC32 = entry->GetCrc32();
+			ans->children.push_back(info);
+		}
+		return ans;
 	}
 
 	std::vector<common::ExtensionInfo*> Detailer(const std::string file, std::vector<unsigned char> buffer) {
 		std::vector<common::ExtensionInfo*> ans;
 		ZipArchive::Ptr archive = ZipFile::Open(file);
-		//archive->GetEntriesCount();
-		//archive->GetComment();
+		ZipExtensionInfo* details = getZipDetails(archive);
 
 		CheckEntry(archive, &ans, "META-INF/MANIFEST.MF", "jar", "Java Archive");
 		CheckEntry(archive, &ans, "WEB-INF/web.xml", "war", "Web Application Java Archive");
@@ -319,7 +484,7 @@ namespace zip {
 						CheckContentType(&ans, ctype);
 
 						if (ctype == "application/vnd.ms-office.vbaProject") {
-							ans.push_back(GetVBA(archive));
+							addExtension(&ans, GetVBA(archive, details));
 						}
 						start = contentType.find("ContentType=\"", end + 1);
 					}
@@ -341,11 +506,9 @@ namespace zip {
 		}
 
 		if (ans.size() == 0) {
-			common::ExtensionInfo* ext = new common::ExtensionInfo();
-			ext->Extension = "zip";
-			ext->Name = "ZIP File";
-			ans.push_back(ext);
+			ans.push_back(details);
 		}
 		return ans;
 	}
+
 }

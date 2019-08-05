@@ -1,5 +1,5 @@
 // magic.h
-// Generated on: 04/26/2016 18:33:24
+// Generated on: 08/17/2016 18:03:52
 
 #pragma once
 #include <string>
@@ -36,14 +36,14 @@ unsigned char magic_tiff_b[4] = {0x4D,0x4D,0x00,0x2A};
 unsigned char magic_jpg[2] = {0xFF,0xD8};
 unsigned char magic_png[8] = {0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A};
 unsigned char magic_bmp[2] = {0x42,0x4D};
-unsigned char magic_flac[4] = {0x66,0x4C,0x61,0x43};
-unsigned char magic_midi[4] = {0x4D,0x54,0x68,0x64};
 unsigned char magic_cur[4] = {0x00,0x00,0x02,0x00};
 unsigned char magic_bmpOS2a[2] = {0x42,0x41};
 unsigned char magic_bmpOS2ci[2] = {0x43,0x49};
 unsigned char magic_bmpOS2cp[2] = {0x43,0x50};
 unsigned char magic_bmpOS2i[2] = {0x49,0x43};
 unsigned char magic_bmpOS2p[2] = {0x50,0x54};
+unsigned char magic_psp[25] = {0x50,0x61,0x69,0x6E,0x74,0x20,0x53,0x68,0x6F,0x70,0x20,0x50,0x72,0x6F,0x20,0x49,0x6D,0x61,0x67,0x65,0x20,0x46,0x69,0x6C,0x65};
+unsigned char magic_jbf[15] = {0x4A,0x41,0x53,0x43,0x20,0x42,0x52,0x4F,0x57,0x53,0x20,0x46,0x49,0x4C,0x45};
 unsigned char magic_oless[4] = {0xD0,0xCF,0x11,0xE0};
 unsigned char magic_ps[4] = {0x25,0x21,0x50,0x53};
 unsigned char magic_pdf[4] = {0x25,0x50,0x44,0x46};
@@ -65,6 +65,7 @@ unsigned char magic_accdbtmp[19] = {0x00,0x01,0x00,0x00,0x54,0x65,0x6D,0x70,0x20
 unsigned char magic_one[16] = {0xE4,0x52,0x5C,0x7B,0x8C,0xD8,0xA7,0x4D,0xAE,0xB1,0x53,0x78,0xD0,0x29,0x96,0xD3};
 unsigned char magic_onetoc[16] = {0xA1,0x2F,0xFF,0x43,0xD9,0xEF,0x76,0x4C,0x9E,0xE2,0x10,0xEA,0x57,0x22,0x76,0x5F};
 unsigned char magic_pst[4] = {0x21,0x42,0x44,0x4E};
+unsigned char magic_wab[16] = {0x9C,0xCB,0xCB,0x8D,0x13,0x75,0xD2,0x11,0x91,0x58,0x00,0xC0,0x4F,0x79,0x56,0xA4};
 unsigned char magic_chm[4] = {0x49,0x54,0x53,0x46};
 unsigned char magic_dmp32[8] = {0x50,0x41,0x47,0x45,0x44,0x55,0x4D,0x50};
 unsigned char magic_dmp64[8] = {0x50,0x41,0x47,0x45,0x44,0x55,0x36,0x34};
@@ -77,6 +78,8 @@ unsigned char magic_mp3id3v2[3] = {0x49,0x44,0x33};
 unsigned char magic_flv[3] = {0x46,0x4C,0x56};
 unsigned char magic_swf[3] = {0x46,0x57,0x53};
 unsigned char magic_cwf[3] = {0x43,0x57,0x53};
+unsigned char magic_flac[4] = {0x66,0x4C,0x61,0x43};
+unsigned char magic_midi[4] = {0x4D,0x54,0x68,0x64};
 unsigned char magic_sh[2] = {0x23,0x21};
 unsigned char magic_xml[5] = {0x3C,0x3F,0x78,0x6D,0x6C};
 unsigned char magic_xmluni[12] = {0xFF,0xFE,0x3C,0x00,0x3F,0x00,0x78,0x00,0x6D,0x00,0x6C,0x00};
@@ -120,14 +123,14 @@ std::vector<common::MagicInfo> list = {
   {"jpg", "JPEG Image", "", 0, 2, magic_jpg, "JpegHelper"},
   {"png", "Portable Network Graphics", "", 0, 8, magic_png, NULL},
   {"bmp", "Bitmap Image", "", 0, 2, magic_bmp, NULL},
-  {"flac", "Free Lossless Audio Codec", "", 0, 4, magic_flac, NULL},
-  {"midi", "MIDI Sound File", "", 0, 4, magic_midi, NULL},
   {"cur", "Cursor", "", 0, 4, magic_cur, NULL},
   {"bmp", "Bitmap Image", "OS/2 Array", 0, 2, magic_bmpOS2a, NULL},
   {"bmp", "Bitmap Image", "OS/2 Color Icon", 0, 2, magic_bmpOS2ci, NULL},
   {"bmp", "Bitmap Image", "OS/2 Color Pointer", 0, 2, magic_bmpOS2cp, NULL},
   {"bmp", " Bitmap Icon", "OS/2 Icon", 0, 2, magic_bmpOS2i, NULL},
   {"bmp", "Bitmap Image", "OS/2 Pointer", 0, 2, magic_bmpOS2p, NULL},
+  {"psp", "Corel Paint Shop Pro Image file", "", 0, 25, magic_psp, NULL},
+  {"jbf", "Corel Paint Shop Pro browse file", "", 0, 15, magic_jbf, NULL},
   {"oless", "OLE Structured Storage", "", 0, 4, magic_oless, "OleHelper"},
   {"ps", "PostScript document", "", 0, 4, magic_ps, NULL},
   {"pdf", "PDF document", "", 0, 4, magic_pdf, NULL},
@@ -149,6 +152,7 @@ std::vector<common::MagicInfo> list = {
   {"one", "Microsoft OneNote", "", 0, 16, magic_one, NULL},
   {"onetoc2", "Microsoft OneNote Table of Contents", "", 0, 16, magic_onetoc, NULL},
   {"pst", "Microsoft Outlook Personal Storage Table", "", 0, 4, magic_pst, NULL},
+  {"wab", "Microsoft Output Address File", "", 0, 16, magic_wab, NULL},
   {"chm", "Complied Help File", "", 0, 4, magic_chm, NULL},
   {"dmp", "Windows Dump File", "32-bit", 0, 8, magic_dmp32, NULL},
   {"dmp", "Windows Dump File", "64-bit", 0, 8, magic_dmp64, NULL},
@@ -161,6 +165,8 @@ std::vector<common::MagicInfo> list = {
   {"flv", "Flash Video", "", 0, 3, magic_flv, NULL},
   {"swf", "Shockwave Flash File", "", 0, 3, magic_swf, NULL},
   {"swf", "Shockwave Flash File", "compressed", 0, 3, magic_cwf, NULL},
+  {"flac", "Free Lossless Audio Codec", "", 0, 4, magic_flac, NULL},
+  {"midi", "MIDI Sound File", "", 0, 4, magic_midi, NULL},
   {"script", "*nix script", "", 0, 2, magic_sh, NULL},
   {"xml", "XML", "ASCII", 0, 5, magic_xml, NULL},
   {"xml", "XML", "Unicode", 0, 12, magic_xmluni, NULL},
