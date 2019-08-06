@@ -78,7 +78,6 @@ namespace OleStructuredStorage {
 			}
 			else {
 				//Stream Analysis
-				POLE::Stream *stream = new POLE::Stream(storage, fullname);
 				if (fullname == "/DRMContent") {
 					ei->Extension = "irm";
 					ei->Name = "Microsoft Office Information Rights Managed File";
@@ -87,6 +86,7 @@ namespace OleStructuredStorage {
 				else if (fullname == "/PowerPoint Document") {
 					ei->Extension = "ppt";
 					ei->Name = "Microsoft Office PowerPoint Document";
+					POLE::Stream* stream = new POLE::Stream(storage, fullname);
 					ei->Version = oo->GetPptVersion(storage, stream);
 					ei->VersionName = oo->GetVersion_Powerpoint(ei->Version);
 					ei->SubType = ei->VersionName;
@@ -101,30 +101,38 @@ namespace OleStructuredStorage {
 				else if (fullname == "/Workbook" || fullname == "/Book" || fullname =="/WorkBook") {
 					ei->Extension = "xls";
 					ei->Name = "Microsoft Office Excel Workbook";
+					POLE::Stream* stream = new POLE::Stream(storage, fullname);
 					ei->Version = oo->GetXlsVersion(stream);
 					ei->VersionName = oo->GetVersion_Excel(ei->Version);
 					ei->SubType = ei->VersionName;
+					delete stream;
 				}
 				else if (fullname == "/WordDocument") {
 					ei->Extension = "doc";
 					ei->Name = "Microsoft Office Word Document";
+					POLE::Stream* stream = new POLE::Stream(storage, fullname);
 					ei->Version = oo->GetnFib(stream);
 					ei->VersionName = oo->GetVersion_Word(ei->Version);
 					ei->SubType = ei->VersionName;
+					delete stream;
 				}
 				else if (fullname == "/Contents") {
 					ei->Extension = "pub";
 					ei->Name = "Microsoft Office Publisher Document";
+					POLE::Stream* stream = new POLE::Stream(storage, fullname);
 					ei->Version = oo->GetPubVersion(stream);
 					ei->VersionName = oo->GetVersion_Publisher(ei->Version);
 					ei->SubType = ei->VersionName;
+					delete stream;
 				}
 				else if (fullname == "/VisioDocument") {
 					ei->Extension = "vsd";
 					ei->Name = "Microsoft Office Visio Document";
+					POLE::Stream* stream = new POLE::Stream(storage, fullname);
 					ei->Version = oo->GetVisoVersion(stream);
 					ei->VersionName = oo->GetVersion_Visio(ei->Version);
 					ei->SubType = ei->VersionName;
+					delete stream;
 				}
 				else if (fullname == "/Details") {
 					ei->Extension = "bup";
@@ -164,7 +172,6 @@ namespace OleStructuredStorage {
 					//OlePropertySet::ParseStream(stream);
 				}
 				//TODO: msi, 
-				delete stream;
 			}
 			if (!ei->Extension.empty()) {
 				this->m_results.push_back((common::IExportable*)ei);
