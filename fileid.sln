@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fileid", "fileid\fileid.vcxproj", "{535EE90E-4021-45DE-A76E-4D93FA564CA0}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -22,10 +22,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		.gitmodules = .gitmodules
+		build.cmd = build.cmd
 		build.sh = build.sh
 		LICENSE = LICENSE
 		makefile = makefile
-		publish.ps1 = publish.ps1
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -104,5 +105,8 @@ Global
 		{DBBF348D-C221-4F2E-8A0D-24EFA0D98E71} = {218B0154-89FC-49FD-9959-EDF15F8E867C}
 		{7EAD1358-3E72-4FB6-A212-25D462B5C1E9} = {218B0154-89FC-49FD-9959-EDF15F8E867C}
 		{BAEB16B3-DB4C-432F-9E6A-2ACADEA0691D} = {218B0154-89FC-49FD-9959-EDF15F8E867C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1B5BE0C9-F489-4031-B88F-3C3A8D0BDF85}
 	EndGlobalSection
 EndGlobal

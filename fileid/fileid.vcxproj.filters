@@ -2,7 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="fileid.cpp" />
-    <ClCompile Include="oless\pole.cpp" />
+    <ClCompile Include="oless\pole.cpp">
+      <Filter>oless</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Create-Headers.ps1" />
@@ -11,22 +13,64 @@
     <ClInclude Include="common.hpp" />
     <ClInclude Include="magic.h" />
     <ClInclude Include="details.hpp" />
-    <ClInclude Include="exe\Exec.hpp" />
-    <ClInclude Include="oless\OleCommon.hpp" />
-    <ClInclude Include="oless\MSExcel.hpp" />
-    <ClInclude Include="oless\MSPowerPoint.hpp" />
-    <ClInclude Include="oless\MSPublisher.hpp" />
-    <ClInclude Include="oless\MSVisio.hpp" />
-    <ClInclude Include="oless\MSWord.hpp" />
-    <ClInclude Include="oless\oless.hpp" />
-    <ClInclude Include="oless\pole.h" />
-    <ClInclude Include="oless\olessoffice.hpp" />
-    <ClInclude Include="oless\vbahelper.hpp" />
-    <ClInclude Include="mp4\mp4.hpp" />
-    <ClInclude Include="zip\ziphelper.hpp" />
-    <ClInclude Include="oless\DocumentSummary.hpp" />
+    <ClInclude Include="exe\Exec.hpp">
+      <Filter>exe</Filter>
+    </ClInclude>
+    <ClInclude Include="mp4\mp4.hpp">
+      <Filter>mp4</Filter>
+    </ClInclude>
+    <ClInclude Include="zip\ziphelper.hpp">
+      <Filter>zip</Filter>
+    </ClInclude>
+    <ClInclude Include="oless\DocumentSummary.hpp">
+      <Filter>oless</Filter>
+    </ClInclude>
+    <ClInclude Include="oless\MSExcel.hpp">
+      <Filter>oless</Filter>
+    </ClInclude>
+    <ClInclude Include="oless\MSPowerPoint.hpp">
+      <Filter>oless</Filter>
+    </ClInclude>
+    <ClInclude Include="oless\MSPublisher.hpp">
+      <Filter>oless</Filter>
+    </ClInclude>
+    <ClInclude Include="oless\MSVisio.hpp">
+      <Filter>oless</Filter>
+    </ClInclude>
+    <ClInclude Include="oless\MSWord.hpp">
+      <Filter>oless</Filter>
+    </ClInclude>
+    <ClInclude Include="oless\OleCommon.hpp">
+      <Filter>oless</Filter>
+    </ClInclude>
+    <ClInclude Include="oless\oless.hpp">
+      <Filter>oless</Filter>
+    </ClInclude>
+    <ClInclude Include="oless\olessoffice.hpp">
+      <Filter>oless</Filter>
+    </ClInclude>
+    <ClInclude Include="oless\vbahelper.hpp">
+      <Filter>oless</Filter>
+    </ClInclude>
+    <ClInclude Include="oless\pole.h">
+      <Filter>oless</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="data.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="exe">
+      <UniqueIdentifier>{e2c05772-90be-4ed5-ad32-ae05f6a97a04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oless">
+      <UniqueIdentifier>{d5728d14-db12-4b34-90fa-2dd5a6179545}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zip">
+      <UniqueIdentifier>{9b229a22-58c7-40c8-9d1b-893cd022128c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mp4">
+      <UniqueIdentifier>{c78c49ca-0e9d-46da-ae63-a4e1b6576e92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
