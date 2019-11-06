@@ -13,10 +13,10 @@
 #include "magic.h"
 #include "details.hpp"
 
+#define STD_BUFFER_SIZE 512
 
 void dumpFile(std::string file) {
-
-	std::vector<unsigned char> buffer = common::readFile(file, 512);
+	std::vector<unsigned char> buffer = common::readFile(file, STD_BUFFER_SIZE);
 	common::hexDump(file.c_str(), buffer.data(), buffer.size());
 }
 
@@ -56,11 +56,36 @@ common::ExtraDataFunc GetExtraDataFunction(std::string name) {
 	return ans;
 }
 
+//Taken from: https://stackoverflow.com/a/466242/13124
+unsigned int roundUpPowerOfTwo(_In_ const unsigned int x) {
+	unsigned int v = x; // compute the next highest power of 2 of 32-bit v
 
+	v--;
+	v |= v >> 1;
+	v |= v >> 2;
+	v |= v >> 4;
+	v |= v >> 8;
+	v |= v >> 16;
+	v++;
+	return v;
+}
+
+unsigned int getMinimumBufferSize() {
+	unsigned int ans = STD_BUFFER_SIZE;	
+	for (std::vector<common::MagicInfo>::const_iterator i = list.begin(); i != list.end(); i++) 
+	{
+		common::MagicInfo mi = *i;
+		unsigned int size = mi.size + mi.offset;
+		if (size > ans) {
+			ans = size;
+		}
+	}
+	return roundUpPowerOfTwo(ans);
+}
 
 std::vector<common::ExtensionInfo*> guessExtension(std::string file) {
 	std::vector<common::ExtensionInfo*> ans;
-	std::vector<unsigned char> buffer = common::readFile(file, 512);
+	std::vector<unsigned char> buffer = common::readFile(file, getMinimumBufferSize());
 
 	if (buffer.size() > 0) {
 		for (std::vector<common::MagicInfo>::const_iterator i = list.begin(); i != list.end(); i++) {

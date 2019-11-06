@@ -1,5 +1,5 @@
 // magic.h
-// Generated on: 08/05/2019 09:30:14
+// Generated on: 11/06/2019 15:36:59
 
 #pragma once
 #include <string>
@@ -24,6 +24,13 @@ unsigned char magic_vhd[8] = {0x63,0x6F,0x6E,0x65,0x63,0x74,0x69,0x78};
 unsigned char magic_iso1[5] = {0x43,0x44,0x30,0x30,0x31};
 unsigned char magic_iso2[5] = {0x43,0x44,0x30,0x30,0x31};
 unsigned char magic_iso3[5] = {0x43,0x44,0x30,0x30,0x31};
+unsigned char magic_udf1[5] = {0x42,0x45,0x41,0x30,0x31};
+unsigned char magic_udf2[5] = {0x42,0x4f,0x4f,0x54,0x32};
+unsigned char magic_udf3[5] = {0x43,0x44,0x30,0x30,0x31};
+unsigned char magic_udf4[5] = {0x43,0x44,0x57,0x30,0x32};
+unsigned char magic_udf5[5] = {0x4e,0x53,0x52,0x30,0x32};
+unsigned char magic_udf6[5] = {0x4e,0x53,0x52,0x30,0x33};
+unsigned char magic_udf7[5] = {0x54,0x45,0x41,0x30,0x31};
 unsigned char magic_vmdk[3] = {0x4B,0x44,0x4D};
 unsigned char magic_pcap[4] = {0xD4,0xC3,0xB2,0xA1};
 unsigned char magic_pcapn[4] = {0x4D,0x3C,0xB2,0xA1};
@@ -110,9 +117,16 @@ std::vector<common::MagicInfo> list = {
   {"cab", "Microsoft Cabinet file", "", 0, 4, magic_cab, NULL},
   {"lha", "LHA Archive", "", 0, 3, magic_lha, NULL},
   {"vhd", "Microsoft Virtual HardDisk", "", 0, 8, magic_vhd, NULL},
-  {"iso", "ISO 9660 Disk Image", "", 8001, 5, magic_iso1, NULL},
-  {"iso", "ISO 9660 Disk Image", "", 8801, 5, magic_iso2, NULL},
-  {"iso", "ISO 9660 Disk Image", "", 9001, 5, magic_iso3, NULL},
+  {"iso", "ISO 9660 Disk Image", "", 32769, 5, magic_iso1, NULL},
+  {"iso", "ISO 9660 Disk Image", "", 34817, 5, magic_iso2, NULL},
+  {"iso", "ISO 9660 Disk Image", "", 36864, 5, magic_iso3, NULL},
+  {"iso", "Universal Disk Format (ISO 13490/Ecma-168) - Beginning Extended Area Descriptor", "", 32769, 5, magic_udf1, NULL},
+  {"iso", "Universal Disk Format (ISO 13490/Ecma-168) - Boot Descriptor", "", 32769, 5, magic_udf2, NULL},
+  {"iso", "Universal Disk Format (ISO 13490/Ecma-168) - CD001 - ECMA-119", "", 32769, 5, magic_udf3, NULL},
+  {"iso", "Universal Disk Format (ISO 13490/Ecma-168) - Volume Descriptor", "", 32769, 5, magic_udf4, NULL},
+  {"iso", "Universal Disk Format (ISO 13490/Ecma-168) - NSR02 - ECMA-168", "", 32769, 5, magic_udf5, NULL},
+  {"iso", "Universal Disk Format (ISO 13490/Ecma-168) - NSR03 - ECMA-167", "", 32769, 5, magic_udf6, NULL},
+  {"iso", "Universal Disk Format (ISO 13490/Ecma-168) - Terminating Extended Area Descriptor", "", 32769, 5, magic_udf7, NULL},
   {"vmdk", "VMWare Virtual Disk", "", 0, 3, magic_vmdk, NULL},
   {"pcap", "Network Packet Capture File", "", 0, 4, magic_pcap, NULL},
   {"pcap", "Network Packet Capture File", "Nanosecond-precision timestamps", 0, 4, magic_pcapn, NULL},
