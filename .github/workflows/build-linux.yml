@@ -15,9 +15,7 @@ jobs:
     - name: Build
       run: |
         mkdir bin
-        make
-    - name: Test
-      run: fid-test
+        make    
     - name: Archive
       uses: actions/upload-artifact@v1
       with:
