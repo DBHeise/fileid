@@ -1,4 +1,5 @@
-name: Build On Linux
+name: Continuous Integration
+
 
 on: [push]
 
@@ -9,5 +10,7 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+      with:
+        submodules: true
     - name: make
       run: make

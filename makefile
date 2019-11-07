@@ -1,6 +1,6 @@
 #~/user/bin/make -f
-EXECUTABLE = fileid
-SO_LIBRARY = fileid.so
+EXECUTABLE = fid
+SO_LIBRARY = fid.so
 
 CC        = gcc
 CXX       = g++
@@ -47,3 +47,9 @@ $(SO_LIBRARY): $(OBJS)
 
 clean:
 	rm -rf `find Source -name '*.o'` $(EXECUTABLE) $(SO_LIBRARY)
+
+
+BINDIR ?= ${PREFIX}/bin
+
+install:
+	@cp -p fid ${PREFIX}/bin/fileid
