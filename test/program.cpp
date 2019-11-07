@@ -1,18 +1,11 @@
 
-#include <string>
-#include <iostream>
-#include <iomanip>
-#include <fstream>
-#include <vector>
-#include <unordered_map>
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest.h"
+#include "..\fileid\common.hpp"
 
 
-int main(int argc, char* argv[])
-{
-	std::vector<std::string> params(argv + 1, argv + argc);
-	std::string fit = params[0];
+
+TEST_CASE("checkMagic - basic") {
 	
 
-
-	return 0;
 }

@@ -1,13 +1,15 @@
-﻿$testFolder = 'C:\TestFiles\Sample'
-Set-Alias fileid (Resolve-Path ..\x64\debug\fileid.exe)
+﻿$testFolder = Resolve-Path '.\files'
+Set-Alias fileid (Resolve-Path ..\Bin\x64\Debug\fileid.exe)
 
-gci $testFolder | ?{!$_.PSIsContainer} | % {
-    $r = fileid $_.FullName text
-    $rExt = $r.Split()[2].Trim()
-    if ($rExt -ne $_.Extension.Trim('.')) {        
+gci $testFolder -Recurse | ?{!$_.PSIsContainer} | % {
+    $r = [String]::Join('',(fileid $_.FullName json)) | ConvertFrom-Json
+    $actual = $r.extensions.extension
+    $expected = $_.Extension.Trim('.')
+    if ($actual -ne $expected) {
         New-Object PSObject -Property @{
             File = $_.FullName
-            Result = $r
+            Expected = $expected
+            Actual = $actual
         }
-    } 
+    }
 }
