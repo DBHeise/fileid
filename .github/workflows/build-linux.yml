@@ -10,4 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: build
-      run: chmod +x build.sh & ./build.sh
+      run: |
+        ls
+        sudo chmod +x build.sh
+        ./build.sh
