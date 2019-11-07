@@ -1,11 +1,20 @@
-﻿$testFolder = Resolve-Path '.\files'
-Set-Alias fileid (Resolve-Path ..\Bin\x64\Debug\fileid.exe)
+﻿[CmdletBinding()] 
+param(
+	[String][ValidateSet('Win32','x64')] $Platform = 'x64',
+	[String][ValidateSet('Debug', 'Release')] $onfig = 'Debug',
+	[Switch] $ShowAll
+)
 
-gci $testFolder -Recurse | ?{!$_.PSIsContainer} | % {
-    $r = [String]::Join('',(fileid $_.FullName json)) | ConvertFrom-Json
+$testFolder = Resolve-Path '.\files' -ErrorAction Stop
+Set-Alias -Name fileid -Value (Resolve-Path -Path ("..\Bin\$platform\$config\fileid.exe") -ErrorAction Stop)
+
+Write-Verbose -Message ("Using FileId executable: " + (Get-Alias fileid).Definition )
+
+Get-ChildItem -Path $testFolder -Recurse | Where-Object {!$_.PSIsContainer} | ForEach-Object {
+    $r = [String]::Join('',(fileid $_.FullName json)) | ConvertFrom-Json -ErrorAction Stop
     $actual = $r.extensions.extension
     $expected = $_.Extension.Trim('.')
-    if ($actual -ne $expected) {
+    if ($actual -ne $expected -or $ShowAll) {
         New-Object PSObject -Property @{
             File = $_.FullName
             Expected = $expected
