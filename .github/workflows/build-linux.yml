@@ -13,7 +13,9 @@ jobs:
       with:
         submodules: true
     - name: Build
-      run: make
+      run: |
+        mkdir bin
+        make
     - name: Test
       run: fid-test
     - name: Archive
