@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: Build On Linux
 
 on: [push]
 
@@ -10,4 +10,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: build
-      run: ./build.sh
+      run: |
+      chmod +x build.sh
+      ./build.sh
