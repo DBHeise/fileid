@@ -57,7 +57,7 @@ common::ExtraDataFunc GetExtraDataFunction(std::string name) {
 }
 
 //Taken from: https://stackoverflow.com/a/466242/13124
-unsigned int roundUpPowerOfTwo(_In_ const unsigned int x) {
+unsigned int roundUpPowerOfTwo(const unsigned int x) {
 	unsigned int v = x; // compute the next highest power of 2 of 32-bit v
 
 	v--;

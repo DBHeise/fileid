@@ -1,6 +1,6 @@
 #~/user/bin/make -f
-EXECUTABLE = fid
-SO_LIBRARY = fid.so
+EXECUTABLE = fileid
+SO_LIBRARY = fileid.so
 
 CC        = gcc
 CXX       = g++
