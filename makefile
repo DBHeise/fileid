@@ -1,6 +1,6 @@
 #~/user/bin/make -f
-EXECUTABLE = fid
-SO_LIBRARY = fid.so
+EXECUTABLE = bin/fid
+SO_LIBRARY = bin/fid.so
 
 CC        = gcc
 CXX       = g++
@@ -52,4 +52,4 @@ clean:
 BINDIR ?= ${PREFIX}/bin
 
 install:
-	@cp -p fid ${PREFIX}/bin/fileid
+	@cp -p bin/fid ${PREFIX}/bin/fileid

@@ -5,12 +5,19 @@ on: [push]
 
 jobs:
   build:
-
+    name: Linux Build and Test
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v1
       with:
         submodules: true
-    - name: make
+    - name: Build
       run: make
+    - name: Test
+      run: fid-test
+    - name: Archive
+      uses: actions/upload-artifact@v1
+      with:
+        name: linux-binaries
+        path: bin
