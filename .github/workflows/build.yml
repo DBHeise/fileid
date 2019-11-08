@@ -1,0 +1,45 @@
+name: Continuous Integration
+
+
+on: [push]
+
+jobs:
+  build:
+    name: Linux Build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: true
+    - name: Build
+      run: |
+        mkdir bin
+        make    
+    - name: Archive
+      uses: actions/upload-artifact@v1
+      with:
+        name: linux-binaries
+        path: bin
+  build:
+    name: Windows Build
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: true
+    - name: Build
+      shell: pwsh      
+      run: |
+        .\build.ps1
+    - name: Archive x86
+      uses: actions/upload-artifact@v1
+      with:
+        name: Windows-x86-binaries
+        path: Bin/Win32/Release
+    - name: Archive x64
+      uses: actions/upload-artifact@v1
+      with:
+        name: Windows-x64-binaries
+        path: Bin/x64/Release
