@@ -152,7 +152,7 @@ namespace zip {
 
 	void CheckContentType(std::vector<common::ExtensionInfo*>* vlist, std::string contentType)
 	{
-		if (contentType == "application/vnd.ms-word.document.macroEnabled.main+xml") {
+		     if (contentType == "application/vnd.ms-word.document.macroEnabled.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "docm";
 			ext->Name = "Microsoft Office Open XML Macro-Enabled Document";
@@ -176,6 +176,7 @@ namespace zip {
 			ext->Name = "Microsoft Office Open XML Document Template";
 			addExtension(vlist, ext);
 		}
+
 		else if (contentType == "application/vnd.ms-powerpoint.template.macroEnabled.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "potm";
@@ -194,16 +195,16 @@ namespace zip {
 			ext->Name = "Microsoft Office Open XML Macro-Enabled Presentation";
 			addExtension(vlist, ext);
 		}
-		else if (contentType == "application/vnd.openxmlformats-officedocument.presentationml.template.main+xml") {
-			common::ExtensionInfo* ext = new common::ExtensionInfo();
-			ext->Extension = "potx";
-			ext->Name = "Microsoft Office Open XML Presentation Template";
-			addExtension(vlist, ext);
-		}
 		else if (contentType == "application/vnd.ms-powerpoint.addin.macroEnabled.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "ppam";
 			ext->Name = "Microsoft Office Open XML Presentation Macro-Enabled Addin";
+			addExtension(vlist, ext);
+		}
+		else if (contentType == "application/vnd.openxmlformats-officedocument.presentationml.template.main+xml") {
+			common::ExtensionInfo* ext = new common::ExtensionInfo();
+			ext->Extension = "potx";
+			ext->Name = "Microsoft Office Open XML Presentation Template";
 			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.openxmlformats-officedocument.presentationml.slideshow.main+xml") {
@@ -218,34 +219,11 @@ namespace zip {
 			ext->Name = "Microsoft Office Open XML Presentation";
 			addExtension(vlist, ext);
 		}
+
 		else if (contentType == "application/vnd.ms-excel.sheet.macroEnabled.main+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "xlsm";
 			ext->Name = "Microsoft Office Open XML Macro-Enabled Spreadsheet";
-			addExtension(vlist, ext);
-		}
-		else if (contentType == "application/vnd.ms-excel.template.macroEnabled.main+xml") {
-			common::ExtensionInfo* ext = new common::ExtensionInfo();
-			ext->Extension = "xltm";
-			ext->Name = "Microsoft Office Open XML Macro-Enabled Spreadsheet Template";
-			addExtension(vlist, ext);
-		}
-		else if (contentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml") {
-			common::ExtensionInfo* ext = new common::ExtensionInfo();
-			ext->Extension = "xlsx";
-			ext->Name = "Microsoft Office Open XML Spreadsheet";
-			addExtension(vlist, ext);
-		}
-		else if (contentType == "application/vnd.ms-excel.addin.macroEnabled.main+xml") {
-			common::ExtensionInfo* ext = new common::ExtensionInfo();
-			ext->Extension = "xlam";
-			ext->Name = "Microsoft Office Open XML Macro-Enabled Addin";
-			addExtension(vlist, ext);
-		}
-		else if (contentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.template.main+xml") {
-			common::ExtensionInfo* ext = new common::ExtensionInfo();
-			ext->Extension = "xltx";
-			ext->Name = "Microsoft Office Open XML Spreadsheet Template";
 			addExtension(vlist, ext);
 		}
 		else if (contentType == "application/vnd.ms-excel.worksheet" || contentType == "application/vnd.ms-excel.main") {
@@ -254,6 +232,44 @@ namespace zip {
 			ext->Name = "Microsoft Office Excel Binary";
 			addExtension(vlist, ext);
 		}
+		else if (contentType == "application/vnd.ms-excel.macrosheet") {
+			common::ExtensionInfo* ext = new common::ExtensionInfo();
+			ext->Extension = "xlsb_e4m";
+			ext->Name = "Microsoft Office Excel Binary with Excel4.0Macros";
+			addExtension(vlist, ext);
+		}
+		else if (contentType == "application/vnd.ms-excel.macrosheet+xml") {
+			common::ExtensionInfo* ext = new common::ExtensionInfo();
+			ext->Extension = "xlsm_e4m";
+			ext->Name = "Microsoft Office Open XML Macro-Enabled Spreadsheet with Excel4.0Macros";
+			addExtension(vlist, ext);
+		}
+
+		else if (contentType == "application/vnd.ms-excel.template.macroEnabled.main+xml") {
+			common::ExtensionInfo* ext = new common::ExtensionInfo();
+			ext->Extension = "xltm";
+			ext->Name = "Microsoft Office Open XML Macro-Enabled Spreadsheet Template";
+			addExtension(vlist, ext);
+		}
+		else if (contentType == "application/vnd.ms-excel.addin.macroEnabled.main+xml") {
+			common::ExtensionInfo* ext = new common::ExtensionInfo();
+			ext->Extension = "xlam";
+			ext->Name = "Microsoft Office Open XML Macro-Enabled Addin";
+			addExtension(vlist, ext);
+		}
+		else if (contentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml") {
+			common::ExtensionInfo* ext = new common::ExtensionInfo();
+			ext->Extension = "xlsx";
+			ext->Name = "Microsoft Office Open XML Spreadsheet";
+			addExtension(vlist, ext);
+		}
+		else if (contentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.template.main+xml") {
+			common::ExtensionInfo* ext = new common::ExtensionInfo();
+			ext->Extension = "xltx";
+			ext->Name = "Microsoft Office Open XML Spreadsheet Template";
+			addExtension(vlist, ext);
+		}
+
 		else if (contentType == "application/vnd.ms-package.xps-fixeddocumentsequence+xml") {
 			common::ExtensionInfo* ext = new common::ExtensionInfo();
 			ext->Extension = "xps";
@@ -378,8 +394,6 @@ namespace zip {
 		}
 		return ans;
 	}
-
-
 
 	common::ExtensionInfo* GetVBA(ZipArchive::Ptr archive, ZipExtensionInfo* details) {
 		OleStructuredStorage::VBA::vbahelper* vba = new OleStructuredStorage::VBA::vbahelper();
