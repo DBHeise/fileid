@@ -32,6 +32,7 @@ namespace common {
 		}
 		return ans;
 	}
+	
 	int ConvertToIntLE(unsigned char* block, int offset) {
 		int ans = 0;
 		ans = ((int)block[offset] << 24) | ((int)block[offset + 1] << 16) | ((int)block[offset + 2] << 8) | ((int)block[offset + 3]);

@@ -61,27 +61,7 @@ namespace OleStructuredStorage {
 			return ans;
 		}
 
-		//Excel (.xls) specific
-		unsigned short GetXlsVersion(POLE::Stream* stream) {
-			unsigned short version = 0;
-
-			Excel::BOF* bof = OleHelper::GetStructFromStream<Excel::BOF>(stream);
-			version = bof->rubBuild;
-
-			delete bof;
-			return version;
-		}
-		std::string GetVersion_Excel(unsigned short version) {
-			std::string ans;
-
-			switch (version) {
-			case 1280: ans = "BIFF5"; break;
-			case 1536: ans = "BIFF8"; break;
-			default:  ans = "Unknown"; break;
-			}
-			return ans;
-		}
-
+		
 		//Powerpoint (.ppt) specific
 		unsigned short GetPptVersion(POLE::Storage* storage, POLE::Stream* stream) {
 			unsigned short version = 0;

@@ -99,12 +99,10 @@ namespace OleStructuredStorage {
 					ei->SubType = ei->VersionName;
 				}
 				else if (fullname == "/Workbook" || fullname == "/Book" || fullname =="/WorkBook") {
-					ei->Extension = "xls";
-					ei->Name = "Microsoft Office Excel Workbook";
+					delete ei;
+					ei = new Excel::ExcelExtensionInfo();
 					POLE::Stream* stream = new POLE::Stream(storage, fullname);
-					ei->Version = oo->GetXlsVersion(stream);
-					ei->VersionName = oo->GetVersion_Excel(ei->Version);
-					ei->SubType = ei->VersionName;
+					((Excel::ExcelExtensionInfo*)ei)->ParseStream(stream);
 					delete stream;
 				}
 				else if (fullname == "/WordDocument") {
