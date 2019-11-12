@@ -1,7 +1,7 @@
 ﻿[CmdletBinding()] 
 param(
 	[String][ValidateSet('Win32','x64')] $Platform = 'x64',
-	[String][ValidateSet('Debug', 'Release')] $onfig = 'Debug',
+	[String][ValidateSet('Debug', 'Release')] $Config = 'Debug',
 	[Switch] $ShowAll
 )
 
