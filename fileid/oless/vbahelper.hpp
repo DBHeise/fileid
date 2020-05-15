@@ -138,21 +138,10 @@ namespace OleStructuredStorage {
 				this->VBAVersionMajor = 0;
 				this->VBAVersionMinor = 0;
 			};
-			virtual std::string ToJson() {
+			virtual std::string ToJson() const {
 				std::ostringstream str;
-				str << "{ \"extension\" : \"" << this->Extension << "\"";
-				if (this->Name.size() > 0) {
-					str << ", \"name\":\"" << this->Name << "\"";
-				}
-				if (this->SubType.size() > 0) {
-					str << ", \"subtype\":\"" << this->SubType << "\"";
-				}
-				if (this->Version > 0) {
-					str << ", \"version\" : " << this->Version;
-				}
-				if (this->VersionName.size() > 0) {
-					str << ", \"versionname\" : \"" << common::JsonEscape(this->VersionName) << "\"";
-				}
+				str << "{";
+				str << this->buildBaseJson();				
 				if (this->ProjectName.size() > 0) {
 					str << ", \"projectname\":\"" << common::JsonEscape(this->ProjectName) << "\"";
 				}
@@ -184,22 +173,10 @@ namespace OleStructuredStorage {
 				str << "}";
 				return str.str();
 			}
-			virtual std::string ToXml() {
+			virtual std::string ToXml() const {
 				std::ostringstream str;
 				str << "<item>";
-				str << "<extension>" << this->Extension << "</extension>";
-				if (this->Name.size() > 0) {
-					str << "<name>" << this->Name << "</name>";
-				}
-				if (this->SubType.size() > 0) {
-					str << "<subtype>" << this->SubType << "</subtype>";
-				}
-				if (this->Version > 0) {
-					str << "<version>" << this->Version << "</version>";
-				}
-				if (this->VersionName.size() > 0) {
-					str << "<versionname>" << this->VersionName << "</versionname>";
-				}
+				str << this->buildBaseXml();
 				if (this->ProjectName.size() > 0) {
 					str << "<projectname>" << this->ProjectName << "</projectname>";
 				}
@@ -322,21 +299,15 @@ namespace OleStructuredStorage {
 
 			static std::pair<unsigned int, std::string> ReadString(unsigned char* buffer, unsigned int bufferLen, unsigned int startIndex) {
 
-				if (startIndex + 4 > bufferLen)
-					throw std::runtime_error("Attempted to read past end of buffer");
-				unsigned int len = common::helper::GetItem4Byte(buffer, startIndex);
-				if (startIndex + 4 + len > bufferLen)
-					throw std::runtime_error("Attempted to read past end of buffer");
-				std::string  str = common::helper::GetItemString(buffer, startIndex + 4, len);
+				unsigned int len = common::ReadUInt(buffer, bufferLen, startIndex, true);
+				std::string  str = common::ReadString(buffer, bufferLen, startIndex + 4, len);
 				return std::make_pair(startIndex + len + 4, str);
 			}
 
 		
 			static std::tuple<unsigned int, std::string, std::wstring> ReadStringW(unsigned char* buffer, unsigned int bufferLen, unsigned int startIndex) {
 
-				if (startIndex + 4 > bufferLen)
-					throw std::runtime_error("Attempted to read past end of buffer");
-				unsigned int len = common::helper::GetItem4Byte(buffer, startIndex);
+				unsigned int len = common::ReadUInt(buffer, bufferLen, startIndex, true);
 				if (startIndex + 4 + len > bufferLen)
 					throw std::runtime_error("Attempted to read past end of buffer");
 				
@@ -356,7 +327,7 @@ namespace OleStructuredStorage {
 				unsigned int len;
 				unsigned char* buffer;
 				std::tie(len, buffer) = FetchAndDecompress(storage, fullname, offset);
-				return common::helper::GetItemString(buffer, 0, len);
+				return common::ReadString(buffer, len, 0, len);
 			}
 		public:
 			vbahelper() {}
@@ -397,12 +368,12 @@ namespace OleStructuredStorage {
 				std::tie(index, tmpStr) = ReadString(buffer, len, index + 2); //ProjectConstants Unicode
 
 																							//Read References
-				while (common::helper::GetItem2Byte(buffer, index) == 0x16) {
+				while (common::ReadUShort(buffer, len, index) == 0x16) {
 					std::tie(index, tmpStr) = ReadString(buffer, len, index + 2); //Reference Name
 					ans->References.push_back(tmpStr);
 					std::tie(index, tmpStr) = ReadString(buffer, len, index + 2); //Reference Unicode Name
 
-					unsigned short recordType = common::helper::GetItem2Byte(buffer, index);
+					unsigned short recordType = common::ReadUShort(buffer, len, index + 2);
 					index += 2;
 					switch (recordType) {
 					case 0x33://REFRENCECONTROL		
@@ -444,10 +415,10 @@ namespace OleStructuredStorage {
 					mod->isReadOnly = false;
 
 					//Read Records
-					unsigned short id = common::helper::GetItem2Byte(buffer, index);
+					unsigned short id = common::ReadUShort(buffer, len, index);
 
 					while (id != 0x2B && index < len) {
-						id = common::helper::GetItem2Byte(buffer, index);
+						id = common::ReadUShort(buffer, len, index);
 						index += 2;
 						switch (id) {
 						case 0x19: //ModuleName
@@ -472,7 +443,7 @@ namespace OleStructuredStorage {
 							break;
 						case 0x31: //ModuleOffset
 							index += 4;
-							mod->Offset = common::helper::GetItem4Byte(buffer, index);
+							mod->Offset = common::ReadUInt(buffer, len, index, true);
 							index += 4;
 							break;
 						case 0x1E: //ModuleHelpContext
@@ -526,7 +497,7 @@ namespace OleStructuredStorage {
 					compressedChunkStart = compressedCurrent;
 
 					//2.4.1.3.2		
-					unsigned short headerblock = common::helper::GetItem2Byte(compressedBuffer, compressedCurrent);
+					unsigned short headerblock = common::ReadUShort(compressedBuffer, compressedRecordEnd, compressedCurrent);
 					unsigned int size = Extract_CompressedChunkSize(headerblock);
 					unsigned int sig = (headerblock >> 12) & 0x07;
 					if (sig != 3) {
@@ -561,7 +532,7 @@ namespace OleStructuredStorage {
 											unsigned short offsetMask = ~lengthMask;
 											//unsigned short maximumLength = (0xFFFF >> bitCount) + 3;
 
-											unsigned short token = common::helper::GetItem2Byte(compressedBuffer, compressedCurrent);
+											unsigned short token = common::ReadUShort(compressedBuffer, compressedBufferLength, compressedCurrent);
 
 											unsigned short copyTokenLength = (token & lengthMask) + 3;
 											unsigned short copyTokenOffset = ((token & offsetMask) >> (16 - bitCount)) + 1;

@@ -25,7 +25,7 @@ namespace zip {
 	struct ZipFileInfo {
 	public:
 		std::string Name;
-		int Size;
+		std::size_t Size;
 		int CompressedSize;
 		bool IsPassworded;
 		std::string CompressionMethod;

@@ -13,7 +13,9 @@
 #include "OleCommon.hpp"
 #include "olessoffice.hpp"
 #include "vbahelper.hpp"
-#include "DocumentSummary.hpp"
+#include "WordPerfect.hpp"
+#include "./propset/DocumentSummary.hpp"
+
 
 namespace OleStructuredStorage {
 	POLE::Storage* OpenFile(const char* file) {
@@ -30,7 +32,6 @@ namespace OleStructuredStorage {
 		}		
 	}
 
-
 	template<class T>
 	std::vector<T*> convert(std::vector<common::IExportable*> vector) {
 		std::vector<T*> ans;
@@ -40,10 +41,13 @@ namespace OleStructuredStorage {
 		}
 		return ans;
 	}
+
 	class Oless {
 	private:
 		const char* m_file;
+		std::vector<std::string> m_paths;
 		std::vector<common::IExportable*> m_results;
+		std::map<std::string, std::vector<OlePropertySet::Property*>> m_properties;
 
 		void printStreamInfo(POLE::Storage* storage, std::string name, std::string fullname)
 		{
@@ -59,7 +63,7 @@ namespace OleStructuredStorage {
 		}
 		void guessStreamInfo(POLE::Storage* storage, std::string name, std::string fullname) {
 			olessoffice *oo = new olessoffice();
-			common::ExtensionInfo *ei = new common::ExtensionInfo();
+			common::ExtensionInfo* ei = nullptr;
 
 			if (storage->isDirectory(fullname)) {
 				//Storage Analysis
@@ -79,11 +83,13 @@ namespace OleStructuredStorage {
 			else {
 				//Stream Analysis
 				if (fullname == "/DRMContent") {
+					ei = new OLESSExtensionInfo();
 					ei->Extension = "irm";
 					ei->Name = "Microsoft Office Information Rights Managed File";
 					ei->SubType = "drm";
 				}
 				else if (fullname == "/PowerPoint Document") {
+					ei = new OLESSExtensionInfo(); 
 					ei->Extension = "ppt";
 					ei->Name = "Microsoft Office PowerPoint Document";
 					POLE::Stream* stream = new POLE::Stream(storage, fullname);
@@ -92,20 +98,21 @@ namespace OleStructuredStorage {
 					ei->SubType = ei->VersionName;
 				}
 				else if (fullname == "/PP40") {
+					ei = new OLESSExtensionInfo(); 
 					ei->Extension = "ppt";
 					ei->Name = "Microsoft Office PowerPoint Document";
 					ei->Version = 4;
 					ei->VersionName = "PowerPoint 4.0";
 					ei->SubType = ei->VersionName;
 				}
-				else if (fullname == "/Workbook" || fullname == "/Book" || fullname =="/WorkBook") {
-					delete ei;
+				else if (common::iequals(fullname, "/Workbook") || common::iequals(fullname,"/Book")) {					
 					ei = new Excel::ExcelExtensionInfo();
 					POLE::Stream* stream = new POLE::Stream(storage, fullname);
 					((Excel::ExcelExtensionInfo*)ei)->ParseStream(stream);
 					delete stream;
 				}
 				else if (fullname == "/WordDocument") {
+					ei = new OLESSExtensionInfo(); 
 					ei->Extension = "doc";
 					ei->Name = "Microsoft Office Word Document";
 					POLE::Stream* stream = new POLE::Stream(storage, fullname);
@@ -115,6 +122,7 @@ namespace OleStructuredStorage {
 					delete stream;
 				}
 				else if (fullname == "/Contents") {
+					ei = new OLESSExtensionInfo(); 
 					ei->Extension = "pub";
 					ei->Name = "Microsoft Office Publisher Document";
 					POLE::Stream* stream = new POLE::Stream(storage, fullname);
@@ -124,6 +132,7 @@ namespace OleStructuredStorage {
 					delete stream;
 				}
 				else if (fullname == "/VisioDocument") {
+					ei = new OLESSExtensionInfo(); 
 					ei->Extension = "vsd";
 					ei->Name = "Microsoft Office Visio Document";
 					POLE::Stream* stream = new POLE::Stream(storage, fullname);
@@ -133,19 +142,23 @@ namespace OleStructuredStorage {
 					delete stream;
 				}
 				else if (fullname == "/Details") {
+					ei = new OLESSExtensionInfo(); 
 					ei->Extension = "bup";
 					//extract bup data!
 				}
 				else if (fullname == "/__properties_version1.0") {
+					ei = new OLESSExtensionInfo(); 
 					ei->Extension = "msg";
 					ei->Name = "Mail Message";
 				}
 				else if (fullname == "/DataSpaces/DataSpaceMap") {
+					ei = new OLESSExtensionInfo(); 
 					ei->Extension = "irm";
 					ei->Name = "Encrypted Office Document";
 					ei->SubType = "encrypted";
 				}
 				else if (fullname == "/Props9") {
+					ei = new OLESSExtensionInfo(); 
 					ei->Extension = "mpp";
 					ei->Version = 9;
 					ei->VersionName = "Project 9";
@@ -153,6 +166,7 @@ namespace OleStructuredStorage {
 					ei->Name = "Microsoft Project File";
 				}
 				else if (fullname == "/Props12") {
+					ei = new OLESSExtensionInfo();
 					ei->Extension = "mpp";
 					ei->Version = 12;
 					ei->VersionName = "Project 12";
@@ -160,23 +174,64 @@ namespace OleStructuredStorage {
 					ei->Name = "Microsoft Project File";
 				}
 				else if (fullname == "/Props14") {
+					ei = new OLESSExtensionInfo(); 
 					ei->Extension = "mpp";
 					ei->Version = 14;
 					ei->VersionName = "Project 14";
 					ei->SubType = "Office 2010";
 					ei->Name = "Microsoft Project File";
 				}
-				else if (name == "DocumentSummaryInformation"  || name== "SummaryInformation" || name == "GlobalInfo" || name == "ImageContents" || name == "ImageInfo") {
-					//OlePropertySet::ParseStream(stream);
+				else if (fullname == "/Binder") {
+					ei = new OLESSExtensionInfo(); 
+					ei->Extension = "obd";
+					ei->Name = "Microsoft Office Binder";
 				}
-				//TODO: msi, 
+				else if (fullname == "/CONTENTS" || fullname == "/MatOST") {
+					ei = new OLESSExtensionInfo(); 
+					ei->Extension = "wps";
+					ei->Name = "Microsoft Works File";
+				}
+				else if (fullname == "/StarCalcDocument") {
+					ei = new OLESSExtensionInfo();
+					ei->Extension = "sdc";
+					ei->Name = "StarOffice Calc";
+				}
+				else if (fullname == "/StarWriterDocument") {
+					ei = new OLESSExtensionInfo(); 
+					ei->Extension = "sdw";
+					ei->Name = "StarOffice Write";
+				}
+				//else if (fullname == "/StarDrawDocument3") {
+					//ei->Extension = "sda"; //sxd
+					//ei->Name = "StarOffice Draw";
+					//ei->Extension = "sdd"; //sxi
+					//ei->Name = "StarOffice Draw";
+				//}
+				else if (fullname == "/HwpSummaryInformation") {
+					ei = new OLESSExtensionInfo();
+					ei->Extension = "hwp";
+					ei->Name = "Hangul Word Processor File";
+				}
+				else if (fullname == "/PerfectOffice_MAIN") {					
+					POLE::Stream* stream = new POLE::Stream(storage, fullname);
+					ei = WordPerfect::ReadWPStream(stream);
+					delete stream;
+				}
+				else if (name == "DocumentSummaryInformation"  || name== "SummaryInformation" || name == "GlobalInfo" || name == "ImageContents" || name == "ImageInfo") {
+					POLE::Stream* stream = new POLE::Stream(storage, fullname);
+					auto props = OlePropertySet::ParseStream(stream);					
+					this->m_properties.insert(std::pair<std::string, std::vector<OlePropertySet::Property*>>(name, props));
+					delete stream;
+				}
+				//TODO: msi, msp
 			}
-			if (!ei->Extension.empty()) {
+			if (ei != nullptr) {
 				this->m_results.push_back((common::IExportable*)ei);
 			}
 			delete oo;
 		}
 		void recurse(POLE::Storage* storage, const std::string path, void(Oless::*pCallback)(POLE::Storage*, std::string, std::string)) {
+			this->m_paths.push_back(path);
 			std::list<std::string> entries;
 			entries = storage->entries(path);
 
@@ -208,11 +263,18 @@ namespace OleStructuredStorage {
 				delete storage;
 			}
 			if (this->m_results.size() == 0) {
-				common::ExtensionInfo* ei = new common::ExtensionInfo();
-				ei->Extension = "oless";
-				ei->Name = "OLE Structured Storage";
-				ei->SubType = "Unknown";
+				auto ei = new OLESSExtensionInfo();
+				ei->paths = this->m_paths;
+				ei->properties = this->m_properties;
 				this->m_results.push_back((common::IExportable*)ei);
+			} else {
+				for (auto i = this->m_results.begin(); i != this->m_results.end(); i++) {
+					if (OLESSExtensionInfo* e = dynamic_cast<OLESSExtensionInfo*>(*i)) {
+						e->paths = this->m_paths;
+						e->properties = this->m_properties;
+						break;
+					}
+				}
 			}
 
 			return convert<common::ExtensionInfo>(this->m_results);

@@ -128,7 +128,7 @@ namespace mp4 {
 		Mp4ExtensionInfo* ei = new Mp4ExtensionInfo();
 		
 		//Read major version
-		ei->Version = common::ConvertToIntLE(buffer.data(), 12);
+		ei->Version = common::ReadUInt(buffer.data(), buffer.size(), 12);
 
 		std::vector<unsigned char> majorBlock(&buffer[8], &buffer[12]);
 		std::string brandcode;		

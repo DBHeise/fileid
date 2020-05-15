@@ -12,17 +12,166 @@
 #include <cstring>
 #include <cstdio>
 #include <unordered_map>
+#include <locale>
+#include <codecvt>
+#include <ctime>
+#include <chrono>
+
+#define STD_BUFFER_SIZE 512
+
 
 namespace common {
 
-	std::vector<unsigned char> readFile(std::string file, unsigned int max) {
+	//displayDuration - turns a FILETIME into a duration string (i.e. HH:MM:SS)
+	std::string displayDuration(unsigned long long filetime) {
+		using namespace std::chrono;
+		
+		microseconds micro(filetime/10);
+		auto ms = duration_cast<milliseconds>(micro);
+		micro -= duration_cast<microseconds>(ms);
+		auto secs = duration_cast<seconds>(ms);
+		ms -= duration_cast<milliseconds>(secs);
+		auto mins = duration_cast<minutes>(secs);
+		secs -= duration_cast<seconds>(mins);
+		auto hour = duration_cast<hours>(mins);
+		mins -= duration_cast<minutes>(hour);		
+
+		std::ostringstream str;
+		str << std::setfill('0') << std::setw(2) << hour.count();
+		str << ":";
+		str << std::setfill('0') << std::setw(2) << mins.count();
+		str << ":";
+		str << std::setfill('0') << std::setw(2) << secs.count();
+		if (ms.count() > 0 || micro.count() > 0) {
+			str << "." << std::setfill('0') << std::setw(3) << ms.count();
+			str << std::setfill('0') << std::setw(3) << micro.count();
+		}
+		return str.str();
+	}
+
+	//convertFILETIME - converts a FILETIME to unix seconds
+	time_t convertFILETIME(unsigned long long time) {
+		return (time_t)((time / 10000000) - 11644473600LL);
+	}
+
+	//FileTimeToString - turns a FILETIME into a human readable ISO8601 string
+	std::string FileTimeToString(unsigned long long time) {		
+		time_t t = convertFILETIME(time);
+		if (t > 0) {
+			struct tm dt;
+			char buffer[STD_BUFFER_SIZE] = { 0 };			
+			localtime_s(&dt, &t);
+			strftime(buffer, STD_BUFFER_SIZE, "%F %T", &dt);
+			return std::string(buffer);
+		}
+		return "1601/01/01 00:00:00";
+	}
+
+	//iequals - compares two string in case-insensitive manner
+	// taken from: https://stackoverflow.com/a/4119881/13124
+	bool iequals(const std::string& a, const std::string& b)
+	{
+		return std::equal(a.begin(), a.end(),
+			b.begin(), b.end(),
+			[](char a, char b) {
+				return tolower(a) == tolower(b);
+			});
+	}
+
+	//ltrim - left trim of given characters
+	// taken from:http://www.martinbroadhurst.com/how-to-trim-a-stdstring.html
+	std::string& ltrim(std::string& str, const std::string& chars = "\t\n\v\f\r \0")
+	{
+		str.erase(0, str.find_first_not_of(chars));
+		return str;
+	}
+
+	//rtrim - right trim of given characters
+	// taken from:http://www.martinbroadhurst.com/how-to-trim-a-stdstring.html
+	std::string& rtrim(std::string& str, const std::string& chars = "\t\n\v\f\r \0")
+	{
+		str.erase(str.find_last_not_of(chars) + 1);
+		return str;
+	}
+
+	//trim - right trim followed by left trim
+	// taken from:http://www.martinbroadhurst.com/how-to-trim-a-stdstring.html
+	std::string& trim(std::string& str, const std::string& chars = "\t\n\v\f\r \0")
+	{
+		return ltrim(rtrim(str, chars), chars);
+	}
+
+	//erasenulls - removes null characters from std::string
+	std::string erasenulls(std::string str) {
+		str.erase(std::find(str.begin(), str.end(), '\0'), str.end());
+		return str;
+	}
+
+	//convert - Converts a wstring to a string
+	// taken from: https://stackoverflow.com/a/18374698/13124
+	std::string convert(std::wstring str) {
+		using convert_type = std::codecvt_utf8<wchar_t>;
+		std::wstring_convert<convert_type, wchar_t> converter;
+		std::string converted_str = converter.to_bytes(str);
+		return converted_str;
+	}
+
+
+	//bin2hex11 - Outputs the bytes in a HEX string 
+	std::string bin2hex11(const unsigned char* buffer, unsigned int size) {
+		std::ostringstream oss;
+		oss << std::setfill('0');
+		for (size_t i = 0; i < size; i++)
+		{
+			oss << std::hex << std::setw(2) << buffer[i];
+		}
+		return oss.str();
+
+	}
+
+	//bin2hex11 - Outputs the vector in a HEX string
+	// taken from: https://stackoverflow.com/a/14826747/13124
+	std::string bin2hex11(const std::vector<unsigned char>& buffer)
+	{
+		std::ostringstream oss;
+		oss << std::setfill('0');
+		std::for_each(buffer.begin(), buffer.end(),
+			[&oss](unsigned char ch)
+			{
+				oss << std::hex
+					<< std::setw(2)
+					<< static_cast<int>(ch);
+			});
+		return oss.str();
+	}
+
+	//readBuffer - reads data into a std::vector
+	std::vector<unsigned char> readBuffer(unsigned char* buffer, std::size_t size) {
+		std::vector<unsigned char> tmp;
+		tmp.reserve(size);
+		std::copy(buffer, buffer + size, std::back_inserter(tmp));
+		return tmp;
+	}
+
+	//getFileSize - gets the size of a file by opening it and seeking to the end
+	unsigned int getFileSize(std::string file) {
+		std::ifstream ifs;
+		ifs.open(file, std::ios::binary);
+		ifs.seekg(0, std::ios::end);
+		auto pos = ifs.tellg();
+		ifs.close();
+		return (unsigned int)pos;
+	}
+
+	//readFile - reads 'max' bytes from file into std::vector
+	std::vector<unsigned char> readFile(std::string file, std::size_t max) {
 		std::vector<unsigned char> ans;
-		std::ifstream stream(file, std::ios::binary|std::ios::ate);
+		std::ifstream stream(file, std::ios::binary | std::ios::ate);
 		if (stream) {
 			unsigned int fileSize = static_cast<unsigned int>(stream.tellg());
 			stream.seekg(0, std::ios::beg);
-			
-			unsigned int size = max;
+
+			std::size_t size = max;
 			if (fileSize < max) {
 				size = fileSize;
 			}
@@ -32,24 +181,169 @@ namespace common {
 		}
 		return ans;
 	}
+
+	//ExtractBits - extracts a single bit from a single byte number
+	unsigned char ExtractBits(unsigned char num, unsigned short bitCount, unsigned short bitOffset) {
+		return ((1 << bitCount) - 1) & (num >> (bitOffset - 1));
+	}
+
+	//VerifyGuids - compares two guids in thier raw-array form
+	bool VerifyGuids(const unsigned char actual[16], const unsigned char expected[16]) {
+		bool ans = true;
+		for (int i = 0; ans && i < 16; i++)
+		{
+			ans &= actual[i] == expected[i];
+		}
+		return ans;
+	}
+
+	//ReadUShort - reads a two-byte unsigned short
+	unsigned short ReadUShort(const unsigned char* buffer, std::size_t max, const unsigned int offset, bool bigEndian = false) {
+		unsigned short ans = 0;
+		if (offset + 1 > max) {
+			throw std::range_error("Offset would read past end of buffer");
+		}
+		if (bigEndian) {
+			ans = ((unsigned short)buffer[offset] << 8) | ((unsigned short)buffer[offset + 1]);
+		}
+		else {
+			ans = ((unsigned short)buffer[offset + 1] << 8) | ((unsigned short)buffer[offset]);
+		}
+		return ans;
+	}
+
+	//ReadSShort - reads a two-byte signed short
+	signed short ReadSShort(const unsigned char* buffer, std::size_t max, const unsigned int offset, bool bigEndian = false) {
+		signed short ans = 0;
+		if (offset + 1 > max) {
+			throw std::range_error("Offset would read past end of buffer");
+		}
+		if (bigEndian) {
+			ans = ((signed short)buffer[offset] << 8) | ((signed short)buffer[offset + 1]);
+		}
+		else {
+			ans = ((signed short)buffer[offset + 1] << 8) | ((signed short)buffer[offset]);
+		}
+		return ans;
+	}
+
+	//ReadUInt - reads a four-byte unsigned int
+	unsigned int ReadUInt(const unsigned char* buffer, std::size_t max, const unsigned int offset, bool bigEndian = false) {
+		unsigned int ans = 0;
+		if (offset + 3 > max) {
+			throw std::range_error("Offset would read past end of buffer");
+		}
+		if (bigEndian) {
+			ans = (((unsigned long long)buffer[offset + 3]) << 24) |
+				(((unsigned long)buffer[offset + 2]) << 16) |
+				(((unsigned long)buffer[offset + 1]) << 8) |
+				(unsigned int)buffer[offset + 0];
+		}
+		else {
+			ans = (((unsigned long long)buffer[offset]) << 24) |
+				(((unsigned long)buffer[offset + 1]) << 16) |
+				(((unsigned long)buffer[offset + 2]) << 8) |
+				(unsigned int)buffer[offset + 3];
+		}
+		return ans;
+	}
 	
-	int ConvertToIntLE(unsigned char* block, int offset) {
-		int ans = 0;
-		ans = ((int)block[offset] << 24) | ((int)block[offset + 1] << 16) | ((int)block[offset + 2] << 8) | ((int)block[offset + 3]);
+	//ReadSInt - reads a four-byte signed int
+	signed int ReadSInt(const unsigned char* buffer, std::size_t max, const unsigned int offset, bool bigEndian = false) {
+		signed int ans = 0;
+		if (offset + 3 > max) {
+			throw std::range_error("Offset would read past end of buffer");
+		}
+		if (bigEndian) {
+			ans = (((signed long long)buffer[offset + 3]) << 24) |
+				(((signed long)buffer[offset + 2]) << 16) |
+				(((signed long)buffer[offset + 1]) << 8) |
+				(signed int)buffer[offset + 0];
+		}
+		else {
+			ans = (((signed long long)buffer[offset]) << 24) |
+				(((signed long)buffer[offset + 1]) << 16) |
+				(((signed long)buffer[offset + 2]) << 8) |
+				(signed int)buffer[offset + 3];
+		}
 		return ans;
 	}
-	int ConvertToIntBE(unsigned char* block, int offset) {
-		int ans = 0;
-		ans = ((int)block[offset + 3] << 24) | ((int)block[offset + 2] << 16) | ((int)block[offset + 1] << 8) | ((int)block[offset]);
-		return ans;
+
+	
+	unsigned long ReadULong(const unsigned char* buffer, std::size_t max, const unsigned int offset) {
+		if (offset + sizeof(unsigned long) > max) {
+			throw std::range_error("Offset would read past end of buffer");
+		}
+		struct tmp {
+			unsigned long v;
+		};
+		auto t = reinterpret_cast<tmp*>(const_cast<unsigned char*>(buffer) + offset);
+		return t->v;
 	}
-	bool checkMagic(const unsigned char* actual, unsigned int actualLength, const unsigned char* expected, unsigned int expectedLength, unsigned int offset) {
+
+	//ReadULongLong - reads a 8-byte unsigned long long
+	unsigned long long ReadULongLong(const unsigned char* buffer, std::size_t max, const unsigned int offset) {
+		if (offset + sizeof(unsigned long long) > max) {
+			throw std::range_error("Offset would read past end of buffer");
+		}
+		struct tmp {
+			unsigned long long v;
+		};
+		auto t = reinterpret_cast<tmp*>(const_cast<unsigned char*>(buffer) + offset);
+		return t->v;
+	}
+
+	//ReadString - reads in a string
+	std::string ReadString(const unsigned char* buffer, std::size_t max, unsigned int offset, unsigned int strLength) {
+		if (offset + strLength > max) {
+			throw std::range_error("Offset would read past end of buffer");
+		}
+		std::string str((char*)&buffer[offset], (size_t)strLength);
+		return str;
+	}
+
+	//ReadWString - reads in a wide string (where strLength is the number of bytes)
+	std::wstring ReadWString(const unsigned char* buffer, std::size_t max, unsigned int offset, unsigned int strLength) {
+		if (offset + strLength > max) {
+			throw std::range_error("Offset would read past end of buffer");
+		}
+
+		std::wstring str((wchar_t*)&buffer[offset], (wchar_t*)&buffer[offset+strLength]);
+		return str;
+	}
+
+	//ReadFloat = reads an 4-byte (single precision) IEEE floating-point number
+	float ReadFloat(const unsigned char* buffer, std::size_t max, const unsigned int offset) {
+		struct tmp {
+			float v;
+		};
+		if (offset + 4 > max) {
+			throw std::range_error("Offset would read past end of buffer");
+		}
+		auto t = reinterpret_cast<tmp*>(const_cast<unsigned char*>(buffer) + offset);
+		return t->v;
+	}
+
+	//ReadDouble = reads an 8-byte (double precision) IEEE floating-point number
+	double ReadDouble(const unsigned char* buffer, std::size_t max, const unsigned int offset) {
+		struct tmp {
+			double v;
+		};
+		if (offset + 8 > max) {
+			throw std::range_error("Offset would read past end of buffer");
+		}
+		auto t = reinterpret_cast<tmp*>(const_cast<unsigned char*>(buffer) + offset);
+		return t->v;
+	}
+
+
+	bool checkMagic(const unsigned char* actual, std::size_t actualLength, const unsigned char* expected, std::size_t expectedLength, unsigned int offset) {
 		bool ans = true;
 
-		unsigned int min = expectedLength;
-		unsigned int max = actualLength;
-		const unsigned char* minner = expected;
-		const unsigned char* maxxer = actual;
+		auto min = expectedLength;
+		auto max = actualLength;
+		auto minner = expected;
+		auto maxxer = actual;
 		if (expectedLength > actualLength) {
 			min = actualLength;
 			max = expectedLength;
@@ -60,13 +354,13 @@ namespace common {
 		if (offset + min > max || actualLength < expectedLength)
 			return false;
 
-		for (unsigned int i = offset; i < (min + offset) && ans; i++)
+		for (std::size_t i = offset; i < (min + offset) && ans; i++)
 			ans &= maxxer[i] == minner[i - offset];
 
 		return ans;
 	}
-	
-	static std::string JsonEscape(const std::string &source) {
+
+	static std::string JsonEscape(const std::string& source) {
 		std::string result;
 		for (const char* c = source.c_str(); *c != 0; ++c) {
 			switch (*c) {
@@ -109,32 +403,17 @@ namespace common {
 
 	class IExportable {
 	public:
-		virtual std::string ToJson() = 0;
-		virtual std::string ToXml() = 0;
-		virtual std::string ToCsv() = 0;
-		virtual std::string ToText() = 0;
+		virtual std::string ToJson() const = 0;
+		virtual std::string ToXml() const = 0;
+		virtual std::string ToCsv() const = 0;
+		virtual std::string ToText() const = 0;
 	};
 
 	class ExtensionInfo : public IExportable {
-	public:
-		std::string Extension;
-		std::string Name;
-		std::string SubType;
-		unsigned short Version;
-		std::string VersionName;
-	public:
-		ExtensionInfo() {
-			this->Version = 0;
-		}
-		bool operator==(const ExtensionInfo *other) const {
-			return this->Extension.compare(other->Extension) == 0;
-		}
-		bool operator!=(const ExtensionInfo *other) const {
-			return this->Extension.compare(other->Extension) != 0;
-		}
-		virtual std::string ToJson() {
+	protected:
+		virtual std::string buildBaseJson() const {
 			std::ostringstream str;
-			str << "{ \"extension\" : \"" << this->Extension << "\"";
+			str << "\"extension\" : \"" << this->Extension << "\"";
 			if (this->Name.size() > 0) {
 				str << ", \"name\":\"" << this->Name << "\"";
 			}
@@ -144,15 +423,13 @@ namespace common {
 			if (this->Version > 0) {
 				str << ", \"version\" : \"" << this->Version << "\"";
 			}
-			if (this->VersionName.size() > 0 ) {
+			if (this->VersionName.size() > 0) {
 				str << ", \"versionname\" : \"" << this->VersionName << "\"";
 			}
-			str << "}";
 			return str.str();
 		}
-		virtual std::string ToXml() {
+		virtual std::string buildBaseXml() const {
 			std::ostringstream str;
-			str << "<item>";
 			str << "<extension>" << this->Extension << "</extension>";
 			if (this->Name.size() > 0) {
 				str << "<name>" << this->Name << "</name>";
@@ -166,10 +443,39 @@ namespace common {
 			if (this->VersionName.size() > 0) {
 				str << "<versionname>" << this->VersionName << "</versionname>";
 			}
+			return str.str();
+		}
+	public:
+		std::string Extension;
+		std::string Name;
+		std::string SubType;
+		unsigned short Version;
+		std::string VersionName;
+	public:
+		ExtensionInfo() {
+			this->Version = 0;
+		}
+		bool operator==(const ExtensionInfo* other) const {
+			return this->Extension.compare(other->Extension) == 0;
+		}
+		bool operator!=(const ExtensionInfo* other) const {
+			return this->Extension.compare(other->Extension) != 0;
+		}
+		virtual std::string ToJson() const {
+			std::ostringstream str;
+			str << "{";
+			str << this->buildBaseJson();
+			str << "}";
+			return str.str();
+		}
+		virtual std::string ToXml() const {
+			std::ostringstream str;
+			str << "<item>";
+			str << this->buildBaseXml();
 			str << "</item>";
 			return str.str();
 		}
-		virtual std::string ToText() {
+		virtual std::string ToText() const {
 			std::ostringstream str;
 			str << this->Extension;
 			str << "\t" << this->Name;
@@ -178,7 +484,7 @@ namespace common {
 			str << "\t" << this->VersionName;
 			return str.str();
 		}
-		virtual std::string ToCsv() {
+		virtual std::string ToCsv() const {
 			std::ostringstream str;
 			str << this->Extension;
 			str << "," << this->Name;
@@ -242,10 +548,10 @@ namespace common {
 	}
 
 	// taken from: http://stackoverflow.com/questions/7775991/how-to-get-hexdump-of-a-structure-data/7776146#7776146
-	void hexDump(const char *desc, const void *addr, size_t len) {
+	void hexDump(const char* desc, const void* addr, size_t len) {
 		size_t i;
 		unsigned char buff[17];
-		unsigned char *pc = (unsigned char*)addr;
+		unsigned char* pc = (unsigned char*)addr;
 
 		// Output description if given.
 		if (desc != NULL)
@@ -307,113 +613,95 @@ namespace common {
 					result << *i;
 			}
 			return result.str();
-		}	
-
-		static unsigned short GetItem2Byte(const unsigned char* data, unsigned int index) {
-			return (data[index + 1] << 8) | data[index + 0];
 		}
-		static unsigned int GetItem4Byte(const unsigned char* data, unsigned int index) {
-			return
-				(((unsigned long long)data[index + 3]) << 32) |
-				(((unsigned int)data[index + 2]) << 16) |
-				(((unsigned int)data[index + 1]) << 8) |
-				data[index + 0];
-		}
-		static std::string GetItemString(const unsigned char* data, unsigned int index, unsigned int length) {
-			std::string str((char*)&data[index], (size_t)length);
-			return str;
-		}
-		static std::wstring GetItemStringW(const unsigned char* data, unsigned int index, unsigned int length) {
-			std::wstring str(reinterpret_cast<wchar_t*>(data[index]), (size_t)length / sizeof(wchar_t));
-			return str;
-		}
+	};
 
-		static inline bool is_base64(unsigned char c) {
-			return (isalnum(c) || (c == '+') || (c == '/'));
-		}
-		static std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
-			std::string ret;
-			int i = 0;
-			int j = 0;
-			unsigned char char_array_3[3];
-			unsigned char char_array_4[4];
 
-			while (in_len--) {
-				char_array_3[i++] = *(bytes_to_encode++);
-				if (i == 3) {
-					char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
-					char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
-					char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
-					char_array_4[3] = char_array_3[2] & 0x3f;
+	inline bool is_base64(unsigned char c) {
+		return (isalnum(c) || (c == '+') || (c == '/'));
+	}
+	std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
+		std::string ret;
+		int i = 0;
+		int j = 0;
+		unsigned char char_array_3[3];
+		unsigned char char_array_4[4];
 
-					for (i = 0; (i < 4); i++)
-						ret += base64_chars[char_array_4[i]];
-					i = 0;
-				}
-			}
-
-			if (i)
-			{
-				for (j = i; j < 3; j++)
-					char_array_3[j] = '\0';
-
+		while (in_len--) {
+			char_array_3[i++] = *(bytes_to_encode++);
+			if (i == 3) {
 				char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
 				char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
 				char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
 				char_array_4[3] = char_array_3[2] & 0x3f;
 
-				for (j = 0; (j < i + 1); j++)
-					ret += base64_chars[char_array_4[j]];
-
-				while ((i++ < 3))
-					ret += '=';
-
+				for (i = 0; (i < 4); i++)
+					ret += base64_chars[char_array_4[i]];
+				i = 0;
 			}
+		}
 
-			return ret;
+		if (i)
+		{
+			for (j = i; j < 3; j++)
+				char_array_3[j] = '\0';
+
+			char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+			char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+			char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+			char_array_4[3] = char_array_3[2] & 0x3f;
+
+			for (j = 0; (j < i + 1); j++)
+				ret += base64_chars[char_array_4[j]];
+
+			while ((i++ < 3))
+				ret += '=';
 
 		}
-		static std::string base64_decode(std::string const& encoded_string) {
-			size_t in_len = encoded_string.size();
-			size_t i = 0;
-			size_t j = 0;
-			int in_ = 0;
-			unsigned char char_array_4[4], char_array_3[3];
-			std::string ret;
 
-			while (in_len-- && (encoded_string[in_] != '=') && is_base64(encoded_string[in_])) {
-				char_array_4[i++] = encoded_string[in_]; in_++;
-				if (i == 4) {
-					for (i = 0; i < 4; i++)
-						char_array_4[i] = static_cast<unsigned char>(base64_chars.find(char_array_4[i]));
+		return ret;
 
-					char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
-					char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-					char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+	}
+	std::string base64_decode(std::string const& encoded_string) {
+		size_t in_len = encoded_string.size();
+		size_t i = 0;
+		size_t j = 0;
+		int in_ = 0;
+		unsigned char char_array_4[4], char_array_3[3];
+		std::string ret;
 
-					for (i = 0; (i < 3); i++)
-						ret += char_array_3[i];
-					i = 0;
-				}
-			}
-
-			if (i) {
-				for (j = i; j < 4; j++)
-					char_array_4[j] = 0;
-
-				for (j = 0; j < 4; j++)
-					char_array_4[j] = static_cast<unsigned char>(base64_chars.find(char_array_4[j]));
+		while (in_len-- && (encoded_string[in_] != '=') && is_base64(encoded_string[in_])) {
+			char_array_4[i++] = encoded_string[in_]; in_++;
+			if (i == 4) {
+				for (i = 0; i < 4; i++)
+					char_array_4[i] = static_cast<unsigned char>(base64_chars.find(char_array_4[i]));
 
 				char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
 				char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
 				char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
 
-				for (j = 0; (j < i - 1); j++) ret += char_array_3[j];
+				for (i = 0; (i < 3); i++)
+					ret += char_array_3[i];
+				i = 0;
 			}
-
-			return ret;
 		}
-	};
+
+		if (i) {
+			for (j = i; j < 4; j++)
+				char_array_4[j] = 0;
+
+			for (j = 0; j < 4; j++)
+				char_array_4[j] = static_cast<unsigned char>(base64_chars.find(char_array_4[j]));
+
+			char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+			char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+			char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+
+			for (j = 0; (j < i - 1); j++) ret += char_array_3[j];
+		}
+
+		return ret;
+	}
 
 	template<class T>
 	void Output(OutputFormat format, std::string file, std::string headerName, std::vector<T*> summary) {

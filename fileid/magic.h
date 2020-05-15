@@ -1,14 +1,16 @@
 // magic.h
-// Generated on: 11/07/2019 06:46:00
+// Generated on: 05/14/2020 06:21:29
 
 #pragma once
 #include "common.hpp"
 
 unsigned char magic_dosexe[2] = {0x4D,0x5A};
 unsigned char magic_elf[4] = {0x7F,0x45,0x4C,0x46};
-unsigned char magic_dex[8] = {0x64,0x65,0x78,0x0A,0x30,0x33,0x35,0x00};
+unsigned char magic_dex[6] = {0x64,0x65,0x78,0x0A,0x30,0x33};
 unsigned char magic_lib[8] = {0x21,0x3C,0x61,0x72,0x63,0x68,0x3E,0x0A};
 unsigned char magic_obj[2] = {0x4C,0x01};
+unsigned char magic_pdb1[39] = {0x4D,0x69,0x63,0x72,0x6F,0x73,0x6F,0x66,0x74,0x20,0x43,0x2F,0x43,0x2B,0x2B,0x20,0x70,0x72,0x6F,0x67,0x72,0x61,0x6D,0x20,0x64,0x61,0x74,0x61,0x62,0x61,0x73,0x65,0x20,0x32,0x2E,0x30,0x30,0x0D,0x0A};
+unsigned char magic_pdb2[29] = {0x4D,0x69,0x63,0x72,0x6F,0x73,0x6F,0x66,0x74,0x20,0x43,0x2F,0x43,0x2B,0x2B,0x20,0x4D,0x53,0x46,0x20,0x37,0x2E,0x30,0x30,0x0D,0x0A,0x1A,0x44,0x53};
 unsigned char magic_zip[2] = {0x50,0x4B};
 unsigned char magic_rar[6] = {0x52,0x61,0x72,0x21,0x1A,0x07};
 unsigned char magic_7z[6] = {0x37,0x7A,0xBC,0xAF,0x27,0x1C};
@@ -20,6 +22,7 @@ unsigned char magic_gz[2] = {0x1F,0x8B};
 unsigned char magic_cab[4] = {0x4D,0x53,0x43,0x46};
 unsigned char magic_lha[3] = {0x2D,0x6C,0x68};
 unsigned char magic_vhd[8] = {0x63,0x6F,0x6E,0x65,0x63,0x74,0x69,0x78};
+unsigned char magic_xz[6] = {0xFD,0x37,0x7A,0x58,0x5A,0x00};
 unsigned char magic_iso1[5] = {0x43,0x44,0x30,0x30,0x31};
 unsigned char magic_iso2[5] = {0x43,0x44,0x30,0x30,0x31};
 unsigned char magic_iso3[5] = {0x43,0x44,0x30,0x30,0x31};
@@ -34,6 +37,9 @@ unsigned char magic_vmdk[3] = {0x4B,0x44,0x4D};
 unsigned char magic_pcap[4] = {0xD4,0xC3,0xB2,0xA1};
 unsigned char magic_pcapn[4] = {0x4D,0x3C,0xB2,0xA1};
 unsigned char magic_rpm[4] = {0xED,0xAB,0xEE,0xDB};
+unsigned char magic_dos_c1[8] = {0x53,0x5A,0x44,0x44,0x88,0xF0,0x27,0x33};
+unsigned char magic_dos_c2[8] = {0x4B,0x57,0x41,0x4A,0x88,0xF0,0x27,0xD1};
+unsigned char magic_dos_c3[8] = {0x53,0x5A,0x20,0x88,0xF0,0x27,0x33,0xD1};
 unsigned char magic_ico[4] = {0x00,0x00,0x01,0x00};
 unsigned char magic_gif87[6] = {0x47,0x49,0x46,0x38,0x37,0x61};
 unsigned char magic_gif89[6] = {0x47,0x49,0x46,0x38,0x39,0x61};
@@ -76,6 +82,29 @@ unsigned char magic_chm[4] = {0x49,0x54,0x53,0x46};
 unsigned char magic_dmp32[8] = {0x50,0x41,0x47,0x45,0x44,0x55,0x4D,0x50};
 unsigned char magic_dmp64[8] = {0x50,0x41,0x47,0x45,0x44,0x55,0x36,0x34};
 unsigned char magic_hdmp[6] = {0x4D,0x44,0x4D,0x50,0x93,0xA7};
+unsigned char magic_rtf[6] = {0x7B,0x5C,0x72,0x74,0x66,0x31};
+unsigned char magic_skp[32] = {0xFF,0xFE,0xFF,0x0E,0x53,0x00,0x6B,0x00,0x65,0x00,0x74,0x00,0x63,0x00,0x68,0x00,0x55,0x00,0x70,0x00,0x20,0x00,0x4D,0x00,0x6F,0x00,0x64,0x00,0x65,0x00,0x6C,0x00};
+unsigned char magic_mdi[4] = {0x45,0x50,0x2a,0x00};
+unsigned char magic_hlp1[4] = {0x3f,0x5f,0x03,0x00};
+unsigned char magic_hlp2[5] = {0x04,0x12,0x46,0x31,0x14};
+unsigned char magic_mcw1[3] = {0xfe,0x32,0x00};
+unsigned char magic_mcw2[3] = {0xfe,0x33,0x00};
+unsigned char magic_mcw3[3] = {0xfe,0x34,0x00};
+unsigned char magic_mcw4[8] = {0xfe,0x37,0x00,0x1c,0x00,0x00,0x00,0x00};
+unsigned char magic_mcw5[8] = {0xfe,0x37,0x00,0x23,0x00,0x00,0x00,0x00};
+unsigned char magic_pcw3[2] = {0xbe,0x31};
+unsigned char magic_doc_old1[2] = {0x9B,0xA5};
+unsigned char magic_doc_old2[2] = {0x9C,0xA5};
+unsigned char magic_doc_old3[2] = {0x08,0xEC};
+unsigned char magic_doc_old4[2] = {0x08,0xED};
+unsigned char magic_doc_old5[2] = {0x22,0x43};
+unsigned char magic_doc_old6[2] = {0xDB,0xA5};
+unsigned char magic_wri1[2] = {0x31,0xBE};
+unsigned char magic_wri2[2] = {0x32,0xBE};
+unsigned char magic_wri3[5] = {0xBE,0x00,0x00,0x00,0xAB};
+unsigned char magic_wps[2] = {0x01,0xFE};
+unsigned char magic_wp5[4] = {0xFF,0x57,0x50,0x43};
+unsigned char magic_wpenc[4] = {0xff,0xff,0x61,0x61};
 unsigned char magic_mp4[4] = {0x66,0x74,0x79,0x70};
 unsigned char magic_asf[16] = {0x30,0x26,0xB2,0x75,0x8E,0x66,0xCF,0x11,0xA6,0xD9,0x00,0xAA,0x00,0x62,0xCE,0x6C};
 unsigned char magic_riff[4] = {0x52,0x49,0x46,0x46};
@@ -86,25 +115,40 @@ unsigned char magic_swf[3] = {0x46,0x57,0x53};
 unsigned char magic_cwf[3] = {0x43,0x57,0x53};
 unsigned char magic_flac[4] = {0x66,0x4C,0x61,0x43};
 unsigned char magic_midi[4] = {0x4D,0x54,0x68,0x64};
+unsigned char magic_woff1[4] = {0x77,0x4f,0x46,0x46};
+unsigned char magic_woff2[4] = {0x77,0x4f,0x46,0x32};
+unsigned char magic_otf[4] = {0x4F,0x54,0x54,0x4F};
+unsigned char magic_pfm[4] = {0x74,0x79,0x70,0x31};
+unsigned char magic_ttf1[4] = {0x74,0x72,0x75,0x65};
+unsigned char magic_ttf2[4] = {0x00,0x01,0x00,0x00};
 unsigned char magic_sh[2] = {0x23,0x21};
-unsigned char magic_xml[5] = {0x3C,0x3F,0x78,0x6D,0x6C};
-unsigned char magic_xml1[12] = {0xFF,0xFE,0x3C,0x00,0x3F,0x00,0x78,0x00,0x6D,0x00,0x6C,0x00};
-unsigned char magic_html1[5] = {0x3C,0x68,0x74,0x6D,0x6C};
-unsigned char magic_html2[5] = {0x3C,0x21,0x64,0x6F,0x63};
-unsigned char magic_html3[12] = {0xFF,0xFE,0x3C,0x00,0x68,0x00,0x74,0x00,0x6D,0x00,0x6C,0x00};
-unsigned char magic_html4[12] = {0xFF,0xFE,0x3C,0x00,0x21,0x00,0x64,0x00,0x6F,0x00,0x63,0x00};
-unsigned char magic_dtd[9] = {0x3C,0x21,0x44,0x4F,0x43,0x54,0x59,0x50,0x45};
-unsigned char magic_rtf[6] = {0x7B,0x5C,0x72,0x74,0x66,0x31};
-unsigned char magic_utf8[3] = {0xEF,0xBB,0xBF};
-unsigned char magic_utf16[2] = {0xFE,0xFF};
-unsigned char magic_utf32[4] = {0xFF,0xFE,0x00,0x00};
+unsigned char magic_xml_al[5] = {0x3C,0x3F,0x78,0x6D,0x6C};
+unsigned char magic_xml_au[5] = {0x3C,0x3F,0x58,0x4D,0x4C};
+unsigned char magic_xml_8l[8] = {0xEF,0xBB,0xBF,0x3C,0x3F,0x78,0x6D,0x6C};
+unsigned char magic_xml_8u[8] = {0xEF,0xBB,0xBF,0x3C,0x3F,0x58,0x4D,0x4C};
+unsigned char magic_xml_ul[12] = {0xFF,0xFE,0x3C,0x00,0x3F,0x00,0x78,0x00,0x6D,0x00,0x6C,0x00};
+unsigned char magic_xml_uu[12] = {0xFF,0xFE,0x3C,0x00,0x3F,0x00,0x58,0x00,0x4D,0x00,0x4C,0x00};
+unsigned char magic_html_hal[5] = {0x3C,0x68,0x74,0x6D,0x6C};
+unsigned char magic_html_dal[5] = {0x3C,0x21,0x64,0x6F,0x63};
+unsigned char magic_html_hul[12] = {0xFF,0xFE,0x3C,0x00,0x68,0x00,0x74,0x00,0x6D,0x00,0x6C,0x00};
+unsigned char magic_html_dul[12] = {0xFF,0xFE,0x3C,0x00,0x21,0x00,0x64,0x00,0x6F,0x00,0x63,0x00};
+unsigned char magic_html_hau[5] = {0x3C,0x48,0x54,0x4d,0x4c};
+unsigned char magic_html_dau[5] = {0x3C,0x21,0x44,0x4f,0x43};
+unsigned char magic_html_huu[12] = {0xFF,0xFE,0x3C,0x00,0x48,0x00,0x54,0x00,0x4D,0x00,0x4C,0x00};
+unsigned char magic_html_duu[12] = {0xFF,0xFE,0x3C,0x00,0x21,0x00,0x44,0x00,0x4F,0x00,0x43,0x00};
+unsigned char magic_html_h8l[8] = {0xEF,0xBB,0xBF,0x3C,0x68,0x74,0x6D,0x6C};
+unsigned char magic_html_d8l[8] = {0xEF,0xBB,0xBF,0x3C,0x21,0x64,0x6F,0x63};
+unsigned char magic_html_h8u[8] = {0xEF,0xBB,0xBF,0x3C,0x48,0x54,0x4d,0x4c};
+unsigned char magic_html_d8u[8] = {0xEF,0xBB,0xBF,0x3C,0x21,0x44,0x4f,0x43};
 
 std::vector<common::MagicInfo> list = {
   {"exe", "DOS Executable", "", 0, 2, magic_dosexe, "ExeHelper"},
   {"elf", "ELF Executable", "", 0, 4, magic_elf, NULL},
-  {"dex", "Dalvik Executable", "", 0, 8, magic_dex, NULL},
+  {"dex", "Dalvik Executable", "", 0, 6, magic_dex, NULL},
   {"lib", "Microsoft Program Library Common Object File Format", "", 0, 8, magic_lib, NULL},
   {"obj", "Microsoft Common Object File Format relocatable object code", "", 0, 2, magic_obj, NULL},
+  {"pdb", "Microsoft Program Database 2.0", "2", 0, 39, magic_pdb1, NULL},
+  {"pdb", "Microsoft Program Database 7.0", "7", 0, 29, magic_pdb2, NULL},
   {"zip", "Zip Archive", "", 0, 2, magic_zip, "ZipHelper"},
   {"rar", "Rar Archive", "", 0, 6, magic_rar, NULL},
   {"7z", "7z Archive", "", 0, 6, magic_7z, NULL},
@@ -114,8 +158,9 @@ std::vector<common::MagicInfo> list = {
   {"tar", "Tar Archive", "", 0, 5, magic_tar, NULL},
   {"gz", "GZIP Archive", "", 0, 2, magic_gz, NULL},
   {"cab", "Microsoft Cabinet file", "", 0, 4, magic_cab, NULL},
-  {"lha", "LHA Archive", "", 0, 3, magic_lha, NULL},
+  {"lha", "LHArc (lha/lzh) Archive", "", 2, 3, magic_lha, NULL},
   {"vhd", "Microsoft Virtual HardDisk", "", 0, 8, magic_vhd, NULL},
+  {"xz", "XZ Compressed File", "", 0, 6, magic_xz, NULL},
   {"iso", "ISO 9660 Disk Image", "", 32769, 5, magic_iso1, NULL},
   {"iso", "ISO 9660 Disk Image", "", 34817, 5, magic_iso2, NULL},
   {"iso", "ISO 9660 Disk Image", "", 36864, 5, magic_iso3, NULL},
@@ -130,6 +175,9 @@ std::vector<common::MagicInfo> list = {
   {"pcap", "Network Packet Capture File", "", 0, 4, magic_pcap, NULL},
   {"pcap", "Network Packet Capture File", "Nanosecond-precision timestamps", 0, 4, magic_pcapn, NULL},
   {"rpm", "Red Hat Package Manager File", "", 0, 4, magic_rpm, NULL},
+  {"_", "MS-DOS Installtion Compressed File", "SZDD", 0, 8, magic_dos_c1, NULL},
+  {"_", "MS-DOS Installtion Compressed File", "KWAJ", 0, 8, magic_dos_c2, NULL},
+  {"_", "MS-DOS Installtion Compressed File", "QBasic SZDD", 0, 8, magic_dos_c3, NULL},
   {"ico", "Icon File", "", 0, 4, magic_ico, NULL},
   {"gif", "GIF Image", "GIF87a", 0, 6, magic_gif87, NULL},
   {"gif", "GIF Image", "GIF89a", 0, 6, magic_gif89, NULL},
@@ -167,11 +215,34 @@ std::vector<common::MagicInfo> list = {
   {"one", "Microsoft OneNote", "", 0, 16, magic_one, NULL},
   {"onetoc2", "Microsoft OneNote Table of Contents", "", 0, 16, magic_onetoc, NULL},
   {"pst", "Microsoft Outlook Personal Storage Table", "", 0, 4, magic_pst, NULL},
-  {"wab", "Microsoft Output Address File", "", 0, 16, magic_wab, NULL},
+  {"wab", "Microsoft Outlook Address File", "", 0, 16, magic_wab, NULL},
   {"chm", "Complied Help File", "", 0, 4, magic_chm, NULL},
   {"dmp", "Windows Dump File", "32-bit", 0, 8, magic_dmp32, NULL},
   {"dmp", "Windows Dump File", "64-bit", 0, 8, magic_dmp64, NULL},
   {"hdmp", "Windows Dump File", "with heap", 0, 6, magic_hdmp, NULL},
+  {"rtf", "Rich Text Format", "", 0, 6, magic_rtf, NULL},
+  {"skp", "SketchUp Model", "", 0, 32, magic_skp, NULL},
+  {"mdi", "Microsoft Office Document Imaging", "", 0, 4, magic_mdi, NULL},
+  {"hlp", "Microsoft Help File", "", 0, 4, magic_hlp1, NULL},
+  {"hlp", "Ubuntu Help File", "", 0, 5, magic_hlp2, NULL},
+  {"doc", "Microsoft Word for Macintosh 1.0", "1", 0, 3, magic_mcw1, NULL},
+  {"doc", "Microsoft Word for Macintosh 2.0", "2", 0, 3, magic_mcw2, NULL},
+  {"doc", "Microsoft Word for Macintosh 3.0", "3", 0, 3, magic_mcw3, NULL},
+  {"doc", "Microsoft Word for Macintosh 4.0", "4", 0, 8, magic_mcw4, NULL},
+  {"doc", "Microsoft Word for Macintosh 5.0", "5", 0, 8, magic_mcw5, NULL},
+  {"doc", "Microsoft PC Word", "3", 0, 2, magic_pcw3, NULL},
+  {"doc", "Microsoft Word OLD", "", 0, 2, magic_doc_old1, NULL},
+  {"doc", "Microsoft Word OLD", "", 0, 2, magic_doc_old2, NULL},
+  {"doc", "Microsoft Word OLD (MP 2.0)", "", 0, 2, magic_doc_old3, NULL},
+  {"doc", "Microsoft Word OLD (MP 3.0)", "", 0, 2, magic_doc_old4, NULL},
+  {"doc", "Microsoft Word 1.0", "", 0, 2, magic_doc_old5, NULL},
+  {"doc", "Microsoft WinWord 2.0", "", 0, 2, magic_doc_old6, NULL},
+  {"wri", "MS Write", "1", 0, 2, magic_wri1, NULL},
+  {"wri", "MS Write", "2", 0, 2, magic_wri2, NULL},
+  {"wri", "MS Write", "3", 0, 5, magic_wri3, NULL},
+  {"wps", "Microsoft Works (1-4)", "", 0, 2, magic_wps, NULL},
+  {"wp5", "WordPerfect File", "5", 0, 4, magic_wp5, "WPHelper"},
+  {"wp", "WordPerfect Encrypted File", "encrypted", 0, 4, magic_wpenc, "WPHelper"},
   {"mp4", "Mp4 Container", "", 4, 4, magic_mp4, "Mp4Helper"},
   {"asf", "ASF Container", "", 0, 16, magic_asf, "ASFHelper"},
   {"riff", "Riff file", "", 0, 4, magic_riff, "RIFFHelper"},
@@ -182,16 +253,29 @@ std::vector<common::MagicInfo> list = {
   {"swf", "Shockwave Flash File", "compressed", 0, 3, magic_cwf, NULL},
   {"flac", "Free Lossless Audio Codec", "", 0, 4, magic_flac, NULL},
   {"midi", "MIDI Sound File", "", 0, 4, magic_midi, NULL},
-  {"script", "*nix script", "", 0, 2, magic_sh, NULL},
-  {"xml", "XML", "ASCII", 0, 5, magic_xml, NULL},
-  {"xml", "XML", "Unicode", 0, 12, magic_xml1, NULL},
-  {"html", "HTML Document", "", 0, 5, magic_html1, NULL},
-  {"html", "HTML Document", "", 0, 5, magic_html2, NULL},
-  {"html", "HTML Document", "Unicode", 0, 12, magic_html3, NULL},
-  {"html", "HTML Document", "Unicode", 0, 12, magic_html4, NULL},
-  {"html", "HTML Document", "DocType", 0, 9, magic_dtd, NULL},
-  {"rtf", "Rich Text Format", "", 0, 6, magic_rtf, NULL},
-  {"txt", "Text File", "UTF8", 0, 3, magic_utf8, NULL},
-  {"txt", "Text File", "UTF16", 0, 2, magic_utf16, NULL},
-  {"txt", "Text File", "UTF32", 0, 4, magic_utf32, NULL},
+  {"woff", "Web Open Font Format", "1.0", 0, 4, magic_woff1, NULL},
+  {"woff", "Web Open Font Format", "2.0", 0, 4, magic_woff2, NULL},
+  {"otf", "Open Type Font", "", 0, 4, magic_otf, NULL},
+  {"pfm", "Postscript Font", "type1", 0, 4, magic_pfm, NULL},
+  {"ttf", "True Type Font", "OSx", 0, 4, magic_ttf1, NULL},
+  {"ttf", "True Type Font", "windows", 0, 4, magic_ttf2, NULL},
+  {"sh", "*nix shebang script", "", 0, 2, magic_sh, NULL},
+  {"xml", "XML", "ascii lowercase", 0, 5, magic_xml_al, NULL},
+  {"xml", "XML", "ascii uppercase", 0, 5, magic_xml_au, NULL},
+  {"xml", "XML", "utf8 lowercase", 0, 8, magic_xml_8l, NULL},
+  {"xml", "XML", "utf8 uppercase", 0, 8, magic_xml_8u, NULL},
+  {"xml", "XML", "unicode lowercase", 0, 12, magic_xml_ul, NULL},
+  {"xml", "XML", "unicode uppercase", 0, 12, magic_xml_uu, NULL},
+  {"html", "HTML Document", "ascii lowercase html", 0, 5, magic_html_hal, NULL},
+  {"html", "HTML Document", "ascii lowercase doctype", 0, 5, magic_html_dal, NULL},
+  {"html", "HTML Document", "unicode lowercase html", 0, 12, magic_html_hul, NULL},
+  {"html", "HTML Document", "unicode lowercase doctype", 0, 12, magic_html_dul, NULL},
+  {"html", "HTML Document", "ascii uppercase html", 0, 5, magic_html_hau, NULL},
+  {"html", "HTML Document", "ascii uppercase doctype", 0, 5, magic_html_dau, NULL},
+  {"html", "HTML Document", "unicode uppercase html", 0, 12, magic_html_huu, NULL},
+  {"html", "HTML Document", "unicode uppercase doctype", 0, 12, magic_html_duu, NULL},
+  {"html", "HTML Document", "utf8 lowercase html", 0, 8, magic_html_h8l, NULL},
+  {"html", "HTML Document", "utf8 lowercase doctype", 0, 8, magic_html_d8l, NULL},
+  {"html", "HTML Document", "utf8 uppercase html", 0, 8, magic_html_h8u, NULL},
+  {"html", "HTML Document", "utf8 uppercase doctype", 0, 8, magic_html_d8u, NULL},
 };

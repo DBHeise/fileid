@@ -12,8 +12,7 @@
 #include "common.hpp"
 #include "magic.h"
 #include "details.hpp"
-
-#define STD_BUFFER_SIZE 512
+#include "unknown.hpp"
 
 void dumpFile(std::string file) {
 	std::vector<unsigned char> buffer = common::readFile(file, STD_BUFFER_SIZE);
@@ -30,7 +29,7 @@ common::ExtraDataFunc GetExtraDataFunction(std::string name) {
 		ans = details::DwgHelper;
 	}
 	else if (name == "ExeHelper") {
-		ans = details::ExeHelper;
+		ans = Exec::Detailer;
 	}
 	else if (name == "JpegHelper") {
 		ans = details::JpegHelper;
@@ -42,13 +41,16 @@ common::ExtraDataFunc GetExtraDataFunction(std::string name) {
 		ans = details::OleHelper;
 	}
 	else if (name == "ZipHelper") {
-		ans = details::ZipHelper;
+		ans = zip::Detailer;
 	}
 	else if (name == "RIFFHelper") {
 		ans = details::RIFFHelper;
 	}
 	else if (name == "ASFHelper") {
-		ans = details::ASFHelper;
+		ans = misc::asf::Detailer;
+	}
+	else if (name == "WPHelper") {
+		ans = misc::wp::Detailer;
 	}
 	else {
 		throw std::logic_error("Unknown Extra Data Funcion (bad dev)");
@@ -118,10 +120,8 @@ common::ExtensionInfo* UnknownExtension(std::string file) {
 	std::vector<unsigned char> buffer = common::readFile(file, 512);
 
 	if (buffer.size() > 0) {
-		ei->Extension = "unknown";
-		ei->Name = "Unknown";
-		std::string start(reinterpret_cast<char*>(&buffer[0]), buffer.size());
-		ei->SubType = start;
+		delete ei;
+		ei = new UnknownExtensionInfo(buffer);
 	}
 	else {
 		ei->Extension = "empty";
