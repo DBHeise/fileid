@@ -5,7 +5,7 @@ SO_LIBRARY = bin/fid.so
 CC        = gcc
 CXX       = g++
 CFLAGS    = -fPIC -Wno-enum-conversion -O3
-CXXFLAGS  = -fPIC -std=c++11 -O3 -Wfatal-errors -Werror
+CXXFLAGS  = -fPIC -std=c++14 -O3 -Wfatal-errors -Werror
 LDFLAGS   = -pthread
 
 SRC_ZLIB  = $(wildcard ziplib/Source/ZipLib/extlibs/zlib/*.c)
