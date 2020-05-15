@@ -724,16 +724,16 @@ namespace misc {
 					this->Value = common::bin2hex11(valueData);
 					break;
 				case 0x2: // BOOL
-					this->Value = reinterpret_cast<bool>(valueData.data()) ? "true" : "false";
+					this->Value = valueData[0] ? "true" : "false";
 					break;
 				case 0x3: // DWORD
-					this->Value = std::to_string(reinterpret_cast<unsigned long>(valueData.data()));
+					this->Value = std::to_string(common::ReadUInt(valueData.data(), valueData.size(), 0));
 					break;
 				case 0x4: // QWORD
-					this->Value = std::to_string(reinterpret_cast<unsigned int>(valueData.data()));
+					this->Value = std::to_string(common::ReadULongLong(valueData.data(), valueData.size(), 0));
 					break;
 				case 0x5: // WORD
-					this->Value = std::to_string(reinterpret_cast<unsigned short>(valueData.data()));
+					this->Value = std::to_string(common::ReadUShort(valueData.data(), valueData.size(), 0));
 					break;
 				}
 

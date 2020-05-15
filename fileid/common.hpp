@@ -14,7 +14,6 @@
 #include <unordered_map>
 #include <locale>
 #include <codecvt>
-#include <ctime>
 #include <chrono>
 
 #define STD_BUFFER_SIZE 512
@@ -60,7 +59,11 @@ namespace common {
 		if (t > 0) {
 			struct tm dt;
 			char buffer[STD_BUFFER_SIZE] = { 0 };			
+#ifdef WIN32
 			localtime_s(&dt, &t);
+#else
+			localtime_r(&t, &dt);
+#endif
 			strftime(buffer, STD_BUFFER_SIZE, "%F %T", &dt);
 			return std::string(buffer);
 		}

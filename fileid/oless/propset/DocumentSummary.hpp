@@ -10,21 +10,21 @@
 namespace OleStructuredStorage {
 	namespace OlePropertySet {
 			
-		typedef struct PropertyIdentifierAndOffset {
+		struct PropertyIdentifierAndOffset {
 			PropertyIdentifier PropertyId;
 			unsigned int Offset;
 		};
-		typedef struct PropertySetHeader {
+		struct PropertySetHeader {
 			unsigned int Size;
 			unsigned int NumProperties;
 		};
 
-		typedef struct PropertySetGroup {
+		struct PropertySetGroup {
 			unsigned char	FMTID[16];
 			unsigned int	Offset;
 		};
 
-		typedef struct PropertySetStreamHeader
+		struct PropertySetStreamHeader
 		{
 			unsigned short	ByteOrder;
 			unsigned short	Version;
@@ -39,7 +39,7 @@ namespace OleStructuredStorage {
 			POLE::uint64 size = stream->size();
 			unsigned char* buffer = new unsigned char[size];
 			unsigned int currentIndex = 0;
-			std::vector<Property*> list;
+			std::vector<Property*> children;
 			if (stream->read(buffer, size) == size) {
 
 				PropertySetStreamHeader* pssh = (PropertySetStreamHeader*)buffer;
@@ -61,12 +61,12 @@ namespace OleStructuredStorage {
 						Property* p = ReadProperty(buffer, size, psg->Offset + piao->Offset, piao->PropertyId);
 						if (p != nullptr) {
 							p->FMTID = FormatIdFromGuid(psg->FMTID);
-							list.push_back(p);
+							children.push_back(p);
 						}
 					}
 				}
 			}
-			return list;
+			return children;
 		}
 	}
 }
