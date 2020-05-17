@@ -15,6 +15,7 @@
 #include <locale>
 #include <codecvt>
 #include <chrono>
+#include <fstream>
 
 #define STD_BUFFER_SIZE 512
 
@@ -67,7 +68,7 @@ namespace common {
 			strftime(buffer, STD_BUFFER_SIZE, "%F %T", &dt);
 			return std::string(buffer);
 		}
-		return "1601/01/01 00:00:00";
+		return "1601-01-01 00:00:00";
 	}
 
 	//iequals - compares two string in case-insensitive manner
@@ -80,10 +81,20 @@ namespace common {
 				return tolower(a) == tolower(b);
 			});
 	}
+	//iequals - compares two strings in a case-insensitive manner
+	// modified to take std::wstring
+	bool iequals(const std::wstring& a, const std::wstring& b)
+	{
+		return std::equal(a.begin(), a.end(),
+			b.begin(), b.end(),
+			[](char a, char b) {
+				return tolower(a) == tolower(b);
+			});
+	}
 
 	//ltrim - left trim of given characters
 	// taken from:http://www.martinbroadhurst.com/how-to-trim-a-stdstring.html
-	std::string& ltrim(std::string& str, const std::string& chars = "\t\n\v\f\r \0")
+	std::string& ltrim(std::string& str, const std::string& chars = "\t\n\v\f\r ")
 	{
 		str.erase(0, str.find_first_not_of(chars));
 		return str;
@@ -91,7 +102,7 @@ namespace common {
 
 	//rtrim - right trim of given characters
 	// taken from:http://www.martinbroadhurst.com/how-to-trim-a-stdstring.html
-	std::string& rtrim(std::string& str, const std::string& chars = "\t\n\v\f\r \0")
+	std::string& rtrim(std::string& str, const std::string& chars = "\t\n\v\f\r ")
 	{
 		str.erase(str.find_last_not_of(chars) + 1);
 		return str;
@@ -99,7 +110,7 @@ namespace common {
 
 	//trim - right trim followed by left trim
 	// taken from:http://www.martinbroadhurst.com/how-to-trim-a-stdstring.html
-	std::string& trim(std::string& str, const std::string& chars = "\t\n\v\f\r \0")
+	std::string& trim(std::string& str, const std::string& chars = "\t\n\v\f\r ")
 	{
 		return ltrim(rtrim(str, chars), chars);
 	}

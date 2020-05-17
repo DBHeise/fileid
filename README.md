@@ -5,7 +5,7 @@ Like the linux utility "file", this tool will take an arbirtrary file blob and a
 
 It will identify specific formats in container formats. For example it will identify Microsoft Office file types specifically for OLE Structured Storage files (doc, xls, ppt, pub, vsd, etc), and ZIP files (docx, docm, xlsx, xlsm, pptx, pptm, jar, war, xpi, xap, apk,   etc)
 
-Build scripts are included for both gcc/g++ (4.4.7) (via makefile) and Microsoft Visual Studio (2015) builds (via sln)
+Build scripts are included for both gcc/g++ (>=5.1) (via makefile) and Microsoft Visual Studio (>=2015) builds (via sln)
 
 # Usage
 ```
