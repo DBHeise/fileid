@@ -18,6 +18,7 @@
 
 
 namespace OleStructuredStorage {
+
 	POLE::Storage* OpenFile(const char* file) {
 		POLE::Storage *storage = new POLE::Storage(file);
 		storage->open();
@@ -334,4 +335,9 @@ namespace OleStructuredStorage {
 		};
 
 	};
+
+	std::vector<common::ExtensionInfo*> Detailer(std::string file, std::vector<unsigned char> buffer) {
+		Oless* o = new Oless(file.c_str());
+		return o->Guess();
+	}
 }

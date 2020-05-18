@@ -23,41 +23,6 @@ void showUsage() {
 	std::cout << "fileid {file} [format]" << std::endl;
 }
 
-common::ExtraDataFunc GetExtraDataFunction(std::string name) {
-	common::ExtraDataFunc ans = NULL;
-	if (name == "DwgHelper") {
-		ans = details::DwgHelper;
-	}
-	else if (name == "ExeHelper") {
-		ans = Exec::Detailer;
-	}
-	else if (name == "JpegHelper") {
-		ans = details::JpegHelper;
-	}
-	else if (name == "Mp4Helper") {
-		ans = details::Mp4Helper;
-	}
-	else if (name == "OleHelper") {
-		ans = details::OleHelper;
-	}
-	else if (name == "ZipHelper") {
-		ans = zip::Detailer;
-	}
-	else if (name == "RIFFHelper") {
-		ans = details::RIFFHelper;
-	}
-	else if (name == "ASFHelper") {
-		ans = misc::asf::Detailer;
-	}
-	else if (name == "WPHelper") {
-		ans = misc::wp::Detailer;
-	}
-	else {
-		throw std::logic_error("Unknown Extra Data Funcion (bad dev)");
-	}
-	return ans;
-}
-
 //Taken from: https://stackoverflow.com/a/466242/13124
 unsigned int roundUpPowerOfTwo(const unsigned int x) {
 	unsigned int v = x; // compute the next highest power of 2 of 32-bit v
@@ -74,9 +39,9 @@ unsigned int roundUpPowerOfTwo(const unsigned int x) {
 
 unsigned int getMinimumBufferSize() {
 	unsigned int ans = STD_BUFFER_SIZE;	
-	for (std::vector<common::MagicInfo>::const_iterator i = list.begin(); i != list.end(); i++) 
+	for (auto i = magic::list.begin(); i != magic::list.end(); i++)
 	{
-		common::MagicInfo mi = *i;
+		common::MagicInfo mi = **i;
 		unsigned int size = mi.size + mi.offset;
 		if (size > ans) {
 			ans = size;
@@ -87,15 +52,16 @@ unsigned int getMinimumBufferSize() {
 
 std::vector<common::ExtensionInfo*> guessExtension(std::string file) {
 	std::vector<common::ExtensionInfo*> ans;
+	magic::initList();
 	std::vector<unsigned char> buffer = common::readFile(file, getMinimumBufferSize());
 
 	if (buffer.size() > 0) {
-		for (std::vector<common::MagicInfo>::const_iterator i = list.begin(); i != list.end(); i++) {
-			common::MagicInfo mi = *i;
+		for (auto i = magic::list.begin(); i != magic::list.end(); i++) {
+			common::MagicInfo mi = **i;
 			if (common::checkMagic(buffer.data(), (unsigned int)buffer.size(), mi.magic, mi.size, mi.offset)) {
 				//std::cout << "Magic Match: " << mi.Name << ":" << mi.extraName << std::endl;
-				if (mi.extraName.size() > 0) {
-					common::ExtraDataFunc func = GetExtraDataFunction(mi.extraName);
+				if (mi.extraFunc != nullptr) {
+					common::ExtraDataFunc func = *mi.extraFunc;
 					std::vector<common::ExtensionInfo*> list2 = func(file, buffer);
 					for (std::vector<common::ExtensionInfo*>::const_iterator n = list2.begin(); n != list2.end(); n++) {
 						ans.push_back(*n);

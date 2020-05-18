@@ -124,7 +124,9 @@ namespace media {
 			return ans;
 		}
 
-		common::ExtensionInfo* Detailer(std::string file, std::vector<unsigned char> buffer) {
+		std::vector<common::ExtensionInfo*> Detailer(std::string file, std::vector<unsigned char> buffer) {
+			std::vector<common::ExtensionInfo*> ans;
+
 			Mp4ExtensionInfo* ei = new Mp4ExtensionInfo();
 
 			//Read major version
@@ -135,7 +137,9 @@ namespace media {
 			brandcode.append(majorBlock.begin(), majorBlock.end());
 			ei->BrandCode = brandcode;
 			ei->Brand = GetBrandName(brandcode);
-			return ei;
+
+			ans.push_back(ei);
+			return ans;
 		}
 	}
 }

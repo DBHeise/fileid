@@ -1,9 +1,11 @@
 // magic.h
-// Generated on: 05/18/2020 07:53:47
+// Generated on: 05/18/2020 12:56:14
 
 #pragma once
 #include "common.hpp"
+#include "details.hpp"
 
+namespace magic {
 unsigned char magic_dosexe[2] = {0x4D,0x5A};
 unsigned char magic_elf[4] = {0x7F,0x45,0x4C,0x46};
 unsigned char magic_dex[6] = {0x64,0x65,0x78,0x0A,0x30,0x33};
@@ -143,143 +145,144 @@ unsigned char magic_html_d8l[8] = {0xEF,0xBB,0xBF,0x3C,0x21,0x64,0x6F,0x63};
 unsigned char magic_html_h8u[8] = {0xEF,0xBB,0xBF,0x3C,0x48,0x54,0x4d,0x4c};
 unsigned char magic_html_d8u[8] = {0xEF,0xBB,0xBF,0x3C,0x21,0x44,0x4f,0x43};
 
-std::vector<common::MagicInfo> list = {
-  {"exe", "DOS Executable", "", 0, 2, magic_dosexe, "ExeHelper"},
-  {"elf", "ELF Executable", "", 0, 4, magic_elf, NULL},
-  {"dex", "Dalvik Executable", "", 0, 6, magic_dex, NULL},
-  {"lib", "Microsoft Program Library Common Object File Format", "", 0, 8, magic_lib, NULL},
-  {"obj", "Microsoft Common Object File Format relocatable object code", "", 0, 2, magic_obj, NULL},
-  {"pdb", "Microsoft Program Database 2.0", "2", 0, 39, magic_pdb1, NULL},
-  {"pdb", "Microsoft Program Database 7.0", "7", 0, 29, magic_pdb2, NULL},
-  {"zip", "Zip Archive", "", 0, 2, magic_zip, "ZipHelper"},
-  {"rar", "Rar Archive", "", 0, 6, magic_rar, NULL},
-  {"7z", "7z Archive", "", 0, 6, magic_7z, NULL},
-  {"tar.z", "Tar.Zip Container", "LZW Compression", 0, 2, magic_tarzlzw, NULL},
-  {"tar.z", "Tar.Zip Container", "LZH Compression", 0, 2, magic_tarzlzh, NULL},
-  {"bz2", "BZip2 Container", "", 0, 3, magic_bz2, NULL},
-  {"tar", "Tar Archive", "", 0, 5, magic_tar, NULL},
-  {"gz", "GZIP Archive", "", 0, 2, magic_gz, NULL},
-  {"cab", "Microsoft Cabinet file", "", 0, 4, magic_cab, NULL},
-  {"lha", "LHArc (lha/lzh) Archive", "", 2, 3, magic_lha, NULL},
-  {"vhd", "Microsoft Virtual HardDisk", "", 0, 8, magic_vhd, NULL},
-  {"xz", "XZ Compressed File", "", 0, 6, magic_xz, NULL},
-  {"iso", "ISO 9660 Disk Image", "", 32769, 5, magic_iso1, NULL},
-  {"iso", "ISO 9660 Disk Image", "", 34817, 5, magic_iso2, NULL},
-  {"iso", "ISO 9660 Disk Image", "", 36864, 5, magic_iso3, NULL},
-  {"iso", "Universal Disk Format (ISO 13490/Ecma-168) - Beginning Extended Area Descriptor", "", 32769, 5, magic_udf1, NULL},
-  {"iso", "Universal Disk Format (ISO 13490/Ecma-168) - Boot Descriptor", "", 32769, 5, magic_udf2, NULL},
-  {"iso", "Universal Disk Format (ISO 13490/Ecma-168) - CD001 - ECMA-119", "", 32769, 5, magic_udf3, NULL},
-  {"iso", "Universal Disk Format (ISO 13490/Ecma-168) - Volume Descriptor", "", 32769, 5, magic_udf4, NULL},
-  {"iso", "Universal Disk Format (ISO 13490/Ecma-168) - NSR02 - ECMA-168", "", 32769, 5, magic_udf5, NULL},
-  {"iso", "Universal Disk Format (ISO 13490/Ecma-168) - NSR03 - ECMA-167", "", 32769, 5, magic_udf6, NULL},
-  {"iso", "Universal Disk Format (ISO 13490/Ecma-168) - Terminating Extended Area Descriptor", "", 32769, 5, magic_udf7, NULL},
-  {"vmdk", "VMWare Virtual Disk", "", 0, 3, magic_vmdk, NULL},
-  {"pcap", "Network Packet Capture File", "", 0, 4, magic_pcap, NULL},
-  {"pcap", "Network Packet Capture File", "Nanosecond-precision timestamps", 0, 4, magic_pcapn, NULL},
-  {"rpm", "Red Hat Package Manager File", "", 0, 4, magic_rpm, NULL},
-  {"_", "MS-DOS Installtion Compressed File", "SZDD", 0, 8, magic_dos_c1, NULL},
-  {"_", "MS-DOS Installtion Compressed File", "KWAJ", 0, 8, magic_dos_c2, NULL},
-  {"_", "MS-DOS Installtion Compressed File", "QBasic SZDD", 0, 8, magic_dos_c3, NULL},
-  {"sdi", "Microsoft System Deployment Image", "", 0, 8, magic_sdi1, NULL},
-  {"wim", "Windows Imaging File Format", "", 0, 7, magic_wim1, NULL},
-  {"ico", "Icon File", "", 0, 4, magic_ico, NULL},
-  {"gif", "GIF Image", "GIF87a", 0, 6, magic_gif87, NULL},
-  {"gif", "GIF Image", "GIF89a", 0, 6, magic_gif89, NULL},
-  {"tiff", "Tagged Image File", "little endian", 0, 4, magic_tiff_l, NULL},
-  {"tiff", "Tagged Image File", "big endian", 0, 4, magic_tiff_b, NULL},
-  {"jpg", "JPEG Image", "", 0, 2, magic_jpg, "JpegHelper"},
-  {"png", "Portable Network Graphics", "", 0, 8, magic_png, NULL},
-  {"bmp", "Bitmap Image", "", 0, 2, magic_bmp, NULL},
-  {"cur", "Cursor", "", 0, 4, magic_cur, NULL},
-  {"bmp", "Bitmap Image", "OS/2 Array", 0, 2, magic_bmpOS2a, NULL},
-  {"bmp", "Bitmap Image", "OS/2 Color Icon", 0, 2, magic_bmpOS2ci, NULL},
-  {"bmp", "Bitmap Image", "OS/2 Color Pointer", 0, 2, magic_bmpOS2cp, NULL},
-  {"bmp", " Bitmap Icon", "OS/2 Icon", 0, 2, magic_bmpOS2i, NULL},
-  {"bmp", "Bitmap Image", "OS/2 Pointer", 0, 2, magic_bmpOS2p, NULL},
-  {"psp", "Corel Paint Shop Pro Image file", "", 0, 25, magic_psp, NULL},
-  {"jbf", "Corel Paint Shop Pro browse file", "", 0, 15, magic_jbf, NULL},
-  {"oless", "OLE Structured Storage", "", 0, 4, magic_oless, "OleHelper"},
-  {"ps", "PostScript document", "", 0, 4, magic_ps, NULL},
-  {"pdf", "PDF document", "", 0, 4, magic_pdf, NULL},
-  {"db", "SQLLite Database File", "", 0, 16, magic_db, NULL},
-  {"dwg", "Autocad Drawing", "", 0, 4, magic_dwg, "DwgHelper"},
-  {"lnk", "LNK File", "", 0, 20, magic_lnk, NULL},
-  {"xls", "Microsoft Excel", "BIFF2", 0, 2, magic_biff2, NULL},
-  {"xls", "Microsoft Excel", "BIFF3", 0, 2, magic_biff3, NULL},
-  {"xls", "Microsoft Excel", "BIFF4", 0, 2, magic_biff4, NULL},
-  {"ppt", "Microsoft Powerpoint", "PPT95", 0, 38, magic_ppt95, NULL},
-  {"ppt", "Microsoft Powerpoint", "PPT3", 0, 4, magic_ppt3, NULL},
-  {"ppt", "Microsoft Powerpoint", "PPT3 Swap", 0, 4, magic_ppt3s, NULL},
-  {"mdb", "Microsoft Access Database", "MDB_System", 0, 19, magic_mdbsys, NULL},
-  {"mdb", "Microsoft Access Database", "MDB_Standard", 0, 19, magic_mdbstd, NULL},
-  {"mdb", "Microsoft Access Database", "MDB_Temp", 0, 19, magic_mdbtmp, NULL},
-  {"accdb", "Microsoft Access Database", "ACCDB_System", 0, 19, magic_accdbsys, NULL},
-  {"accdb", "Microsoft Access Database", "ACCDB_Standard", 0, 19, magic_accdbstd, NULL},
-  {"accdb", "Microsoft Access Database", "ACCDB_Temp", 0, 19, magic_accdbtmp, NULL},
-  {"one", "Microsoft OneNote", "", 0, 16, magic_one, NULL},
-  {"onetoc2", "Microsoft OneNote Table of Contents", "", 0, 16, magic_onetoc, NULL},
-  {"pst", "Microsoft Outlook Personal Storage Table", "", 0, 4, magic_pst, NULL},
-  {"wab", "Microsoft Outlook Address File", "", 0, 16, magic_wab, NULL},
-  {"chm", "Complied Help File", "", 0, 4, magic_chm, NULL},
-  {"dmp", "Windows Dump File", "32-bit", 0, 8, magic_dmp32, NULL},
-  {"dmp", "Windows Dump File", "64-bit", 0, 8, magic_dmp64, NULL},
-  {"hdmp", "Windows Dump File", "with heap", 0, 6, magic_hdmp, NULL},
-  {"rtf", "Rich Text Format", "", 0, 6, magic_rtf, NULL},
-  {"skp", "SketchUp Model", "", 0, 32, magic_skp, NULL},
-  {"mdi", "Microsoft Office Document Imaging", "", 0, 4, magic_mdi, NULL},
-  {"hlp", "Microsoft Help File", "", 0, 4, magic_hlp1, NULL},
-  {"hlp", "Ubuntu Help File", "", 0, 5, magic_hlp2, NULL},
-  {"doc", "Microsoft Word for Macintosh 1.0", "1", 0, 3, magic_mcw1, NULL},
-  {"doc", "Microsoft Word for Macintosh 2.0", "2", 0, 3, magic_mcw2, NULL},
-  {"doc", "Microsoft Word for Macintosh 3.0", "3", 0, 3, magic_mcw3, NULL},
-  {"doc", "Microsoft Word for Macintosh 4.0", "4", 0, 8, magic_mcw4, NULL},
-  {"doc", "Microsoft Word for Macintosh 5.0", "5", 0, 8, magic_mcw5, NULL},
-  {"doc", "Microsoft PC Word", "3", 0, 2, magic_pcw3, NULL},
-  {"doc", "Microsoft Word OLD", "", 0, 2, magic_doc_old1, NULL},
-  {"doc", "Microsoft Word OLD", "", 0, 2, magic_doc_old2, NULL},
-  {"doc", "Microsoft Word OLD (MP 2.0)", "", 0, 2, magic_doc_old3, NULL},
-  {"doc", "Microsoft Word OLD (MP 3.0)", "", 0, 2, magic_doc_old4, NULL},
-  {"doc", "Microsoft Word 1.0", "", 0, 2, magic_doc_old5, NULL},
-  {"doc", "Microsoft WinWord 2.0", "", 0, 2, magic_doc_old6, NULL},
-  {"wri", "MS Write", "1", 0, 2, magic_wri1, NULL},
-  {"wri", "MS Write", "2", 0, 2, magic_wri2, NULL},
-  {"wri", "MS Write", "3", 0, 5, magic_wri3, NULL},
-  {"wps", "Microsoft Works (1-4)", "", 0, 2, magic_wps, NULL},
-  {"wp5", "WordPerfect File", "5", 0, 4, magic_wp5, "WPHelper"},
-  {"wp", "WordPerfect Encrypted File", "encrypted", 0, 4, magic_wpenc, "WPHelper"},
-  {"mp4", "Mp4 Container", "", 4, 4, magic_mp4, "Mp4Helper"},
-  {"asf", "ASF Container", "", 0, 16, magic_asf, "ASFHelper"},
-  {"riff", "Riff file", "", 0, 4, magic_riff, "RIFFHelper"},
-  {"mp3", "MPEG-1 Layer 3 file", "", 0, 2, magic_mp3, NULL},
-  {"mp3", "MPEG-1 Layer 3 file", "ID3v2 Tag", 0, 3, magic_mp3id3v2, NULL},
-  {"flv", "Flash Video", "", 0, 3, magic_flv, NULL},
-  {"swf", "Shockwave Flash File", "", 0, 3, magic_swf, NULL},
-  {"swf", "Shockwave Flash File", "compressed", 0, 3, magic_cwf, NULL},
-  {"flac", "Free Lossless Audio Codec", "", 0, 4, magic_flac, NULL},
-  {"midi", "MIDI Sound File", "", 0, 4, magic_midi, NULL},
-  {"woff", "Web Open Font Format", "1.0", 0, 4, magic_woff1, NULL},
-  {"woff", "Web Open Font Format", "2.0", 0, 4, magic_woff2, NULL},
-  {"otf", "Open Type Font", "", 0, 4, magic_otf, NULL},
-  {"pfm", "Postscript Font", "type1", 0, 4, magic_pfm, NULL},
-  {"ttf", "True Type Font", "OSx", 0, 4, magic_ttf1, NULL},
-  {"ttf", "True Type Font", "windows", 0, 4, magic_ttf2, NULL},
-  {"sh", "*nix shebang script", "", 0, 2, magic_sh, NULL},
-  {"xml", "XML", "ascii lowercase", 0, 5, magic_xml_al, NULL},
-  {"xml", "XML", "ascii uppercase", 0, 5, magic_xml_au, NULL},
-  {"xml", "XML", "utf8 lowercase", 0, 8, magic_xml_8l, NULL},
-  {"xml", "XML", "utf8 uppercase", 0, 8, magic_xml_8u, NULL},
-  {"xml", "XML", "unicode lowercase", 0, 12, magic_xml_ul, NULL},
-  {"xml", "XML", "unicode uppercase", 0, 12, magic_xml_uu, NULL},
-  {"html", "HTML Document", "ascii lowercase html", 0, 5, magic_html_hal, NULL},
-  {"html", "HTML Document", "ascii lowercase doctype", 0, 5, magic_html_dal, NULL},
-  {"html", "HTML Document", "unicode lowercase html", 0, 12, magic_html_hul, NULL},
-  {"html", "HTML Document", "unicode lowercase doctype", 0, 12, magic_html_dul, NULL},
-  {"html", "HTML Document", "ascii uppercase html", 0, 5, magic_html_hau, NULL},
-  {"html", "HTML Document", "ascii uppercase doctype", 0, 5, magic_html_dau, NULL},
-  {"html", "HTML Document", "unicode uppercase html", 0, 12, magic_html_huu, NULL},
-  {"html", "HTML Document", "unicode uppercase doctype", 0, 12, magic_html_duu, NULL},
-  {"html", "HTML Document", "utf8 lowercase html", 0, 8, magic_html_h8l, NULL},
-  {"html", "HTML Document", "utf8 lowercase doctype", 0, 8, magic_html_d8l, NULL},
-  {"html", "HTML Document", "utf8 uppercase html", 0, 8, magic_html_h8u, NULL},
-  {"html", "HTML Document", "utf8 uppercase doctype", 0, 8, magic_html_d8u, NULL},
-};
+std::vector<common::MagicInfo*> list;
+void initList() {
+	list.push_back(new common::MagicInfo("exe", "DOS Executable", "", 0, 2, magic_dosexe, Exec::Detailer));
+	list.push_back(new common::MagicInfo("elf", "ELF Executable", "", 0, 4, magic_elf, nullptr));
+	list.push_back(new common::MagicInfo("dex", "Dalvik Executable", "", 0, 6, magic_dex, nullptr));
+	list.push_back(new common::MagicInfo("lib", "Microsoft Program Library Common Object File Format", "", 0, 8, magic_lib, nullptr));
+	list.push_back(new common::MagicInfo("obj", "Microsoft Common Object File Format relocatable object code", "", 0, 2, magic_obj, nullptr));
+	list.push_back(new common::MagicInfo("pdb", "Microsoft Program Database 2.0", "2", 0, 39, magic_pdb1, nullptr));
+	list.push_back(new common::MagicInfo("pdb", "Microsoft Program Database 7.0", "7", 0, 29, magic_pdb2, nullptr));
+	list.push_back(new common::MagicInfo("zip", "Zip Archive", "", 0, 2, magic_zip, zip::Detailer));
+	list.push_back(new common::MagicInfo("rar", "Rar Archive", "", 0, 6, magic_rar, nullptr));
+	list.push_back(new common::MagicInfo("7z", "7z Archive", "", 0, 6, magic_7z, nullptr));
+	list.push_back(new common::MagicInfo("tar.z", "Tar.Zip Container", "LZW Compression", 0, 2, magic_tarzlzw, nullptr));
+	list.push_back(new common::MagicInfo("tar.z", "Tar.Zip Container", "LZH Compression", 0, 2, magic_tarzlzh, nullptr));
+	list.push_back(new common::MagicInfo("bz2", "BZip2 Container", "", 0, 3, magic_bz2, nullptr));
+	list.push_back(new common::MagicInfo("tar", "Tar Archive", "", 0, 5, magic_tar, nullptr));
+	list.push_back(new common::MagicInfo("gz", "GZIP Archive", "", 0, 2, magic_gz, nullptr));
+	list.push_back(new common::MagicInfo("cab", "Microsoft Cabinet file", "", 0, 4, magic_cab, nullptr));
+	list.push_back(new common::MagicInfo("lha", "LHArc (lha/lzh) Archive", "", 2, 3, magic_lha, nullptr));
+	list.push_back(new common::MagicInfo("vhd", "Microsoft Virtual HardDisk", "", 0, 8, magic_vhd, nullptr));
+	list.push_back(new common::MagicInfo("xz", "XZ Compressed File", "", 0, 6, magic_xz, nullptr));
+	list.push_back(new common::MagicInfo("iso", "ISO 9660 Disk Image", "", 32769, 5, magic_iso1, nullptr));
+	list.push_back(new common::MagicInfo("iso", "ISO 9660 Disk Image", "", 34817, 5, magic_iso2, nullptr));
+	list.push_back(new common::MagicInfo("iso", "ISO 9660 Disk Image", "", 36864, 5, magic_iso3, nullptr));
+	list.push_back(new common::MagicInfo("iso", "Universal Disk Format (ISO 13490/Ecma-168) - Beginning Extended Area Descriptor", "", 32769, 5, magic_udf1, nullptr));
+	list.push_back(new common::MagicInfo("iso", "Universal Disk Format (ISO 13490/Ecma-168) - Boot Descriptor", "", 32769, 5, magic_udf2, nullptr));
+	list.push_back(new common::MagicInfo("iso", "Universal Disk Format (ISO 13490/Ecma-168) - CD001 - ECMA-119", "", 32769, 5, magic_udf3, nullptr));
+	list.push_back(new common::MagicInfo("iso", "Universal Disk Format (ISO 13490/Ecma-168) - Volume Descriptor", "", 32769, 5, magic_udf4, nullptr));
+	list.push_back(new common::MagicInfo("iso", "Universal Disk Format (ISO 13490/Ecma-168) - NSR02 - ECMA-168", "", 32769, 5, magic_udf5, nullptr));
+	list.push_back(new common::MagicInfo("iso", "Universal Disk Format (ISO 13490/Ecma-168) - NSR03 - ECMA-167", "", 32769, 5, magic_udf6, nullptr));
+	list.push_back(new common::MagicInfo("iso", "Universal Disk Format (ISO 13490/Ecma-168) - Terminating Extended Area Descriptor", "", 32769, 5, magic_udf7, nullptr));
+	list.push_back(new common::MagicInfo("vmdk", "VMWare Virtual Disk", "", 0, 3, magic_vmdk, nullptr));
+	list.push_back(new common::MagicInfo("pcap", "Network Packet Capture File", "", 0, 4, magic_pcap, nullptr));
+	list.push_back(new common::MagicInfo("pcap", "Network Packet Capture File", "Nanosecond-precision timestamps", 0, 4, magic_pcapn, nullptr));
+	list.push_back(new common::MagicInfo("rpm", "Red Hat Package Manager File", "", 0, 4, magic_rpm, nullptr));
+	list.push_back(new common::MagicInfo("_", "MS-DOS Installtion Compressed File", "SZDD", 0, 8, magic_dos_c1, nullptr));
+	list.push_back(new common::MagicInfo("_", "MS-DOS Installtion Compressed File", "KWAJ", 0, 8, magic_dos_c2, nullptr));
+	list.push_back(new common::MagicInfo("_", "MS-DOS Installtion Compressed File", "QBasic SZDD", 0, 8, magic_dos_c3, nullptr));
+	list.push_back(new common::MagicInfo("sdi", "Microsoft System Deployment Image", "", 0, 8, magic_sdi1, nullptr));
+	list.push_back(new common::MagicInfo("wim", "Windows Imaging File Format", "", 0, 7, magic_wim1, nullptr));
+	list.push_back(new common::MagicInfo("ico", "Icon File", "", 0, 4, magic_ico, nullptr));
+	list.push_back(new common::MagicInfo("gif", "GIF Image", "GIF87a", 0, 6, magic_gif87, nullptr));
+	list.push_back(new common::MagicInfo("gif", "GIF Image", "GIF89a", 0, 6, magic_gif89, nullptr));
+	list.push_back(new common::MagicInfo("tiff", "Tagged Image File", "little endian", 0, 4, magic_tiff_l, nullptr));
+	list.push_back(new common::MagicInfo("tiff", "Tagged Image File", "big endian", 0, 4, magic_tiff_b, nullptr));
+	list.push_back(new common::MagicInfo("jpg", "JPEG Image", "", 0, 2, magic_jpg, media::jpeg::Detailer));
+	list.push_back(new common::MagicInfo("png", "Portable Network Graphics", "", 0, 8, magic_png, nullptr));
+	list.push_back(new common::MagicInfo("bmp", "Bitmap Image", "", 0, 2, magic_bmp, nullptr));
+	list.push_back(new common::MagicInfo("cur", "Cursor", "", 0, 4, magic_cur, nullptr));
+	list.push_back(new common::MagicInfo("bmp", "Bitmap Image", "OS/2 Array", 0, 2, magic_bmpOS2a, nullptr));
+	list.push_back(new common::MagicInfo("bmp", "Bitmap Image", "OS/2 Color Icon", 0, 2, magic_bmpOS2ci, nullptr));
+	list.push_back(new common::MagicInfo("bmp", "Bitmap Image", "OS/2 Color Pointer", 0, 2, magic_bmpOS2cp, nullptr));
+	list.push_back(new common::MagicInfo("bmp", " Bitmap Icon", "OS/2 Icon", 0, 2, magic_bmpOS2i, nullptr));
+	list.push_back(new common::MagicInfo("bmp", "Bitmap Image", "OS/2 Pointer", 0, 2, magic_bmpOS2p, nullptr));
+	list.push_back(new common::MagicInfo("psp", "Corel Paint Shop Pro Image file", "", 0, 25, magic_psp, nullptr));
+	list.push_back(new common::MagicInfo("jbf", "Corel Paint Shop Pro browse file", "", 0, 15, magic_jbf, nullptr));
+	list.push_back(new common::MagicInfo("oless", "OLE Structured Storage", "", 0, 4, magic_oless, OleStructuredStorage::Detailer));
+	list.push_back(new common::MagicInfo("ps", "PostScript document", "", 0, 4, magic_ps, nullptr));
+	list.push_back(new common::MagicInfo("pdf", "PDF document", "", 0, 4, magic_pdf, nullptr));
+	list.push_back(new common::MagicInfo("db", "SQLLite Database File", "", 0, 16, magic_db, nullptr));
+	list.push_back(new common::MagicInfo("dwg", "Autocad Drawing", "", 0, 4, magic_dwg, document::dwg::DwgHelper));
+	list.push_back(new common::MagicInfo("lnk", "LNK File", "", 0, 20, magic_lnk, nullptr));
+	list.push_back(new common::MagicInfo("xls", "Microsoft Excel", "BIFF2", 0, 2, magic_biff2, nullptr));
+	list.push_back(new common::MagicInfo("xls", "Microsoft Excel", "BIFF3", 0, 2, magic_biff3, nullptr));
+	list.push_back(new common::MagicInfo("xls", "Microsoft Excel", "BIFF4", 0, 2, magic_biff4, nullptr));
+	list.push_back(new common::MagicInfo("ppt", "Microsoft Powerpoint", "PPT95", 0, 38, magic_ppt95, nullptr));
+	list.push_back(new common::MagicInfo("ppt", "Microsoft Powerpoint", "PPT3", 0, 4, magic_ppt3, nullptr));
+	list.push_back(new common::MagicInfo("ppt", "Microsoft Powerpoint", "PPT3 Swap", 0, 4, magic_ppt3s, nullptr));
+	list.push_back(new common::MagicInfo("mdb", "Microsoft Access Database", "MDB_System", 0, 19, magic_mdbsys, nullptr));
+	list.push_back(new common::MagicInfo("mdb", "Microsoft Access Database", "MDB_Standard", 0, 19, magic_mdbstd, nullptr));
+	list.push_back(new common::MagicInfo("mdb", "Microsoft Access Database", "MDB_Temp", 0, 19, magic_mdbtmp, nullptr));
+	list.push_back(new common::MagicInfo("accdb", "Microsoft Access Database", "ACCDB_System", 0, 19, magic_accdbsys, nullptr));
+	list.push_back(new common::MagicInfo("accdb", "Microsoft Access Database", "ACCDB_Standard", 0, 19, magic_accdbstd, nullptr));
+	list.push_back(new common::MagicInfo("accdb", "Microsoft Access Database", "ACCDB_Temp", 0, 19, magic_accdbtmp, nullptr));
+	list.push_back(new common::MagicInfo("one", "Microsoft OneNote", "", 0, 16, magic_one, nullptr));
+	list.push_back(new common::MagicInfo("onetoc2", "Microsoft OneNote Table of Contents", "", 0, 16, magic_onetoc, nullptr));
+	list.push_back(new common::MagicInfo("pst", "Microsoft Outlook Personal Storage Table", "", 0, 4, magic_pst, nullptr));
+	list.push_back(new common::MagicInfo("wab", "Microsoft Outlook Address File", "", 0, 16, magic_wab, nullptr));
+	list.push_back(new common::MagicInfo("chm", "Complied Help File", "", 0, 4, magic_chm, nullptr));
+	list.push_back(new common::MagicInfo("dmp", "Windows Dump File", "32-bit", 0, 8, magic_dmp32, nullptr));
+	list.push_back(new common::MagicInfo("dmp", "Windows Dump File", "64-bit", 0, 8, magic_dmp64, nullptr));
+	list.push_back(new common::MagicInfo("hdmp", "Windows Dump File", "with heap", 0, 6, magic_hdmp, nullptr));
+	list.push_back(new common::MagicInfo("rtf", "Rich Text Format", "", 0, 6, magic_rtf, nullptr));
+	list.push_back(new common::MagicInfo("skp", "SketchUp Model", "", 0, 32, magic_skp, nullptr));
+	list.push_back(new common::MagicInfo("mdi", "Microsoft Office Document Imaging", "", 0, 4, magic_mdi, nullptr));
+	list.push_back(new common::MagicInfo("hlp", "Microsoft Help File", "", 0, 4, magic_hlp1, nullptr));
+	list.push_back(new common::MagicInfo("hlp", "Ubuntu Help File", "", 0, 5, magic_hlp2, nullptr));
+	list.push_back(new common::MagicInfo("doc", "Microsoft Word for Macintosh 1.0", "1", 0, 3, magic_mcw1, nullptr));
+	list.push_back(new common::MagicInfo("doc", "Microsoft Word for Macintosh 2.0", "2", 0, 3, magic_mcw2, nullptr));
+	list.push_back(new common::MagicInfo("doc", "Microsoft Word for Macintosh 3.0", "3", 0, 3, magic_mcw3, nullptr));
+	list.push_back(new common::MagicInfo("doc", "Microsoft Word for Macintosh 4.0", "4", 0, 8, magic_mcw4, nullptr));
+	list.push_back(new common::MagicInfo("doc", "Microsoft Word for Macintosh 5.0", "5", 0, 8, magic_mcw5, nullptr));
+	list.push_back(new common::MagicInfo("doc", "Microsoft PC Word", "3", 0, 2, magic_pcw3, nullptr));
+	list.push_back(new common::MagicInfo("doc", "Microsoft Word OLD", "", 0, 2, magic_doc_old1, nullptr));
+	list.push_back(new common::MagicInfo("doc", "Microsoft Word OLD", "", 0, 2, magic_doc_old2, nullptr));
+	list.push_back(new common::MagicInfo("doc", "Microsoft Word OLD (MP 2.0)", "", 0, 2, magic_doc_old3, nullptr));
+	list.push_back(new common::MagicInfo("doc", "Microsoft Word OLD (MP 3.0)", "", 0, 2, magic_doc_old4, nullptr));
+	list.push_back(new common::MagicInfo("doc", "Microsoft Word 1.0", "", 0, 2, magic_doc_old5, nullptr));
+	list.push_back(new common::MagicInfo("doc", "Microsoft WinWord 2.0", "", 0, 2, magic_doc_old6, nullptr));
+	list.push_back(new common::MagicInfo("wri", "MS Write", "1", 0, 2, magic_wri1, nullptr));
+	list.push_back(new common::MagicInfo("wri", "MS Write", "2", 0, 2, magic_wri2, nullptr));
+	list.push_back(new common::MagicInfo("wri", "MS Write", "3", 0, 5, magic_wri3, nullptr));
+	list.push_back(new common::MagicInfo("wps", "Microsoft Works (1-4)", "", 0, 2, magic_wps, nullptr));
+	list.push_back(new common::MagicInfo("wp5", "WordPerfect File", "5", 0, 4, magic_wp5, document::wp::Detailer));
+	list.push_back(new common::MagicInfo("wp", "WordPerfect Encrypted File", "encrypted", 0, 4, magic_wpenc, document::wp::Detailer));
+	list.push_back(new common::MagicInfo("mp4", "Mp4 Container", "", 4, 4, magic_mp4, media::mp4::Detailer));
+	list.push_back(new common::MagicInfo("asf", "ASF Container", "", 0, 16, magic_asf, media::asf::Detailer));
+	list.push_back(new common::MagicInfo("riff", "Riff file", "", 0, 4, magic_riff, media::riff::RIFFHelper));
+	list.push_back(new common::MagicInfo("mp3", "MPEG-1 Layer 3 file", "", 0, 2, magic_mp3, nullptr));
+	list.push_back(new common::MagicInfo("mp3", "MPEG-1 Layer 3 file", "ID3v2 Tag", 0, 3, magic_mp3id3v2, nullptr));
+	list.push_back(new common::MagicInfo("flv", "Flash Video", "", 0, 3, magic_flv, nullptr));
+	list.push_back(new common::MagicInfo("swf", "Shockwave Flash File", "", 0, 3, magic_swf, nullptr));
+	list.push_back(new common::MagicInfo("swf", "Shockwave Flash File", "compressed", 0, 3, magic_cwf, nullptr));
+	list.push_back(new common::MagicInfo("flac", "Free Lossless Audio Codec", "", 0, 4, magic_flac, nullptr));
+	list.push_back(new common::MagicInfo("midi", "MIDI Sound File", "", 0, 4, magic_midi, nullptr));
+	list.push_back(new common::MagicInfo("woff", "Web Open Font Format", "1.0", 0, 4, magic_woff1, nullptr));
+	list.push_back(new common::MagicInfo("woff", "Web Open Font Format", "2.0", 0, 4, magic_woff2, nullptr));
+	list.push_back(new common::MagicInfo("otf", "Open Type Font", "", 0, 4, magic_otf, nullptr));
+	list.push_back(new common::MagicInfo("pfm", "Postscript Font", "type1", 0, 4, magic_pfm, nullptr));
+	list.push_back(new common::MagicInfo("ttf", "True Type Font", "OSx", 0, 4, magic_ttf1, nullptr));
+	list.push_back(new common::MagicInfo("ttf", "True Type Font", "windows", 0, 4, magic_ttf2, nullptr));
+	list.push_back(new common::MagicInfo("sh", "*nix shebang script", "", 0, 2, magic_sh, nullptr));
+	list.push_back(new common::MagicInfo("xml", "XML", "ascii lowercase", 0, 5, magic_xml_al, nullptr));
+	list.push_back(new common::MagicInfo("xml", "XML", "ascii uppercase", 0, 5, magic_xml_au, nullptr));
+	list.push_back(new common::MagicInfo("xml", "XML", "utf8 lowercase", 0, 8, magic_xml_8l, nullptr));
+	list.push_back(new common::MagicInfo("xml", "XML", "utf8 uppercase", 0, 8, magic_xml_8u, nullptr));
+	list.push_back(new common::MagicInfo("xml", "XML", "unicode lowercase", 0, 12, magic_xml_ul, nullptr));
+	list.push_back(new common::MagicInfo("xml", "XML", "unicode uppercase", 0, 12, magic_xml_uu, nullptr));
+	list.push_back(new common::MagicInfo("html", "HTML Document", "ascii lowercase html", 0, 5, magic_html_hal, nullptr));
+	list.push_back(new common::MagicInfo("html", "HTML Document", "ascii lowercase doctype", 0, 5, magic_html_dal, nullptr));
+	list.push_back(new common::MagicInfo("html", "HTML Document", "unicode lowercase html", 0, 12, magic_html_hul, nullptr));
+	list.push_back(new common::MagicInfo("html", "HTML Document", "unicode lowercase doctype", 0, 12, magic_html_dul, nullptr));
+	list.push_back(new common::MagicInfo("html", "HTML Document", "ascii uppercase html", 0, 5, magic_html_hau, nullptr));
+	list.push_back(new common::MagicInfo("html", "HTML Document", "ascii uppercase doctype", 0, 5, magic_html_dau, nullptr));
+	list.push_back(new common::MagicInfo("html", "HTML Document", "unicode uppercase html", 0, 12, magic_html_huu, nullptr));
+	list.push_back(new common::MagicInfo("html", "HTML Document", "unicode uppercase doctype", 0, 12, magic_html_duu, nullptr));
+	list.push_back(new common::MagicInfo("html", "HTML Document", "utf8 lowercase html", 0, 8, magic_html_h8l, nullptr));
+	list.push_back(new common::MagicInfo("html", "HTML Document", "utf8 lowercase doctype", 0, 8, magic_html_d8l, nullptr));
+	list.push_back(new common::MagicInfo("html", "HTML Document", "utf8 uppercase html", 0, 8, magic_html_h8u, nullptr));
+	list.push_back(new common::MagicInfo("html", "HTML Document", "utf8 uppercase doctype", 0, 8, magic_html_d8u, nullptr));
+}}

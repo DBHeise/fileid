@@ -527,8 +527,8 @@ namespace common {
 		unsigned int offset;
 		unsigned int size;
 		unsigned char* magic;
-		std::string extraName;
-		MagicInfo(const char* ext, const char* n, const char* ver, unsigned int offset, unsigned int size, unsigned char* m, const char* ename) {
+		ExtraDataFunc extraFunc;
+		MagicInfo(const char* ext, const char* n, const char* ver, unsigned int offset, unsigned int size, unsigned char* m, ExtraDataFunc ename) {
 			std::string t(ext);
 			this->Extension = t;
 			std::string n2(n);
@@ -538,9 +538,8 @@ namespace common {
 			this->offset = offset;
 			this->size = size;
 			this->magic = m;
-			if (ename != NULL) {
-				std::string e(ename);
-				this->extraName = e;
+			if (ename != nullptr) {
+				this->extraFunc = ename;
 			}
 		}
 	} MagicInfo;
