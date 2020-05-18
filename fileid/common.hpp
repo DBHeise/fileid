@@ -595,25 +595,25 @@ namespace common {
 			}
 			break;
 		case OutputFormat::XML:
-			std::cout << "<file>" << std::endl;
-			std::cout << "\t<name>" << file << "</name>" << std::endl;
-			std::cout << "\t<" << headerName << ">" << std::endl;
+			std::cout << "<file>";
+			std::cout << "<name>" << file << "</name>";
+			std::cout << "<" << headerName << ">";
 			for (it = summary.begin(); it != summary.end(); it++) {
-				std::cout << "\t\t" << (*it)->ToXml() << std::endl;
+				std::cout << (*it)->ToXml();
 			}
-			std::cout << "\t</" << headerName << ">" << std::endl;
-			std::cout << "</file>" << std::endl;
+			std::cout << "</" << headerName << ">";
+			std::cout << "</file>";
 			break;
 		case OutputFormat::JSON:
-			std::cout << "{ \"name\" : \"" << common::JsonEscape(file) << "\"," << std::endl;
-			std::cout << "\t \"" << headerName << "\": [" << std::endl;
+			std::cout << "{\"name\":\"" << common::JsonEscape(file) << "\",";
+			std::cout << "\"" << headerName << "\":[";
 			for (it = summary.begin(); it != summary.end(); it++) {
 				if (it != summary.begin()) {
-					std::cout << "," << std::endl;
+					std::cout << ",";
 				}
-				std::cout << "\t\t" << (*it)->ToJson() << std::endl;
+				std::cout << (*it)->ToJson();
 			}
-			std::cout << "\n\t]\n}" << std::endl;
+			std::cout << "]}";
 			break;
 			break;
 		case OutputFormat::CSV:
