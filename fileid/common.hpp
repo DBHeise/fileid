@@ -539,9 +539,7 @@ namespace common {
 			this->offset = offset;
 			this->size = size;
 			this->magic = m;
-			if (ename != nullptr) {
-				this->extraFunc = ename;
-			}
+			this->extraFunc = ename;
 		}
 	};
 
