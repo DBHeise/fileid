@@ -1,3 +1,4 @@
+
 # FileId
 
 Generic file identifier (for linux and windows)
@@ -5,6 +6,9 @@ Generic file identifier (for linux and windows)
 Like the linux utility "file", this tool will take an arbirtrary file blob and attempt to identify the file type/extension based on magic numbers. In addition it will attempt to pull as much pertinant details as it knows from the file about its format.
 
 It will identify specific formats in container formats. For example it will identify Microsoft Office file types specifically for OLE Structured Storage files (doc, xls, ppt, pub, vsd, etc), and ZIP files (docx, docm, xlsx, xlsm, pptx, pptm, jar, war, xpi, xap, apk,   etc)
+
+## Binaries
+Binaries availabe at the build server: ![Build Status](https://github.com/DBHeise/fileid/workflows/Continuous%20Integration/badge.svg)
 
 Build scripts are included for both gcc/g++ (>=5.1) (via makefile) and Microsoft Visual Studio (>=2015) builds (via sln)
 
