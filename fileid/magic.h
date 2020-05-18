@@ -1,5 +1,5 @@
 // magic.h
-// Generated on: 05/14/2020 06:21:29
+// Generated on: 05/18/2020 07:53:47
 
 #pragma once
 #include "common.hpp"
@@ -40,6 +40,8 @@ unsigned char magic_rpm[4] = {0xED,0xAB,0xEE,0xDB};
 unsigned char magic_dos_c1[8] = {0x53,0x5A,0x44,0x44,0x88,0xF0,0x27,0x33};
 unsigned char magic_dos_c2[8] = {0x4B,0x57,0x41,0x4A,0x88,0xF0,0x27,0xD1};
 unsigned char magic_dos_c3[8] = {0x53,0x5A,0x20,0x88,0xF0,0x27,0x33,0xD1};
+unsigned char magic_sdi1[8] = {0x24,0x53,0x44,0x49,0x30,0x30,0x30,0x31};
+unsigned char magic_wim1[7] = {0x4D,0x53,0x57,0x49,0x4D,0x00,0x00};
 unsigned char magic_ico[4] = {0x00,0x00,0x01,0x00};
 unsigned char magic_gif87[6] = {0x47,0x49,0x46,0x38,0x37,0x61};
 unsigned char magic_gif89[6] = {0x47,0x49,0x46,0x38,0x39,0x61};
@@ -178,6 +180,8 @@ std::vector<common::MagicInfo> list = {
   {"_", "MS-DOS Installtion Compressed File", "SZDD", 0, 8, magic_dos_c1, NULL},
   {"_", "MS-DOS Installtion Compressed File", "KWAJ", 0, 8, magic_dos_c2, NULL},
   {"_", "MS-DOS Installtion Compressed File", "QBasic SZDD", 0, 8, magic_dos_c3, NULL},
+  {"sdi", "Microsoft System Deployment Image", "", 0, 8, magic_sdi1, NULL},
+  {"wim", "Windows Imaging File Format", "", 0, 7, magic_wim1, NULL},
   {"ico", "Icon File", "", 0, 4, magic_ico, NULL},
   {"gif", "GIF Image", "GIF87a", 0, 6, magic_gif87, NULL},
   {"gif", "GIF Image", "GIF89a", 0, 6, magic_gif89, NULL},
