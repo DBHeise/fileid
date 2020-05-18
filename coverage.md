@@ -12,7 +12,7 @@ asf|ASF Container||Metadata 3|[Link](http://download.microsoft.com/download/7/9/
 avi|Audio Video Interleaved|riff|Identification|[Link](https://www.loc.gov/preservation/digital/formats/fdd/fdd000025.shtml)|
 bmp|Bitmap Image||Identification| |
 bmp|Bitmap Icon||Identification| |
-bup|Symmantec malware container|oless|Identification| |
+bup|Symantec malware container|oless|Identification| |
 bz2|BZip2 Container||Identification| |
 cab|Microsoft Cabinet file||Identification| |
 cda||riff|Identification|[Link](https://www.loc.gov/preservation/digital/formats/fdd/fdd000025.shtml)|
@@ -113,7 +113,7 @@ rpm|Red Hat Package Manager File||Identification| |
 rtf|Rich Text Format||Identification|[Link](http://www.microsoft.com/downloads/details.aspx?familyid=dd422b8d-ff06-4207-b476-6b5396a18a2b&displaylang=en&tm)|
 scorm_pif|SCORM (Shareable Content Object Reference Model) Content Package|zip|Identification| |
 sdc|StarOffice Calc|oless|Identification| |
-sdi|Microsoft System Deployment Image||Identification| |
+sdi|Microsoft System Deployment Image||Identification|[Link](https://skolk.livejournal.com/1320.html)|
 sdw|StarOffice Write|oless|Identification| |
 sh|*nix shebang script||Identification| |
 skp|SketchUp Model||Metadata 1| |
