@@ -5,5 +5,11 @@ $outFile = ".\coverage.md"
 "---------|----|:-----------:|:------------:|---------|-----" | Add-Content -Encoding Ascii -Path $outFile
 
 Import-CSV .\coverage.csv | % { 
-	$_.Extension + "|" + $_.Name + "|" + $_.'Parent Format' + "|" + $_.'Coverage Level' + "|" + $_.'Specification Link' + "|" + $_.Notes | Add-Content -Encoding Ascii -Path $outFile
+	$link = $_.'Specification Link'
+	if ([String]::IsNullOrWhiteSpace($link)) {
+		$lnk = " "
+	} else {
+		$lnk = "[Link](" + $link + ")"
+	}	
+	$_.Extension + "|" + $_.Name + "|" + $_.'Parent Format' + "|" + $_.'Coverage Level' + "|" + $lnk + "|" + $_.Notes | Add-Content -Encoding Ascii -Path $outFile
 }
