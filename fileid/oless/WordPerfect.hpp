@@ -3,7 +3,7 @@
 #include "pole.h"
 #include "../common.hpp"
 #include "OleCommon.hpp"
-#include "../misc/wordperfect.hpp"
+#include "../document/wp/wordperfect.hpp"
 
 
 namespace OleStructuredStorage {
@@ -11,8 +11,8 @@ namespace OleStructuredStorage {
 
 
 		common::ExtensionInfo* ReadWPStream(POLE::Stream* stream) {
-			auto ans = new misc::wp::WordPerfectExtensionInfo();
-			ans->Header = OleHelper::GetStructFromStream<misc::wp::wpheader>(stream);
+			auto ans = new document::wp::WordPerfectExtensionInfo();
+			ans->Header = OleHelper::GetStructFromStream<document::wp::wpheader>(stream);
 			return ans;
 		}
 

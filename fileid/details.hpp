@@ -5,10 +5,10 @@
 #include "common.hpp"
 #include "oless/oless.hpp"
 #include "exe/Exec.hpp"
-#include "mp4/mp4.hpp"
+#include "media/mp4/mp4.hpp"
 #include "zip/ziphelper.hpp"
-#include "misc/wordperfect.hpp"
-#include "misc/asf.hpp"
+#include "document/wp/wordperfect.hpp"
+#include "media/asf/asf.hpp"
 
 namespace details {
 
@@ -95,7 +95,7 @@ namespace details {
 		
 	std::vector<common::ExtensionInfo*> Mp4Helper(const std::string file, std::vector<unsigned char> buffer) {
 		std::vector<common::ExtensionInfo*> ans;
-		common::ExtensionInfo* ei = mp4::Detailer(file, buffer);
+		common::ExtensionInfo* ei = media::mp4::Detailer(file, buffer);
 		ans.push_back(ei);
 		return ans;
 	}

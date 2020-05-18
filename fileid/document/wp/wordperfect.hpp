@@ -2,10 +2,10 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "../common.hpp"
+#include "../../common.hpp"
 
 
-namespace misc {
+namespace document {
 	namespace wp {
 
 		struct wpheader {
