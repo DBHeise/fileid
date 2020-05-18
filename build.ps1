@@ -8,7 +8,7 @@ Set-Alias -name msbuild -Value $msbuildPath
 		$config = $_
 		
 		Write-Progress -Activity "Building" -Status ($platform + "," + $config)
-		msbuild -noLogo -verbosity:minimal -restore -target:Rebuild -property:Configuration=$config -property:Platform=$platform /nologo -clp:"ErrorsOnly;NoSummary" fileid.sln
+		msbuild -noLogo -verbosity:detailed -restore -target:Rebuild -property:Configuration=$config -property:Platform=$platform /nologo -clp:"ErrorsOnly;NoSummary" fileid.sln
 		Write-Progress -Activity "Building" -Status ($platform + "," + $config) -Completed
 		if ($LASTEXITCODE) { exit $LASTEXITCODE }
 	}
