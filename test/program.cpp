@@ -309,33 +309,6 @@ TEST_SUITE("common") {
 		//delete file
 		remove(file.c_str());
 	}
-	TEST_CASE("isbase64") {
-		SUBCASE("basic") {
-			CHECK(common::base64::is_base64('a'));
-			CHECK(common::base64::is_base64('2'));
-			CHECK(common::base64::is_base64('+'));
-			CHECK(common::base64::is_base64('/'));
-			CHECK_FALSE(common::base64::is_base64('\0'));
-			CHECK_FALSE(common::base64::is_base64(' '));
-			CHECK_FALSE(common::base64::is_base64('^'));
-		}
-	}
-	TEST_CASE("base64_encode") {
-		SUBCASE("basic") {
-			CHECK_EQ(common::base64::base64_encode((unsigned char*)&"test", 4), "dGVzdA==");
-			CHECK_EQ(common::base64::base64_encode((unsigned char*)&" ", 1), "IA==");
-			CHECK_EQ(common::base64::base64_encode((unsigned char*)&"The quick brown fox jumped over the lazy dog.", 45), "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cu");
-			CHECK_EQ(common::base64::base64_encode((unsigned char*)&"<foo this)@$( test 0598ag", 25), "PGZvbyB0aGlzKUAkKCB0ZXN0IDA1OThhZw==");
-		}
-	}
-	TEST_CASE("base64_decode") {
-		SUBCASE("basic") {
-			CHECK_EQ(common::base64::base64_decode("dGVzdA=="), "test");
-			CHECK_EQ(common::base64::base64_decode("IA=="), " ");
-			CHECK_EQ(common::base64::base64_decode("VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cu"), "The quick brown fox jumped over the lazy dog.");
-			CHECK_EQ(common::base64::base64_decode("PGZvbyB0aGlzKUAkKCB0ZXN0IDA1OThhZw=="), "<foo this)@$( test 0598ag");
-		}
-	}
 	TEST_CASE("ExtractBits") {
 		SUBCASE("basic-1bit") {
 			CHECK_EQ(common::ExtractBits(0xAA, 1, 0), 0);//since it is 1-based offset, the 0th bit does not exist
