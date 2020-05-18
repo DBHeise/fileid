@@ -1,4 +1,5 @@
 # FileId
+
 Generic file identifier (for linux and windows)
 
 Like the linux utility "file", this tool will take an arbirtrary file blob and attempt to identify the file type/extension based on magic numbers. In addition it will attempt to pull as much pertinant details as it knows from the file about its format.
@@ -7,15 +8,30 @@ It will identify specific formats in container formats. For example it will iden
 
 Build scripts are included for both gcc/g++ (>=5.1) (via makefile) and Microsoft Visual Studio (>=2015) builds (via sln)
 
-# Usage
+## Levels of Coverage
+
+There are three levels of coverage for a file format:
+
+1. Identification - we are able to identify the file format from a binary blob, sometimes this is as simple as matching the magic number/bytes, but for many formats it is not as simple
+2. Metadata - we are able to identify the file format and extract some or all of the associated meta data included in the format. For example, we can tell its an Microsoft Office Binary Document and tell you the specific version of DOC file. This level is further broken down to a rating of how much metadata can be extracted on a scale of 1 to 10 (1 being very basic metadata, 10 be all available meta data fully extracted)
+3. Full Extraction - we are able to identify pretty much every byte in the file, what it does and why its there.
+
+## File Format Coverage
+
+[File Format Coverage](./coverage.md)
+
+## Usage
+
 ```
   fileid {file} [format]
 	 {file} - required path the file in question
 	 [format] - optional output format (TEXT [default], CSV, JSON, XML)
 ```
 
-# Examples
+## Examples
+
 * Exe with JSON output
+
 ```
 	fileid c:\windows\notepad.exe json
 	{
@@ -25,7 +41,9 @@ Build scripts are included for both gcc/g++ (>=5.1) (via makefile) and Microsoft
 	 ]
 	}
 ```
+
 * XLS with XML output
+
 ```
 	fileid C:\TestFiles\Sample\Good.macro.xls xml
 	<file>
@@ -125,6 +143,5 @@ Attribute VB_Customizable = True
 ]]></Code></Module>,<Module><Name></Name><StreamName></StreamName><Offset>0</Offset><isPrivate>0</isPrivate><isReadOnly>0</isReadOnly><Code><![CDATA[]]></Code></Module></Modules></item>
 	</extensions>
 </file>
-
 
 ```
