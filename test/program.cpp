@@ -311,32 +311,135 @@ TEST_SUITE("common") {
 	}
 	TEST_CASE("isbase64") {
 		SUBCASE("basic") {
-			CHECK(common::is_base64('a'));
-			CHECK(common::is_base64('2'));
-			CHECK(common::is_base64('+'));
-			CHECK(common::is_base64('/'));
-			CHECK_FALSE(common::is_base64('\0'));
-			CHECK_FALSE(common::is_base64(' '));
-			CHECK_FALSE(common::is_base64('^'));
+			CHECK(common::base64::is_base64('a'));
+			CHECK(common::base64::is_base64('2'));
+			CHECK(common::base64::is_base64('+'));
+			CHECK(common::base64::is_base64('/'));
+			CHECK_FALSE(common::base64::is_base64('\0'));
+			CHECK_FALSE(common::base64::is_base64(' '));
+			CHECK_FALSE(common::base64::is_base64('^'));
 		}
 	}
 	TEST_CASE("base64_encode") {
 		SUBCASE("basic") {
-			CHECK_EQ(common::base64_encode((unsigned char*)&"test", 4), "dGVzdA==");
-			CHECK_EQ(common::base64_encode((unsigned char*)&" ", 1), "IA==");
-			CHECK_EQ(common::base64_encode((unsigned char*)&"The quick brown fox jumped over the lazy dog.", 45), "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cu");
-			CHECK_EQ(common::base64_encode((unsigned char*)&"<foo this)@$( test 0598ag", 25), "PGZvbyB0aGlzKUAkKCB0ZXN0IDA1OThhZw==");
+			CHECK_EQ(common::base64::base64_encode((unsigned char*)&"test", 4), "dGVzdA==");
+			CHECK_EQ(common::base64::base64_encode((unsigned char*)&" ", 1), "IA==");
+			CHECK_EQ(common::base64::base64_encode((unsigned char*)&"The quick brown fox jumped over the lazy dog.", 45), "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cu");
+			CHECK_EQ(common::base64::base64_encode((unsigned char*)&"<foo this)@$( test 0598ag", 25), "PGZvbyB0aGlzKUAkKCB0ZXN0IDA1OThhZw==");
 		}
 	}
 	TEST_CASE("base64_decode") {
 		SUBCASE("basic") {
-			CHECK_EQ(common::base64_decode("dGVzdA=="), "test");
-			CHECK_EQ(common::base64_decode("IA=="), " ");
-			CHECK_EQ(common::base64_decode("VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cu"), "The quick brown fox jumped over the lazy dog.");
-			CHECK_EQ(common::base64_decode("PGZvbyB0aGlzKUAkKCB0ZXN0IDA1OThhZw=="), "<foo this)@$( test 0598ag");
+			CHECK_EQ(common::base64::base64_decode("dGVzdA=="), "test");
+			CHECK_EQ(common::base64::base64_decode("IA=="), " ");
+			CHECK_EQ(common::base64::base64_decode("VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cu"), "The quick brown fox jumped over the lazy dog.");
+			CHECK_EQ(common::base64::base64_decode("PGZvbyB0aGlzKUAkKCB0ZXN0IDA1OThhZw=="), "<foo this)@$( test 0598ag");
+		}
+	}
+	TEST_CASE("ExtractBits") {
+		SUBCASE("basic-1bit") {
+			CHECK_EQ(common::ExtractBits(0xAA, 1, 0), 0);//since it is 1-based offset, the 0th bit does not exist
+			CHECK_EQ(common::ExtractBits(0xAA, 1, 1), 0);
+			CHECK_EQ(common::ExtractBits(0xAA, 1, 2), 1);
+			CHECK_EQ(common::ExtractBits(0xAA, 1, 3), 0);
+			CHECK_EQ(common::ExtractBits(0xAA, 1, 4), 1);
+			CHECK_EQ(common::ExtractBits(0xAA, 1, 5), 0);
+			CHECK_EQ(common::ExtractBits(0xAA, 1, 6), 1);
+			CHECK_EQ(common::ExtractBits(0xAA, 1, 7), 0);
+			CHECK_EQ(common::ExtractBits(0xAA, 1, 8), 1);
+			CHECK_EQ(common::ExtractBits(0xAA, 1, 9), 0);//since it is 1-based offset and an 8 bit input, the 9th bit does not exist
+		}
+		SUBCASE("basic-2bit") {
+			CHECK_EQ(common::ExtractBits(0xBA, 2, 0), 0);//since it is 1-based offset, the 0th bit does not exist
+			CHECK_EQ(common::ExtractBits(0xBA, 2, 1), 2);
+			CHECK_EQ(common::ExtractBits(0xBA, 2, 2), 1);
+			CHECK_EQ(common::ExtractBits(0xBA, 2, 3), 2);
+			CHECK_EQ(common::ExtractBits(0xBA, 2, 4), 3);
+			CHECK_EQ(common::ExtractBits(0xBA, 2, 5), 3);
+			CHECK_EQ(common::ExtractBits(0xBA, 2, 6), 1);
+			CHECK_EQ(common::ExtractBits(0xBA, 2, 7), 2);
+			CHECK_EQ(common::ExtractBits(0xBA, 2, 8), 1);
+			CHECK_EQ(common::ExtractBits(0xBA, 2, 9), 0);//since it is 1-based offset and an 8 bit input, the 9th bit does not exist
+		}
+	}	
+	TEST_CASE("VerifyGuids") {
+		unsigned char test1[] = { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 };
+		unsigned char test2[] = { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01 };
+		unsigned char test3[] = { 0x01,0x23,0x45,0x67,0x89,0xAB,0xCD,0xEF,0x01,0x23,0x45,0x67,0x89,0xAB,0xCD,0xEF };
+		unsigned char test4[] = { 0x01,0x23,0x45,0x67,0x89,0xAB,0xCD,0xEF,0x01,0x23,0x45,0x67,0x89,0xAB,0xCD,0xEF };
+		SUBCASE("basic") {
+			CHECK(common::VerifyGuids(test3, test4));
+			CHECK(common::VerifyGuids(test4, test3));
+			CHECK_FALSE(common::VerifyGuids(test1, test2));
+			CHECK_FALSE(common::VerifyGuids(test1, test3));
+			CHECK_FALSE(common::VerifyGuids(test1, test4));
+			CHECK_FALSE(common::VerifyGuids(test2, test1));
+			CHECK_FALSE(common::VerifyGuids(test2, test3));
+			CHECK_FALSE(common::VerifyGuids(test2, test4));			
+			CHECK_FALSE(common::VerifyGuids(test3, test1));
+			CHECK_FALSE(common::VerifyGuids(test3, test2));
+			CHECK_FALSE(common::VerifyGuids(test4, test1));
+			CHECK_FALSE(common::VerifyGuids(test4, test2));
+		}
+	}
+	TEST_CASE("JsonEscape") {
+		SUBCASE("basic") {
+			CHECK_EQ(common::JsonEscape("test"), "test");
+			CHECK_EQ(common::JsonEscape("\ttest\r\n"), "\\ttest\\r\\n");
+			CHECK_EQ(common::JsonEscape("\"test\""), "\\\"test\\\"");
+			CHECK_EQ(common::JsonEscape("foo¢bar"), "foo\\u00A2bar");
+		}
+	}
+	TEST_CASE("helper.vector_join") {
+		auto h = new common::helper();
+		std::vector<char> t0{};
+		std::vector<std::string> t1{ "one","two","three" };
+		std::vector<int> t2{ 1,2,3,4 };
+		
+		SUBCASE("basic-string") {
+			CHECK_EQ(h->vector_join(t1, "|", false), "one|two|three");
+			CHECK_EQ(h->vector_join(t1, ",", true), "\"one\",\"two\",\"three\"");
+		}
+		SUBCASE("basic-int") {
+			CHECK_EQ(h->vector_join(t2, "|", false), "1|2|3|4");
+			CHECK_EQ(h->vector_join(t2, ",", true), "\"1\",\"2\",\"3\",\"4\"");
+		}
+		SUBCASE("empty") {
+			CHECK_EQ(h->vector_join(t0, "|", false), "");
+			CHECK_EQ(h->vector_join(t0, ",", true), "");
 		}
 	}
 
 
+	TEST_CASE("ReadUShort") {
+		WARN("Not Implemented");
+	}
+	TEST_CASE("ReadSShort") {
+		WARN("Not Implemented");
+	}
+	TEST_CASE("ReadUInt") {
+		WARN("Not Implemented");
+	}
+	TEST_CASE("ReadSInt") {
+		WARN("Not Implemented");
+	}
+	TEST_CASE("ReadULong") {
+		WARN("Not Implemented");
+	}
+	TEST_CASE("ReadULongLong") {
+		WARN("Not Implemented");
+	}
+	TEST_CASE("ReadString") {
+		WARN("Not Implemented");
+	}
+	TEST_CASE("ReadWString") {
+		WARN("Not Implemented");
+	}
+	TEST_CASE("ReadFloat") {
+		WARN("Not Implemented");
+	}
+	TEST_CASE("ReadDouble") {
+		WARN("Not Implemented");
+	}
 }
 

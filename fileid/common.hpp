@@ -196,7 +196,7 @@ namespace common {
 		return ans;
 	}
 
-	//ExtractBits - extracts a single bit from a single byte number
+	//ExtractBits - extracts a single bit from a single byte number, offset is 1-based
 	unsigned char ExtractBits(unsigned char num, unsigned short bitCount, unsigned short bitOffset) {
 		return ((1 << bitCount) - 1) & (num >> (bitOffset - 1));
 	}
@@ -350,7 +350,7 @@ namespace common {
 		return t->v;
 	}
 
-
+	//checkMagic - checks one buffer against another buffer
 	bool checkMagic(const unsigned char* actual, std::size_t actualLength, const unsigned char* expected, std::size_t expectedLength, unsigned int offset) {
 		bool ans = true;
 
@@ -374,6 +374,7 @@ namespace common {
 		return ans;
 	}
 
+	//JsonEscape - escapes a string to be safe for JSON
 	static std::string JsonEscape(const std::string& source) {
 		std::string result;
 		for (const char* c = source.c_str(); *c != 0; ++c) {
@@ -520,7 +521,7 @@ namespace common {
 	typedef std::vector<ExtensionInfo*>(*ExtraDataFunc)(const std::string, std::vector<unsigned char>);
 
 
-	typedef struct MagicInfo {
+	struct MagicInfo {
 		std::string Extension;
 		std::string Name;
 		std::string Version;
@@ -542,7 +543,7 @@ namespace common {
 				this->extraFunc = ename;
 			}
 		}
-	} MagicInfo;
+	};
 
 	OutputFormat ParseOutputFormat(std::string input) {
 		std::unordered_map<std::string, OutputFormat> map = {
@@ -560,52 +561,6 @@ namespace common {
 		}
 	}
 
-	// taken from: http://stackoverflow.com/questions/7775991/how-to-get-hexdump-of-a-structure-data/7776146#7776146
-	void hexDump(const char* desc, const void* addr, size_t len) {
-		size_t i;
-		unsigned char buff[17];
-		unsigned char* pc = (unsigned char*)addr;
-
-		// Output description if given.
-		if (desc != NULL)
-			printf("%s:\n", desc);
-
-		// Process every byte in the data.
-		for (i = 0; i < len; i++) {
-			// Multiple of 16 means new line (with line offset).
-
-			if ((i % 16) == 0) {
-				// Just don't print ASCII for the zeroth line.
-				if (i != 0)
-					printf("  %s\n", buff);
-
-				// Output the offset.
-				printf("  %04x ", static_cast<unsigned int>(i));
-			}
-
-			// Now the hex code for the specific character.
-			printf(" %02x", pc[i]);
-
-			// And store a printable ASCII character for later.
-			if ((pc[i] < 0x20) || (pc[i] > 0x7e))
-				buff[i % 16] = '.';
-			else
-				buff[i % 16] = pc[i];
-			buff[(i % 16) + 1] = '\0';
-		}
-
-		// Pad out last line if not exactly 16 characters.
-		while ((i % 16) != 0) {
-			printf("   ");
-			i++;
-		}
-
-		// And print the final ASCII bit.
-		printf("  %s\n", buff);
-	}
-
-
-	std::string const base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 	class helper
 	{
@@ -629,91 +584,94 @@ namespace common {
 		}
 	};
 
+	namespace base64 {
+		std::string const base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+		inline bool is_base64(unsigned char c) {
+			return (isalnum(c) || (c == '+') || (c == '/'));
+		}
+		std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
+			std::string ret;
+			int i = 0;
+			int j = 0;
+			unsigned char char_array_3[3];
+			unsigned char char_array_4[4];
 
-	inline bool is_base64(unsigned char c) {
-		return (isalnum(c) || (c == '+') || (c == '/'));
-	}
-	std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
-		std::string ret;
-		int i = 0;
-		int j = 0;
-		unsigned char char_array_3[3];
-		unsigned char char_array_4[4];
+			while (in_len--) {
+				char_array_3[i++] = *(bytes_to_encode++);
+				if (i == 3) {
+					char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+					char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+					char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+					char_array_4[3] = char_array_3[2] & 0x3f;
 
-		while (in_len--) {
-			char_array_3[i++] = *(bytes_to_encode++);
-			if (i == 3) {
+					for (i = 0; (i < 4); i++)
+						ret += base64_chars[char_array_4[i]];
+					i = 0;
+				}
+			}
+
+			if (i)
+			{
+				for (j = i; j < 3; j++)
+					char_array_3[j] = '\0';
+
 				char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
 				char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
 				char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
 				char_array_4[3] = char_array_3[2] & 0x3f;
 
-				for (i = 0; (i < 4); i++)
-					ret += base64_chars[char_array_4[i]];
-				i = 0;
+				for (j = 0; (j < i + 1); j++)
+					ret += base64_chars[char_array_4[j]];
+
+				while ((i++ < 3))
+					ret += '=';
+
 			}
-		}
 
-		if (i)
-		{
-			for (j = i; j < 3; j++)
-				char_array_3[j] = '\0';
-
-			char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
-			char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
-			char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
-			char_array_4[3] = char_array_3[2] & 0x3f;
-
-			for (j = 0; (j < i + 1); j++)
-				ret += base64_chars[char_array_4[j]];
-
-			while ((i++ < 3))
-				ret += '=';
+			return ret;
 
 		}
+		std::string base64_decode(std::string const& encoded_string) {
+			size_t in_len = encoded_string.size();
+			size_t i = 0;
+			size_t j = 0;
+			int in_ = 0;
+			unsigned char char_array_4[4], char_array_3[3];
+			std::string ret;
 
-		return ret;
+			while (in_len-- && (encoded_string[in_] != '=') && is_base64(encoded_string[in_])) {
+				char_array_4[i++] = encoded_string[in_]; in_++;
+				if (i == 4) {
+					for (i = 0; i < 4; i++)
+						char_array_4[i] = static_cast<unsigned char>(base64_chars.find(char_array_4[i]));
 
-	}
-	std::string base64_decode(std::string const& encoded_string) {
-		size_t in_len = encoded_string.size();
-		size_t i = 0;
-		size_t j = 0;
-		int in_ = 0;
-		unsigned char char_array_4[4], char_array_3[3];
-		std::string ret;
+					char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+					char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+					char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
 
-		while (in_len-- && (encoded_string[in_] != '=') && is_base64(encoded_string[in_])) {
-			char_array_4[i++] = encoded_string[in_]; in_++;
-			if (i == 4) {
-				for (i = 0; i < 4; i++)
-					char_array_4[i] = static_cast<unsigned char>(base64_chars.find(char_array_4[i]));
+					for (i = 0; (i < 3); i++)
+						ret += char_array_3[i];
+					i = 0;
+				}
+			}
+
+			if (i) {
+				for (j = i; j < 4; j++)
+					char_array_4[j] = 0;
+
+				for (j = 0; j < 4; j++)
+					char_array_4[j] = static_cast<unsigned char>(base64_chars.find(char_array_4[j]));
 
 				char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
 				char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
 				char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
 
-				for (i = 0; (i < 3); i++)
-					ret += char_array_3[i];
-				i = 0;
+				for (j = 0; (j < i - 1); j++) ret += char_array_3[j];
 			}
+
+			return ret;
 		}
 
-		if (i) {
-			for (j = i; j < 4; j++)
-				char_array_4[j] = 0;
-
-			for (j = 0; j < 4; j++)
-				char_array_4[j] = static_cast<unsigned char>(base64_chars.find(char_array_4[j]));
-
-			char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
-			char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-			char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
-
-			for (j = 0; (j < i - 1); j++) ret += char_array_3[j];
-		}
-
-		return ret;
 	}
 
 	template<class T>
