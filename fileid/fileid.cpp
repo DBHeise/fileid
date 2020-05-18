@@ -14,11 +14,6 @@
 #include "details.hpp"
 #include "unknown.hpp"
 
-void dumpFile(std::string file) {
-	std::vector<unsigned char> buffer = common::readFile(file, STD_BUFFER_SIZE);
-	common::hexDump(file.c_str(), buffer.data(), buffer.size());
-}
-
 void showUsage() {
 	std::cout << "fileid {file} [format]" << std::endl;
 }
