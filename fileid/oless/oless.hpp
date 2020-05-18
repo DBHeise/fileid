@@ -241,11 +241,15 @@ namespace OleStructuredStorage {
 			{
 				std::string name = *it;
 				std::string fullname = path + name;
-
+				
 				(this->*pCallback)(storage, name, fullname);
 				if (storage->isDirectory(fullname))
 				{
 					this->recurse(storage, fullname + "/", pCallback);
+				}
+				else 
+				{
+					this->m_paths.push_back(fullname);
 				}
 			}
 		}
