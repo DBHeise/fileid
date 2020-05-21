@@ -84,13 +84,13 @@ namespace oless {
 					std::ostringstream str;
 					str << "<Record>";
 					str << this->getBaseXml();
-					str << "<fBuiltin>" << this->header->fBuiltin << "</fBuiltin>";
-					str << "<fWantAdvise>" << this->header->fWantAdvise << "</fWantAdvise>";
-					str << "<fWantPict>" << this->header->fWantPict << "</fWantPict>";
-					str << "<fOle>" << this->header->fOle << "</fOle>";
-					str << "<fOleLink>" << this->header->fOleLink << "</fOleLink>";
-					str << "<cf>" << this->header->cf << "</cf>";
-					str << "<fIcon>" << this->header->fBuiltin << "</fIcon>";
+					str << "<fBuiltin>" << (unsigned short)this->header->fBuiltin << "</fBuiltin>";
+					str << "<fWantAdvise>" << (unsigned short)this->header->fWantAdvise << "</fWantAdvise>";
+					str << "<fWantPict>" << (unsigned short)this->header->fWantPict << "</fWantPict>";
+					str << "<fOle>" << (unsigned short)this->header->fOle << "</fOle>";
+					str << "<fOleLink>" << (unsigned short)this->header->fOleLink << "</fOleLink>";
+					str << "<cf>" << (unsigned short)this->header->cf << "</cf>";
+					str << "<fIcon>" << (unsigned short)this->header->fBuiltin << "</fIcon>";
 					if (this->hasAddinUdf) {
 						str << "<addinUdf>" << this->addinUdf << "</addinUdf>";
 					}

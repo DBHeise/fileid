@@ -246,7 +246,7 @@ namespace oless {
 						if (this->flags != nullptr) {
 							str << this->flags->ToXML();
 							str << this->encHeader->ToXML();
-							str << "<CSPName>" << common::convert(this->cspName) << "</CSPName>";
+							str << "<CSPName>" << common::XmlEscape(common::erasenulls(common::convert(this->cspName))) << "</CSPName>";
 							str << this->verifier->ToXML();
 							str << "<EncryptedVerifierHash>" << common::bin2hex11(this->verifierHash) << "</EncryptedVerifierHash>";
 						} else if (this->salt.size() > 0) {
@@ -282,7 +282,7 @@ namespace oless {
 						if (this->flags != nullptr) {
 							str << this->flags->ToJSON() << ",";
 							str << this->encHeader->ToJSON() << ",";
-							str << "\"CSPName\":\"" << common::convert(this->cspName) << "\",";
+							str << "\"CSPName\":\"" << common::JsonEscape(common::erasenulls(common::convert(this->cspName))) << "\",";
 							str << this->verifier->ToJSON() << ",";
 							str << "\"EncryptedVerifierHash\":\"" << common::bin2hex11(this->verifierHash) << "\"";
 						}

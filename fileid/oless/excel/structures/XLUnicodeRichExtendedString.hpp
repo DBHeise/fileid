@@ -55,13 +55,14 @@ namespace oless {
 					if (ans.fHighByte == 0x0) {
 						std::string name(reinterpret_cast<char const*>(buffer + index), byteCount);
 						ans.rgb = name;
+						index += byteCount;
 					}
 					else {
 						std::wstring wname(reinterpret_cast<wchar_t const*>(buffer + index), byteCount);
-						ans.rgb = common::convert(wname);
+						ans.rgb = common::erasenulls(common::convert(wname));
+						index += (byteCount*2);
 					}
 
-					index += byteCount;
 
 					if (ans.fRichSt == 0x1) {
 						//TODO: Read array of FormatRun structures
