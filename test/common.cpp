@@ -38,13 +38,16 @@ TEST_SUITE("common") {
 	TEST_CASE("FileTimeToString") {
 		SUBCASE("basic") {
 			SUBCASE("zero") {
-				CHECK(common::FileTimeToString(0) == "1601-01-01 00:00:00");
+				CHECK_EQ(common::FileTimeToString(0), "1601-01-01 00:00:00");
 			}
 			SUBCASE("one") {
-				CHECK(common::FileTimeToString(1) == "1601-01-01 00:00:00");
+				CHECK_EQ(common::FileTimeToString(1), "1601-01-01 00:00:00");
 			}
 			SUBCASE("normal") {
-				CHECK(common::FileTimeToString(132223284000000000) == "2020-01-01 00:00:00");
+				CHECK_EQ(common::FileTimeToString(132223284000000000), "2020-01-01 00:00:00");
+			}
+			SUBCASE("real") {
+				CHECK_EQ(common::FileTimeToString(14757395258967641292), "invalid time");
 			}
 		}
 	}

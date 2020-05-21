@@ -59,14 +59,22 @@ namespace common {
 		time_t t = convertFILETIME(time);
 		if (t > 0) {
 			struct tm dt;
-			char buffer[STD_BUFFER_SIZE] = { 0 };			
+			char buffer[STD_BUFFER_SIZE] = { 0 };		
+			bool localTimeErr = false;
 #ifdef WIN32
 			localtime_s(&dt, &t);
+			localTimeErr = dt.tm_mon == -1;
 #else
 			localtime_r(&t, &dt);
+			localTimeErr = errno == EOVERFLOW;
 #endif
-			strftime(buffer, STD_BUFFER_SIZE, "%F %T", &dt);
-			return std::string(buffer);
+			if (!localTimeErr) {
+				strftime(buffer, STD_BUFFER_SIZE, "%F %T", &dt);
+				return std::string(buffer);
+			}
+			else {
+				return "invalid time";
+			}
 		}
 		return "1601-01-01 00:00:00";
 	}
@@ -460,13 +468,28 @@ namespace common {
 		return result;
 	}
 
-	class IExportable {
+	class IJsonExportable {
 	public:
 		virtual std::string ToJson() const = 0;
+	};
+	class IXmlExportable {
+	public:
 		virtual std::string ToXml() const = 0;
+	};
+	class IMiniExportable: public IJsonExportable, public IXmlExportable {
+
+	};
+	class ICsvExportable {
+	public:
 		virtual std::string ToCsv() const = 0;
+	};
+	class ITxtExportable {
+	public:
 		virtual std::string ToText() const = 0;
 	};
+	class IExportable : public IMiniExportable, public ICsvExportable, public ITxtExportable { };
+
+
 
 	class ExtensionInfo : public IExportable {
 	protected:
