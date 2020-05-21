@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Record.hpp"
+#include "../structures/XLUnicodeString.hpp"
 
-namespace OleStructuredStorage {
-	namespace Excel {
-		namespace Records {
+namespace oless {
+	namespace excel {
+		namespace records {
 
 	
 			class CodeNameRecord : public Record {
@@ -13,7 +14,7 @@ namespace OleStructuredStorage {
 			public:
 				CodeNameRecord(unsigned short type, std::vector<uint8_t> data) : Record(type, data)
 				{
-					this->name = Excel::XLUnicodeString::Read(this->Data.data(), 0, this->Data.size()).string;
+					this->name = excel::structures::XLUnicodeString::Read(this->Data.data(), 0, this->Data.size()).string;
 				}
 
 				std::string ToXml() const override

@@ -1,8 +1,8 @@
 #pragma once
 #include "../../common.hpp"
 
-namespace OleStructuredStorage {
-	namespace OlePropertySet {
+namespace oless {
+	namespace propset {
 		enum class FormatId {
 			FMTID_Unknown,
 			FMTID_SummaryInformation,

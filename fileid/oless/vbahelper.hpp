@@ -18,7 +18,7 @@
 #define __max(a,b)  (((a) > (b)) ? (a) : (b))
 #define __min(a,b)  (((a) < (b)) ? (a) : (b))
 
-namespace OleStructuredStorage {
+namespace oless {
 	namespace VBA {
 
 		struct MODULEOFFSET {
@@ -152,7 +152,7 @@ namespace OleStructuredStorage {
 					str << ", \"VBAVersionMinor\" : " << this->VBAVersionMinor;
 				}
 				if (this->References.size() > 0) {
-					str << ", \"References\" : [" << common::helper::vector_join(this->References, ",", true) << "]";
+					str << ", \"References\" : [" << common::vector_join(this->References, ",", true) << "]";
 				}
 				if (this->Modules.size() > 0) {
 					str << ", \"Modules\" : [";
@@ -341,7 +341,7 @@ namespace OleStructuredStorage {
 
 				//Read VBA Version
 				POLE::Stream* stream = new POLE::Stream(vbaStorage, fullname + "/VBA/_VBA_PROJECT");
-				VBAProjectStreamHeader* header = OleStructuredStorage::OleHelper::GetStructFromStream<VBAProjectStreamHeader>(stream);
+				VBAProjectStreamHeader* header = oless::OleHelper::GetStructFromStream<VBAProjectStreamHeader>(stream);
 				ans->Version = header->Version;
 				delete stream;
 

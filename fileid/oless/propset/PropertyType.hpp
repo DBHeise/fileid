@@ -1,8 +1,8 @@
 #pragma once
 #include "../../common.hpp"
 
-namespace OleStructuredStorage {
-	namespace OlePropertySet {
+namespace oless {
+	namespace propset {
 
 		typedef unsigned int PropertyType;
 

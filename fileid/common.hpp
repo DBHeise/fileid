@@ -559,28 +559,18 @@ namespace common {
 		}
 	}
 
-
-	class helper
-	{
-
-	public:
-		helper() {}
-		~helper() {}
-
-
-		template<class T>
-		static std::string vector_join(const std::vector<T>& v, const std::string& token, const bool useQuotes = false) {
-			std::ostringstream result;
-			for (typename std::vector<T>::const_iterator i = v.begin(); i != v.end(); i++) {
-				if (i != v.begin()) result << token;
-				if (useQuotes)
-					result << "\"" << *i << "\"";
-				else
-					result << *i;
+	template<class T> std::string vector_join(const std::vector<T>& v, const std::string& token, const bool useQuotes = false) {
+		std::ostringstream result;
+		for (typename std::vector<T>::const_iterator i = v.begin(); i != v.end(); i++) {
+			if (i != v.begin()) result << token;
+			if (useQuotes) {
+				result << "\"" << *i << "\"";
+			} else {
+				result << *i;
 			}
-			return result.str();
 		}
-	};
+		return result.str();
+	}
 
 	template<class T>
 	void Output(OutputFormat format, std::string file, std::string headerName, std::vector<T*> summary) {

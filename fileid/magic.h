@@ -201,7 +201,7 @@ void initList() {
 	list.push_back(new common::MagicInfo("bmp", "Bitmap Image", "OS/2 Pointer", 0, 2, magic_bmpOS2p, nullptr));
 	list.push_back(new common::MagicInfo("psp", "Corel Paint Shop Pro Image file", "", 0, 25, magic_psp, nullptr));
 	list.push_back(new common::MagicInfo("jbf", "Corel Paint Shop Pro browse file", "", 0, 15, magic_jbf, nullptr));
-	list.push_back(new common::MagicInfo("oless", "OLE Structured Storage", "", 0, 4, magic_oless, OleStructuredStorage::Detailer));
+	list.push_back(new common::MagicInfo("oless", "OLE Structured Storage", "", 0, 4, magic_oless, oless::Detailer));
 	list.push_back(new common::MagicInfo("ps", "PostScript document", "", 0, 4, magic_ps, nullptr));
 	list.push_back(new common::MagicInfo("pdf", "PDF document", "", 0, 4, magic_pdf, nullptr));
 	list.push_back(new common::MagicInfo("db", "SQLLite Database File", "", 0, 16, magic_db, nullptr));

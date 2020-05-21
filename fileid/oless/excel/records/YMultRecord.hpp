@@ -2,9 +2,9 @@
 
 #include "Record.hpp"
 
-namespace OleStructuredStorage {
-	namespace Excel {
-		namespace Records {
+namespace oless {
+	namespace excel {
+		namespace records {
 
 			class YMultRecord : public Record {
 			public:

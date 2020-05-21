@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Record.hpp"
+#include "../structures/XLUnicodeStringSegmented.hpp"
 
-namespace OleStructuredStorage {
-	namespace Excel {
-		namespace Records {
+namespace oless {
+	namespace excel {
+		namespace records {
 			namespace DConn {
 
 				class Connection : public common::IExportable {
@@ -19,7 +20,7 @@ namespace OleStructuredStorage {
 				public:
 					static ConnectionString* Read(const unsigned char* buffer, const unsigned int offset, const unsigned int max) {
 						ConnectionString* ans = new ConnectionString();
-						auto tmp = XLUnicodeStringSegmented::Read(buffer, offset, max);
+						auto tmp = oless::excel::structures::XLUnicodeStringSegmented::Read(buffer, offset, max);
 						ans->bytesRead = tmp.bytesRead;
 						ans->connstr = tmp.ToOneString();
 						return ans;
@@ -46,7 +47,7 @@ namespace OleStructuredStorage {
 						ConnectionWeb* ans = new ConnectionWeb();
 						unsigned int index = offset;
 
-						auto tmp = XLUnicodeStringSegmented::Read(buffer, index, max);
+						auto tmp = oless::excel::structures::XLUnicodeStringSegmented::Read(buffer, index, max);
 						ans->bytesRead = tmp.bytesRead;
 						index += tmp.bytesRead;
 						ans->url = tmp.ToOneString();
@@ -104,7 +105,7 @@ namespace OleStructuredStorage {
 
 						for (int i = 0; i < ans->cOleDb; i++)
 						{
-							auto tmp = XLUnicodeStringSegmented::Read(buffer, index, max);
+							auto tmp = oless::excel::structures::XLUnicodeStringSegmented::Read(buffer, index, max);
 							index += tmp.bytesRead;
 							ans->rgConn.push_back(tmp.ToOneString());
 						}
@@ -182,7 +183,7 @@ namespace OleStructuredStorage {
 						DConnParameter ans;
 						unsigned int index = offset;
 
-						auto tmp = XLUnicodeStringSegmented::Read(buffer, index, max);
+						auto tmp = oless::excel::structures::XLUnicodeStringSegmented::Read(buffer, index, max);
 						index += tmp.bytesRead;
 						ans.name = tmp.ToOneString();
 

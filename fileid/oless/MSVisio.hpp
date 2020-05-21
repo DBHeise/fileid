@@ -1,6 +1,6 @@
 #ifndef MSVISIO_H
 #define MSVISIO_H
-namespace OleStructuredStorage {
+namespace oless {
 	namespace Visio {
 
 		static const char VISIO[] = "Visio (TM) Drawing\x0d\x0a"; //24

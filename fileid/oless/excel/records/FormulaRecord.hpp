@@ -1,57 +1,43 @@
 #pragma once
 
 #include "Record.hpp"
-#include "..\MSExcel.formulas.hpp"
-#include "..\MSExcel.ptg.hpp"
+#include "../structures/formulas/FormulaHeader.hpp"
+#include "../structures/formulas/CellParsedFormula.hpp"
+#include "../structures/formulas/Ptg.hpp"
 
-
-namespace OleStructuredStorage {
-	namespace Excel {
-		namespace Records {
-
-			// see: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/6cdf7d38-d08c-4e56-bd2f-6c82b8da752e
-			// The Rgce structure specifies a set of Ptgs, laid out sequentially in the file.
-			struct Rgce {
-
-			};
-
-			// see: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/70f743b2-a853-4c57-88be-8af637ac6e43
-			// The RgbExtra structure specifies a set of structures, laid out sequentially in the file, that correspond to and MUST exist for certain Ptgs in the Rgce. 
-			struct RgbExtra {
-
-			};
-
-			// see: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/7dd67f0a-671d-4905-b87b-4cc07295e442
-			// The CellParsedFormula structure specifies a formula (section 2.2.2) stored in a cell.
-			struct CellParsedFormula {
-				unsigned short cce;
-				Rgce rgce;
-				RgbExtra rgcb;
-			};
+namespace oless {
+	namespace excel {
+		namespace records {
 
 
 			class FormulaRecord : public Record {
 			private:
-				FormulaHeader* header;
-				CellParsedFormula* cpFormula;
-				std::vector<Formulas::Ptg*> children;
+				excel::structures::formulas::FormulaHeader* header;
+				excel::structures::formulas::CellParsedFormula* cpFormula;
+				std::vector<excel::structures::formulas::Ptg*> children;
 				std::string formula;
 
 			public:
 				FormulaRecord(unsigned short type, std::vector<uint8_t> data) : Record(type, data)
 				{
 					auto buffer = this->Data.data();
-					unsigned int maxBuffer = this->Data.size();
-					this->header = reinterpret_cast<FormulaHeader*>(buffer);
-					unsigned int index = 20;
+					auto maxBuffer = this->Data.size();
+					unsigned int index = 0;
 					unsigned int bytesRead = 0;
+
+					this->header = reinterpret_cast<excel::structures::formulas::FormulaHeader*>(buffer);
+					index += 20;
+
 					unsigned short max = common::ReadUShort(buffer, maxBuffer, index);
 					index += 2;
 
-					this->children = Formulas::Parse(buffer, index, maxBuffer);
+					auto rgce = new excel::structures::formulas::Rgce();
+					rgce->Parse(buffer, maxBuffer, index);
+					this->children = rgce->list;
+					index += rgce->bytesRead;
 
 					std::ostringstream ss;
-					for (std::vector<Formulas::Ptg*>::const_iterator it = this->children.begin(); it != this->children.end(); it++) {
+					for (std::vector<excel::structures::formulas::Ptg*>::const_iterator it = this->children.begin(); it != this->children.end(); it++) {
 						if (it != this->children.begin()) { ss << ";"; }
 						ss << (*it)->to_string();
 					}

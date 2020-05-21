@@ -1,12 +1,13 @@
 #pragma once
 
+#include <string>
 #include <vector>
 #include <sstream>
-#include "Record.hpp"
 
-namespace OleStructuredStorage {
-	namespace Excel {
-		namespace Records {
+namespace oless {
+	namespace excel {
+
+		namespace records {
 
 			/*
 			CSV taken from table given here: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/7d9326d6-691a-4fa1-8dce-42082f38e943
@@ -378,27 +379,37 @@ namespace OleStructuredStorage {
 			}
 
 			class Record : public common::IExportable {
-			private:
+			protected:
+				virtual std::string getBaseXml() const {
+					std::ostringstream str;
+					str << "<Type>" << GetRecordTypeStr(this->Type) << "</Type>";
+					str << "<Length>" << this->Length << "</Length>";
+					return str.str();
+				}
+				virtual std::string getBaseJson() const {
+					std::ostringstream str;
+					str << "\"Type\":\"" << GetRecordTypeStr(this->Type) << "\",";
+					str << "\"Length\":" << this->Length;
+					return str.str();
 
+				}
 			public:
 				unsigned short		 Type;
-				unsigned short		 Length;
+				std::size_t			 Length;
 				std::vector<uint8_t> Data;
 
-				Record(unsigned short type, std::vector<uint8_t> data) :Record(type, data.size(), data) { }
-				Record(unsigned short type, unsigned short length, std::vector<uint8_t> data) 
+				Record(unsigned short type, std::vector<uint8_t> data)
 				{
 					this->Type = type;
-					this->Length = length;
 					this->Data = data;
+					this->Length = data.size();
 				}
 
 				virtual std::string ToXml() const
 				{
 					std::ostringstream str;
 					str << "<Record>";
-					str << "<Type>" << GetRecordTypeStr(this->Type) << "</Type>";
-					str << "<Length>" << this->Length << "</Length>";
+					str << this->getBaseXml();
 					str << "</Record>";
 					return str.str();
 				}
@@ -407,8 +418,7 @@ namespace OleStructuredStorage {
 				{
 					std::ostringstream str;
 					str << "{";
-					str << "\"Type\":\"" << GetRecordTypeStr(this->Type) << "\",";
-					str << "\"Length\":" << this->Length;
+					str << this->getBaseJson();
 					str << "}";
 					return str.str();
 				}
@@ -420,5 +430,18 @@ namespace OleStructuredStorage {
 			};
 
 		}
+
+
+		class IRecordParser {
+		public:
+			virtual records::Record* GetPrevRecord() = 0;
+			virtual records::Record* GetPrevRecordOfType(unsigned short type) = 0;
+			virtual records::Record* GetPrevRecordNotOfType(unsigned short type) = 0;
+		};
+
+		class IReParseable {
+		public:
+			virtual void ReParse(IRecordParser* p) = 0;
+		};
 	}
 }

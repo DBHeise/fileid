@@ -7,8 +7,8 @@
 #include "Property.hpp"
 
 
-namespace OleStructuredStorage {
-	namespace OlePropertySet {
+namespace oless {
+	namespace propset {
 			
 		struct PropertyIdentifierAndOffset {
 			PropertyIdentifier PropertyId;

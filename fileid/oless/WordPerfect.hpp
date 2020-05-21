@@ -6,7 +6,7 @@
 #include "../document/wp/wordperfect.hpp"
 
 
-namespace OleStructuredStorage {
+namespace oless {
 	namespace WordPerfect {
 
 

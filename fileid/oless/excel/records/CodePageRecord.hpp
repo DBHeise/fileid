@@ -2,9 +2,9 @@
 
 #include "Record.hpp"
 
-namespace OleStructuredStorage {
-	namespace Excel {
-		namespace Records {
+namespace oless {
+	namespace excel {
+		namespace records {
 
 			// see: https://docs.microsoft.com/en-us/windows/win32/intl/code-page-identifiers
 			std::string CPToString(unsigned short cp) {

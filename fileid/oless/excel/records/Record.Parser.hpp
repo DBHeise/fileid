@@ -3,9 +3,9 @@
 #include "Record.hpp"
 #include "Records.hpp"
 
-namespace OleStructuredStorage {
-	namespace Excel {
-		namespace Records {
+namespace oless {
+	namespace excel {
+		namespace records {
 
 			/*
 			CSV taken from table given here: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/7d9326d6-691a-4fa1-8dce-42082f38e943
@@ -14,7 +14,7 @@ namespace OleStructuredStorage {
 				$data | % { $_.RecordType = [int]$_.RecordType };
 				$data | sort RecordType | % { "case " + "0x{0:X4}" -f ([int]$_.RecordType) + ": r = (Record*)(new " + $_.Name +"Record(type, data)); break;"  } | Out-Clipboard
 			*/
-			Record* ParseRecord(unsigned short type, std::vector<uint8_t> data) {
+			Record* ParseRecord(IRecordParser* parser, unsigned short type, std::vector<uint8_t> data) {
 				Record* r = nullptr;
 				try {
 					switch (type) {
@@ -38,7 +38,7 @@ namespace OleStructuredStorage {
 					case 0x001C: r = (Record*)(new NoteRecord(type, data)); break;
 					case 0x001D: r = (Record*)(new SelectionRecord(type, data)); break;
 					case 0x0022: r = (Record*)(new Date1904Record(type, data)); break;
-					case 0x0023: r = (Record*)(new ExternNameRecord(type, data)); break;
+					case 0x0023: r = (Record*)(new ExternNameRecord(parser, type, data)); break;
 					case 0x0026: r = (Record*)(new LeftMarginRecord(type, data)); break;
 					case 0x0027: r = (Record*)(new RightMarginRecord(type, data)); break;
 					case 0x0028: r = (Record*)(new TopMarginRecord(type, data)); break;
@@ -48,7 +48,7 @@ namespace OleStructuredStorage {
 					case 0x002F: r = (Record*)(new FilePassRecord(type, data)); break;
 					case 0x0031: r = (Record*)(new FontRecord(type, data)); break;
 					case 0x0033: r = (Record*)(new PrintSizeRecord(type, data)); break;
-					case 0x003C: r = (Record*)(new ContinueRecord(type, data)); break;
+					case 0x003C: r = (Record*)(new ContinueRecord(parser, type, data)); break;
 					case 0x003D: r = (Record*)(new Window1Record(type, data)); break;
 					case 0x0040: r = (Record*)(new BackupRecord(type, data)); break;
 					case 0x0041: r = (Record*)(new PaneRecord(type, data)); break;
@@ -147,7 +147,7 @@ namespace OleStructuredStorage {
 					case 0x00F9: r = (Record*)(new SxFmlaRecord(type, data)); break;
 					case 0x00FB: r = (Record*)(new SxFormatRecord(type, data)); break;
 					case 0x00FC: r = (Record*)(new SSTRecord(type, data)); break;
-					case 0x00FD: r = (Record*)(new LabelSstRecord(type, data)); break;
+					case 0x00FD: r = (Record*)(new LabelSstRecord(parser, type, data)); break;
 					case 0x00FF: r = (Record*)(new ExtSSTRecord(type, data)); break;
 					case 0x0100: r = (Record*)(new SXVDExRecord(type, data)); break;
 					case 0x0103: r = (Record*)(new SXFormulaRecord(type, data)); break;
@@ -223,7 +223,7 @@ namespace OleStructuredStorage {
 					case 0x0293: r = (Record*)(new StyleRecord(type, data)); break;
 					case 0x0418: r = (Record*)(new BigNameRecord(type, data)); break;
 					case 0x041E: r = (Record*)(new FormatRecord(type, data)); break;
-					case 0x043C: r = (Record*)(new ContinueBigNameRecord(type, data)); break;
+					case 0x043C: r = (Record*)(new ContinueBigNameRecord(parser, type, data)); break;
 					case 0x04BC: r = (Record*)(new ShrFmlaRecord(type, data)); break;
 					case 0x0800: r = (Record*)(new HLinkTooltipRecord(type, data)); break;
 					case 0x0801: r = (Record*)(new WebPubRecord(type, data)); break;
@@ -242,7 +242,7 @@ namespace OleStructuredStorage {
 					case 0x080E: r = (Record*)(new SXPIExRecord(type, data)); break;
 					case 0x080F: r = (Record*)(new SXVDTExRecord(type, data)); break;
 					case 0x0810: r = (Record*)(new SXViewEx9Record(type, data)); break;
-					case 0x0812: r = (Record*)(new ContinueFrtRecord(type, data)); break;
+					case 0x0812: r = (Record*)(new ContinueFrtRecord(parser, type, data)); break;
 					case 0x0813: r = (Record*)(new RealTimeDataRecord(type, data)); break;
 					case 0x0850: r = (Record*)(new ChartFrtInfoRecord(type, data)); break;
 					case 0x0851: r = (Record*)(new FrtWrapperRecord(type, data)); break;
@@ -268,7 +268,7 @@ namespace OleStructuredStorage {
 					case 0x0871: r = (Record*)(new FeatHdr11Record(type, data)); break;
 					case 0x0872: r = (Record*)(new Feature11Record(type, data)); break;
 					case 0x0874: r = (Record*)(new DropDownObjIdsRecord(type, data)); break;
-					case 0x0875: r = (Record*)(new ContinueFrt11Record(type, data)); break;
+					case 0x0875: r = (Record*)(new ContinueFrt11Record(parser, type, data)); break;
 					case 0x0876: r = (Record*)(new DConnRecord(type, data)); break;
 					case 0x0877: r = (Record*)(new List12Record(type, data)); break;
 					case 0x0878: r = (Record*)(new Feature12Record(type, data)); break;
@@ -278,7 +278,7 @@ namespace OleStructuredStorage {
 					case 0x087C: r = (Record*)(new XFCRCRecord(type, data)); break;
 					case 0x087D: r = (Record*)(new XFExtRecord(type, data)); break;
 					case 0x087E: r = (Record*)(new AutoFilter12Record(type, data)); break;
-					case 0x087F: r = (Record*)(new ContinueFrt12Record(type, data)); break;
+					case 0x087F: r = (Record*)(new ContinueFrt12Record(parser, type, data)); break;
 					case 0x0884: r = (Record*)(new MDTInfoRecord(type, data)); break;
 					case 0x0885: r = (Record*)(new MDXStrRecord(type, data)); break;
 					case 0x0886: r = (Record*)(new MDXTupleRecord(type, data)); break;
@@ -305,7 +305,7 @@ namespace OleStructuredStorage {
 					case 0x089C: r = (Record*)(new HeaderFooterRecord(type, data)); break;
 					case 0x089D: r = (Record*)(new CrtLayout12Record(type, data)); break;
 					case 0x089E: r = (Record*)(new CrtMlFrtRecord(type, data)); break;
-					case 0x089F: r = (Record*)(new CrtMlFrtContinueRecord(type, data)); break;
+					case 0x089F: r = (Record*)(new CrtMlFrtContinueRecord(parser, type, data)); break;
 					case 0x08A3: r = (Record*)(new ForceFullCalculationRecord(type, data)); break;
 					case 0x08A4: r = (Record*)(new ShapePropsStreamRecord(type, data)); break;
 					case 0x08A5: r = (Record*)(new TextPropsStreamRecord(type, data)); break;

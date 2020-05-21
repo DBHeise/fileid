@@ -2,13 +2,13 @@
 
 #include "Record.hpp"
 
-namespace OleStructuredStorage {
-	namespace Excel {
-		namespace Records {
+namespace oless {
+	namespace excel {
+		namespace records {
 
 			class CrtMlFrtContinueRecord : public Record {
 			public:
-				CrtMlFrtContinueRecord(unsigned short type, std::vector<uint8_t> data) : Record(type, data) {
+				CrtMlFrtContinueRecord(IRecordParser* p, unsigned short type, std::vector<uint8_t> data) : Record(type, data) {
 
 				}
 			};

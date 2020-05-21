@@ -2,9 +2,9 @@
 
 #include "Record.hpp"
 
-namespace OleStructuredStorage {
-	namespace Excel {
-		namespace Records {
+namespace oless {
+	namespace excel {
+		namespace records {
 
 			// from: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/4d6a3d1e-d7c5-405f-bbae-d01e9cb79366
 			// The BOF record specifies the beginning of the individual substreams as specified by the workbook section. It also specifies history information for the substreams. 

@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Record.hpp"
-#include "../MSExcel.strings.hpp"
+#include "../structures/ShortXLUnicodeString.hpp"
 
-namespace OleStructuredStorage {
-	namespace Excel {
-		namespace Records {
+namespace oless {
+	namespace excel {
+		namespace records {
 
 			// see: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/b9ec509a-235d-424e-871d-f8e721106501
 			// The BoundSheet8 record specifies basic information about a sheet, including the sheet name, hidden state, and type of sheet.
@@ -28,7 +28,7 @@ namespace OleStructuredStorage {
 				{
 					auto buffer = this->Data.data();
 					this->header = reinterpret_cast<BoundSheetHeader*>(buffer);
-					this->Name = ShortXLUnicodeString::Read(buffer, 6).string;
+					this->Name = excel::structures::ShortXLUnicodeString::Read(buffer, 6).string;
 				}
 
 				BoundSheetHeader* GetRawHeader() {

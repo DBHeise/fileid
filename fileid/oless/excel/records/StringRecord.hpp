@@ -1,19 +1,23 @@
 #pragma once
 
 #include "Record.hpp"
-#include "../MSExcel.strings.hpp"
+#include "../structures/XLUnicodeString.hpp"
 
-namespace OleStructuredStorage {
-	namespace Excel {
-		namespace Records {
+namespace oless {
+	namespace excel {
+		namespace records {
 
-			class StringRecord : public Record {
+			class StringRecord : public Record, public IReParseable {
 			private:
 				std::string record;
 			public:
 				StringRecord(unsigned short type, std::vector<uint8_t> data) : Record(type, data)
 				{					
-					this->record = Excel::XLUnicodeString::Read(this->Data.data(), 0, this->Data.size()).string;
+					this->ReParse(nullptr);
+				}
+
+				virtual void ReParse(IRecordParser* p) override {
+					this->record = oless::excel::structures::XLUnicodeString::Read(this->Data.data(), 0, this->Data.size()).string;
 				}
 
 				std::string ToXml() const override

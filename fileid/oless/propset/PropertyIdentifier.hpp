@@ -2,8 +2,8 @@
 #include "../../common.hpp"
 #include "FormatId.hpp"
 
-namespace OleStructuredStorage {
-	namespace OlePropertySet {
+namespace oless {
+	namespace propset {
 		typedef unsigned int PropertyIdentifier;
 
 		const PropertyIdentifier DICTIONARY_PROPERTY_IDENTIFIER = 0x00000000;

@@ -2,9 +2,9 @@
 
 #include "Record.hpp"
 
-namespace OleStructuredStorage {
-	namespace Excel {
-		namespace Records {
+namespace oless {
+	namespace excel {
+		namespace records {
 
 			// see: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/e85d171a-9138-44bb-8e53-9cef48abbc0e
 			// The HLink record specifies a hyperlink associated with a range of cells.

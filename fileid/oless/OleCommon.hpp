@@ -7,8 +7,7 @@
 #include "../common.hpp"
 #include "./propset/DocumentSummary.hpp"
 
-namespace OleStructuredStorage 
-{
+namespace oless {
 
 	class OLESSExtensionInfo : public common::ExtensionInfo {
 	protected:
@@ -28,7 +27,7 @@ namespace OleStructuredStorage
 				for (auto n = this->properties.begin(); n != this->properties.end(); n++) {
 					if (n != this->properties.begin()) str << ",";
 					std::string key = n->first;
-					std::vector<OlePropertySet::Property*> props = n->second;
+					std::vector<propset::Property*> props = n->second;
 
 					str << "{\"Group\":\"" << key << "\",\"properties\": [";
 
@@ -49,7 +48,7 @@ namespace OleStructuredStorage
 				str << "<Paths>";
 				for (auto i = this->paths.begin(); i != this->paths.end(); i++) {
 					if (i != this->paths.begin()) str << ",";
-					str << "<Path>" << (i)->c_str() << "<Path>";
+					str << "<Path>" << (i)->c_str() << "</Path>";
 				}
 				str << "</Paths>";
 			}
@@ -57,7 +56,7 @@ namespace OleStructuredStorage
 				str << "<properties>";
 				for (auto n = this->properties.begin(); n != this->properties.end(); n++) {
 					std::string key = n->first;
-					std::vector<OlePropertySet::Property*> props = n->second;
+					std::vector<propset::Property*> props = n->second;
 
 					str << "<Group>";
 					str << "<Name>" << key << "</Name>";
@@ -74,7 +73,7 @@ namespace OleStructuredStorage
 		}
 	public:
 		std::vector<std::string> paths;
-		std::map<std::string, std::vector<OlePropertySet::Property*>> properties;		
+		std::map<std::string, std::vector<propset::Property*>> properties;		
 		OLESSExtensionInfo() {
 			this->Extension = "oless";
 			this->VersionName = "OLE Structured Storage";

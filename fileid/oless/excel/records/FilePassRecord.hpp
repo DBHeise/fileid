@@ -3,9 +3,9 @@
 #include <string>
 #include "Record.hpp"
 
-namespace OleStructuredStorage {
-	namespace Excel {
-		namespace Records {
+namespace oless {
+	namespace excel {
+		namespace records {
 
 			struct EncryptionHeaderFlags {
 				unsigned int Reserved1 : 1, Reserved2 : 1, fCryptoAPI : 1, fDocProps : 1, fExternal : 1, fAES : 1, Unused : 26;

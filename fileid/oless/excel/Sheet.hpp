@@ -7,8 +7,8 @@
 #include "SubStream.hpp"
 #include "records/Record.hpp"
 
-namespace OleStructuredStorage {
-	namespace Excel {
+namespace oless {
+	namespace excel {
 
 		class Sheet {
 		private:
@@ -20,7 +20,7 @@ namespace OleStructuredStorage {
 			unsigned short  Type;
 			unsigned int    Offset;
 			
-			void AddRecord(Records::Record* r) {
+			void AddRecord(records::Record* r) {
 				this->children.AddRecord(r);
 			}
 			

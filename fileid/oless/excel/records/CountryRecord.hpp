@@ -2,9 +2,9 @@
 
 #include "Record.hpp"
 
-namespace OleStructuredStorage {
-	namespace Excel {
-		namespace Records {
+namespace oless {
+	namespace excel {
+		namespace records {
 
 			/*
 			CSV taken from table given here: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/7d9326d6-691a-4fa1-8dce-42082f38e943
@@ -87,8 +87,7 @@ namespace OleStructuredStorage {
 				{
 					std::ostringstream str;
 					str << "<Record>";
-					str << "<Type>" << GetRecordTypeStr(this->Type) << "</Type>";
-					str << "<Length>" << this->Length << "</Length>";
+					str << this->getBaseXml();
 					str << "<WorkbookLocale><Code>" << this->iCountryDef << "</Code><Name>" << GetCountryName(this->iCountryDef) << "</Name></WorkbookLocale>";
 					str << "<OSLocale><Code>" << this->iCountryWinIni << "</Code><Name>" << GetCountryName(this->iCountryWinIni) << "</Name></OSLocale>";
 					str << "</Record>";
@@ -98,10 +97,9 @@ namespace OleStructuredStorage {
 				{
 					std::ostringstream str;
 					str << "{";
-					str << "\"Type\":\"" << GetRecordTypeStr(this->Type) << "\",";
-					str << "\"Length\":" << this->Length << ",";
-					str << "\"WorkbookLocale\" : { \"Code\":" << this->iCountryDef << ", \"Name\": \"" << GetCountryName(this->iCountryDef) << "\"},";
-					str << "\"OSLocale\" : { \"Code\":" << this->iCountryWinIni << ", \"Name\": \"" << GetCountryName(this->iCountryWinIni) << "\"}";
+					str << this->getBaseJson();
+					str << ",\"WorkbookLocale\" : { \"Code\":" << this->iCountryDef << ", \"Name\": \"" << GetCountryName(this->iCountryDef) << "\"}";
+					str << ",\"OSLocale\" : { \"Code\":" << this->iCountryWinIni << ", \"Name\": \"" << GetCountryName(this->iCountryWinIni) << "\"}";
 					str << "}";
 					return str.str();
 				}

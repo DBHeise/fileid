@@ -2,13 +2,17 @@
 
 #include "Record.hpp"
 
-namespace OleStructuredStorage {
-	namespace Excel {
-		namespace Records {
+namespace oless {
+	namespace excel {
+		namespace records {
 
-			class SortDataRecord : public Record {
+			class SortDataRecord : public Record, public IReParseable {
 			public:
 				SortDataRecord(unsigned short type, std::vector<uint8_t> data) : Record(type, data) {
+
+				}
+
+				virtual void ReParse(IRecordParser* p) override {
 
 				}
 			};
