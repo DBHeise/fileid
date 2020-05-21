@@ -181,6 +181,15 @@ namespace oless {
 
 						this->bytesRead = index - offset;
 					}
+
+					std::string ToFormulaString() {
+						std::ostringstream ss;
+						for (auto it = this->list.begin(); it != this->list.end(); it++) {
+							if (it != this->list.begin()) { ss << ";"; }
+							ss << (*it)->to_string();
+						}
+						return ss.str();
+					}
 				};
 			}
 		}

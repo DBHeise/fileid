@@ -2,32 +2,11 @@
 
 #include "Record.hpp"
 #include "SupBookRecord.hpp"
-#include "../structures/ShortXLUnicodeString.hpp"
+#include "../structures/AddinUdf.hpp"
 
 namespace oless {
 	namespace excel {
 		namespace records {
-
-			class AddinUdf {
-			private:
-				unsigned int reserved;
-				AddinUdf() {}
-			public: 
-				std::string udfName;
-
-				static AddinUdf Read(const unsigned char* buffer, std::size_t max, const unsigned int offset) {
-					AddinUdf ans;
-					unsigned int index = offset;
-
-					ans.reserved = common::ReadUInt(buffer, max, index, true);
-					index += 4;
-					
-					auto s = excel::structures::ShortXLUnicodeString::Read(buffer, index);
-					ans.udfName = s.string;
-
-					return ans;
-				}
-			};
 
 			struct ExternNameHeader {
 				unsigned char fBuiltin : 1;
@@ -61,9 +40,14 @@ namespace oless {
 					if (SupBookRecord* sb = dynamic_cast<SupBookRecord*>(last)) {
 
 						if (sb->cch == 0x3A01) {
-							auto body = AddinUdf::Read(buffer, max, index);
 							this->hasAddinUdf = true;
-							this->addinUdf = body.udfName;
+
+							oless::excel::structures::AddinUdf u;
+							u.Parse(buffer, max, index);
+							index += u.bytesRead;
+
+							this->addinUdf = u.udfName;
+
 						} else {
 							if (this->header->fOle) {
 								//ExternDdeLinkNoOpr

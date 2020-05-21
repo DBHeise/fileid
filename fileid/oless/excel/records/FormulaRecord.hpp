@@ -35,22 +35,15 @@ namespace oless {
 					rgce->Parse(buffer, maxBuffer, index);
 					this->children = rgce->list;
 					index += rgce->bytesRead;
-
-					std::ostringstream ss;
-					for (std::vector<excel::structures::formulas::Ptg*>::const_iterator it = this->children.begin(); it != this->children.end(); it++) {
-						if (it != this->children.begin()) { ss << ";"; }
-						ss << (*it)->to_string();
-					}
-
-					this->formula = ss.str();
+					
+					this->formula = rgce->ToFormulaString();
 				}
 
 				std::string ToXml() const override
 				{
 					std::ostringstream str;
 					str << "<Record>";
-					str << "<Type>" << GetRecordTypeStr(this->Type) << "</Type>";
-					str << "<Length>" << this->Length << "</Length>";
+					str << this->getBaseXml();
 
 					str << "<Cell>" << this->header->cell.to_string() << "</Cell>";
 					str << "<Value>" << common::XmlEscape(this->header->val.Value()) << "</Value>";
@@ -63,9 +56,8 @@ namespace oless {
 				{
 					std::ostringstream str;
 					str << "{";
-					str << "\"Type\":\"" << GetRecordTypeStr(this->Type) << "\",";
-					str << "\"Length\":" << this->Length << ",";
-					str << "\"Cell\":\"" << this->header->cell.to_string() << "\",";
+					str << this->getBaseJson();
+					str << ",\"Cell\":\"" << this->header->cell.to_string() << "\",";
 					str << "\"Value\":\"" << common::JsonEscape(this->header->val.Value()) << "\",";
 					str << "\"FormulaString\":\"" << common::JsonEscape(this->formula) << "\"";
 
