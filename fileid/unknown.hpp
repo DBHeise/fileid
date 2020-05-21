@@ -32,7 +32,7 @@ public:
 		str << "<item>";
 		str << "<extension>" << this->Extension << "</extension>";
 		str << "<name>" << this->VersionName << "</name>";		
-		str << "<sampleStr><![CDATA[" << this->sampleStr << "]]></sampleStr>";
+		str << "<sampleStr><![CDATA[" << common::XmlEscape(this->sampleStr) << "]]></sampleStr>";
 		str << "<sampleHex>" << common::bin2hex11(this->sample) << "</sampleHex>";
 		str << "</item>";
 		return str.str();

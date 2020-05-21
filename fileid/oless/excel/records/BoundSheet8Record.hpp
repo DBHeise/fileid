@@ -40,7 +40,7 @@ namespace oless {
 					std::ostringstream str;
 					str << "<Record>";
 					str << this->getBaseXml();
-					str << "<Name>" << this->Name << "</Name>";
+					str << "<Name>" << common::XmlEscape(this->Name) << "</Name>";
 					str << "<State>" << this->header->hsState << "</State>";
 					str << "<SheetType>" << this->header->dt << "</SheetType>";
 

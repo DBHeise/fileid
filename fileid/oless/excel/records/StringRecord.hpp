@@ -27,7 +27,7 @@ namespace oless {
 					str << "<Type>" << GetRecordTypeStr(this->Type) << "</Type>";
 					str << "<Length>" << this->Length << "</Length>";
 
-					str << "<String><![CDATA[" << this->record << "]]></String>";
+					str << "<String><![CDATA[" << common::XmlEscape(this->record) << "]]></String>";
 
 					str << "</Record>";
 					return str.str();

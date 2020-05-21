@@ -185,7 +185,7 @@ namespace oless {
 					str << "<Type>" << GetRecordTypeStr(this->Type) << "</Type>";
 					str << "<Length>" << this->Length << "</Length>";
 					str << "<CodePage>" << this->codepage << "</CodePage>";
-					str << "<CodePageStr>" << CPToString(this->codepage) << "</CodePageStr>";
+					str << "<CodePageStr>" << common::XmlEscape(CPToString(this->codepage)) << "</CodePageStr>";
 					str << "</Record>";
 					return str.str();
 				}

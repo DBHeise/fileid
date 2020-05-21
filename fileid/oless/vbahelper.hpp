@@ -178,7 +178,7 @@ namespace oless {
 				str << "<item>";
 				str << this->buildBaseXml();
 				if (this->ProjectName.size() > 0) {
-					str << "<projectname>" << this->ProjectName << "</projectname>";
+					str << "<projectname>" << common::XmlEscape(this->ProjectName) << "</projectname>";
 				}
 				if (this->VBAVersionMajor > 0) {
 					str << "<VBAVersionMajor>" << this->VBAVersionMajor << "</VBAVersionMajor>";
@@ -199,8 +199,8 @@ namespace oless {
 					for (std::vector<ProjectModule*>::const_iterator i = this->Modules.begin(); i != this->Modules.end(); i++) {
 						if (i != this->Modules.begin()) str << ",";
 						str << "<Module>";
-						str << "<Name>" << (*i)->Name << "</Name>";
-						str << "<StreamName>" << (*i)->StreamName << "</StreamName>";
+						str << "<Name>" << common::XmlEscape((*i)->Name) << "</Name>";
+						str << "<StreamName>" << common::XmlEscape((*i)->StreamName) << "</StreamName>";
 						str << "<Offset>" << (*i)->Offset << "</Offset>";
 						str << "<isPrivate>" << (*i)->isPrivate << "</isPrivate>";
 						str << "<isReadOnly>" << (*i)->isReadOnly << "</isReadOnly>";

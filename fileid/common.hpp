@@ -117,8 +117,14 @@ namespace common {
 
 	//erasenulls - removes null characters from std::string
 	std::string erasenulls(std::string str) {
-		str.erase(std::find(str.begin(), str.end(), '\0'), str.end());
-		return str;
+		std::string output;
+		for (size_t i = 0; i < str.size(); i++) {
+			unsigned char c = str[i];
+			if (c != '\0') {
+				output += c;
+			}
+		}
+		return output;
 	}
 
 	//convert - Converts a wstring to a string
@@ -137,7 +143,7 @@ namespace common {
 		oss << std::setfill('0');
 		for (size_t i = 0; i < size; i++)
 		{
-			oss << std::hex << std::setw(2) << buffer[i];
+			oss << std::hex << std::setw(2) << static_cast<int>(buffer[i]);
 		}
 		return oss.str();
 
@@ -375,7 +381,7 @@ namespace common {
 	}
 
 	//JsonEscape - escapes a string to be safe for JSON
-	static std::string JsonEscape(const std::string& source) {
+	std::string JsonEscape(const std::string& source) {
 		std::string result;
 		for (const char* c = source.c_str(); *c != 0; ++c) {
 			switch (*c) {
@@ -416,6 +422,44 @@ namespace common {
 		return result;
 	}
 
+	//XmlEscape - escapes a string to be safe for JSON
+	std::string XmlEscape(const std::string& source) {
+		std::string result;
+		for (size_t i = 0; i < source.size(); i++) {
+			const unsigned char c = source[i];
+			switch (c)
+			{
+			case '"':
+				result += "&#34;";
+				break;
+			case '&':
+				result += "&#38;";
+				break;
+			case '\'':
+				result += "&#39;";
+				break;
+			case '>':
+				result += "&#60;";
+				break;
+			case '<':
+				result += "&#62;";
+				break;
+			default:
+				if (iscntrl(c) || c > 127) {
+					std::ostringstream oss;
+					oss << "&#" << std::setfill('0') << std::setw(2) << ((static_cast<unsigned int>(c) << 24) >> 24) << ";"; //ugh!
+					result += oss.str();
+				}
+				else {
+					result += c;
+				}
+
+				break;
+			}
+		}
+		return result;
+	}
+
 	class IExportable {
 	public:
 		virtual std::string ToJson() const = 0;
@@ -450,7 +494,7 @@ namespace common {
 				str << "<name>" << this->Name << "</name>";
 			}
 			if (this->SubType.size() > 0) {
-				str << "<subtype>" << this->SubType << "</subtype>";
+				str << "<subtype>" << common::XmlEscape(this->SubType) << "</subtype>";
 			}
 			if (this->Version > 0) {
 				str << "<version>" << this->Version << "</version>";
@@ -584,7 +628,7 @@ namespace common {
 			break;
 		case OutputFormat::XML:
 			std::cout << "<file>";
-			std::cout << "<name>" << file << "</name>";
+			std::cout << "<name>" << common::XmlEscape(file) << "</name>";
 			std::cout << "<" << headerName << ">";
 			for (it = summary.begin(); it != summary.end(); it++) {
 				std::cout << (*it)->ToXml();

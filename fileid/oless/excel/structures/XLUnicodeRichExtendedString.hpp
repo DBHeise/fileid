@@ -51,16 +51,16 @@ namespace oless {
 						index += 4;
 					}
 
-					int byteCount = 0;
+					int byteCount = ans.cch;
 					if (ans.fHighByte == 0x0) {
-						byteCount = ans.cch;
+						std::string name(reinterpret_cast<char const*>(buffer + index), byteCount);
+						ans.rgb = name;
 					}
 					else {
-						byteCount = ans.cch * 2;
+						std::wstring wname(reinterpret_cast<wchar_t const*>(buffer + index), byteCount);
+						ans.rgb = common::convert(wname);
 					}
 
-					std::string name(reinterpret_cast<char const*>(buffer + index), byteCount);
-					ans.rgb = name;
 					index += byteCount;
 
 					if (ans.fRichSt == 0x1) {

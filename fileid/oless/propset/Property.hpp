@@ -52,7 +52,7 @@ namespace oless {
 				str << ",\"Type\":\"" << PropertyTypeToString(this->Type) << "\"";
 				str << ",\"Value\":";
 				if (this->HasString) {
-					str << "\"" << this->String << "\"";
+					str << "\"" << common::JsonEscape(this->String) << "\"";
 				}
 				else if (this->HasFloat) {
 					str << this->Float;
@@ -86,7 +86,7 @@ namespace oless {
 				str << "<Type>" << PropertyTypeToString(this->Type) << "</Type>";
 				str << "<Value>";
 				if (this->HasString) {
-					str << this->String;
+					str << common::XmlEscape(this->String);
 				}
 				else if (this->HasFloat) {
 					str << this->Float;

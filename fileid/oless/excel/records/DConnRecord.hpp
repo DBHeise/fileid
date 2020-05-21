@@ -28,7 +28,7 @@ namespace oless {
 					virtual std::string ToXml() const { 
 						std::ostringstream str;
 						str << "<Connection>";
-						str << "<ConnString><![CDATA[" << this->connstr << "]]> </ConnString>";
+						str << "<ConnString><![CDATA[" << common::XmlEscape(this->connstr) << "]]> </ConnString>";
 						str << "</Connection>";
 						return str.str();
 					}
@@ -123,7 +123,7 @@ namespace oless {
 						{
 							str << "<ConnStr>";
 							str << "<Type>" << this->rglOleDbValid[i] << "</Type>";
-							str << "<Conn>" << common::JsonEscape(this->rgConn[i]) << "</Conn>";
+							str << "<Conn>" << common::XmlEscape(this->rgConn[i]) << "</Conn>";
 							str << "</ConnStr>";
 						}
 						str << "</Strings>";

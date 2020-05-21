@@ -48,7 +48,7 @@ namespace oless {
 					str << "<Cell>" << this->cell->to_string() << "</Cell>";
 					str << "<isst>" << this->isst << "</isst>";
 					if (this->hasValue) {
-						str << "<Value>" << this->value << "</Value>";
+						str << "<Value>" << common::XmlEscape(this->value) << "</Value>";
 					}
 					str << "</Record>";
 					return str.str();

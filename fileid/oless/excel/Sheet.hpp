@@ -28,7 +28,7 @@ namespace oless {
 			{
 				std::ostringstream str;
 				str << "<Sheet>";
-				str << "<Name>" << this->Name << "</Name>";
+				str << "<Name>" << common::XmlEscape(this->Name) << "</Name>";
 				str << "<Type>" << GetSheetTypeStr(this->Type) << "</Type>";
 				str << "<Visiblity>" << GetVisibilityStr(this->Visiblity) << "</Visiblity>";
 				str << "<Offset>" << this->Offset << "</Offset>";

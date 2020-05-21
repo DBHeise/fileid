@@ -124,7 +124,7 @@ namespace oless {
 		virtual std::string ToXml() const {
 			std::ostringstream str;
 			str << "<item>";
-			str << "<path>" << this->FullName << "</path>";
+			str << "<path>" << common::XmlEscape(this->FullName) << "</path>";
 			str << "<size>" << this->Size << "</size>";
 			str << "</item>";
 			return str.str();

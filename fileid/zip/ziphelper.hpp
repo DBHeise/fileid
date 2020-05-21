@@ -81,7 +81,7 @@ namespace zip {
 				str << "<name>" << this->Name << "</name>";
 			}
 			if (this->SubType.size() > 0) {
-				str << "<subtype>" << this->SubType << "</subtype>";
+				str << "<subtype>" << common::XmlEscape(this->SubType) << "</subtype>";
 			}
 			if (this->children.size() > 0) {
 				str << "<children>";

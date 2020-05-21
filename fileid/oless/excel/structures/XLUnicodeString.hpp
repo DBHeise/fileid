@@ -32,26 +32,25 @@ namespace oless {
 					ans.reserved1 = buffer[index] & 127;
 					index++;
 
-					int byteCount = 0;
-					if (ans.fHighByte == 0x0) {
-						byteCount = ans.cch;
-					}
-					else {
-						byteCount = ans.cch * 2;
-					}
-
+					int byteCount = ans.cch;
 					if (byteCount > max) {
 						byteCount = max;
 					}
-					std::string name(reinterpret_cast<char const*>(buffer + index), byteCount);
+					if (ans.fHighByte == 0x0) {
+						std::string name(reinterpret_cast<char const*>(buffer + index), byteCount);
+						ans.string = name;
+					}
+					else {
+						std::wstring wname(reinterpret_cast<wchar_t const*>(buffer + index), byteCount);
+						ans.string = common::convert(wname);
+					}
 
-					ans.string = name;
 					ans.bytesRead = (index - offset) + byteCount;
 
 					return ans;
 				}
 			};
 
-        }
-    }
+		}
+	}
 }

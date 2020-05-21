@@ -53,8 +53,8 @@ namespace oless {
 					str << "<Length>" << this->Length << "</Length>";
 
 					str << "<Cell>" << this->header->cell.to_string() << "</Cell>";
-					str << "<Value>" << this->header->val.Value() << "</Value>";
-					str << "<FormulaString>" << this->formula << "</FormulaString>";
+					str << "<Value>" << common::XmlEscape(this->header->val.Value()) << "</Value>";
+					str << "<FormulaString>" << common::XmlEscape(this->formula) << "</FormulaString>";
 
 					str << "</Record>";
 					return str.str();

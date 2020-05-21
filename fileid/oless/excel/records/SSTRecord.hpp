@@ -40,7 +40,7 @@ namespace oless {
 					if (this->strings.size() > 0) {
 						str << "<strings>";
 						for (auto it = this->strings.begin(); it != this->strings.end(); it++) {
-							str << "<string>" << (*it) << "</string>";
+							str << "<string>" << common::XmlEscape(*it) << "</string>";
 						}
 						str << "</strings>";
 					}

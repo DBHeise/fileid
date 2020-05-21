@@ -1,4 +1,4 @@
-﻿#define DOCTEST_CONFIG_IMPLEMENT
+﻿#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 #include <fstream>
 #include <random>
@@ -6,19 +6,6 @@
 
 std::random_device rd{};
 std::mt19937 gen{ rd() };
-
-int main(int argc, char** argv) {
-	doctest::Context context;
-	
-	context.applyCommandLine(argc, argv);
-
-	int res = context.run();
-	if (context.shouldExit())
-		return res;
-
-	return res;
-}
-
 
 TEST_SUITE("common") {
 	TEST_CASE("checkMagic") {
@@ -192,13 +179,17 @@ TEST_SUITE("common") {
 			test[1] = 'e';
 			test[2] = 's';
 			test[3] = 't';
-			std::string t(test, 6);
+			std::string t(test,10);
 			CHECK_EQ(common::erasenulls(t), "test");
 
-			CHECK_EQ(common::erasenulls("test\t\r\n\0\0"), "test\t\r\n");
-			//CHECK_EQ(common::erasenulls("\0\0te\0st\t\r\n\0\0"), "test\t\r\n");
-			//CHECK_EQ(common::erasenulls("\0\0test\t\r\n\0\0"), "test\t\r\n");
-			//CHECK_EQ(common::erasenulls("test\t\r\0\n\0\0"), "test\t\r\0\n");
+			char test2[10] = { 0 };
+			test2[3] = 't';
+			test2[4] = 'e';
+			test2[6] = 's';
+			test2[8] = 't';
+			std::string t2(test2, 10);
+			CHECK_EQ(common::erasenulls(t2), "test");
+			CHECK_EQ(common::erasenulls(common::convert(L"test")), "test");
 		}
 	}
 	TEST_CASE("convert") {
@@ -363,23 +354,22 @@ TEST_SUITE("common") {
 			CHECK_EQ(common::JsonEscape("foo¢bar"), "foo\\u00A2bar");
 		}
 	}
-	TEST_CASE("helper.vector_join") {
-		auto h = new common::helper();
+	TEST_CASE("vector_join") {
 		std::vector<char> t0{};
-		std::vector<std::string> t1{ "one","two","three" };
-		std::vector<int> t2{ 1,2,3,4 };
+		std::vector<std::string> t1{ "one","two","three", "four\t¢" };
+		std::vector<int> t2{ 1,2,3,4 };		
 		
 		SUBCASE("basic-string") {
-			CHECK_EQ(h->vector_join(t1, "|", false), "one|two|three");
-			CHECK_EQ(h->vector_join(t1, ",", true), "\"one\",\"two\",\"three\"");
+			CHECK_EQ(common::vector_join(t1, "|", false), "one|two|three|four\t¢");
+			CHECK_EQ(common::vector_join(t1, ",", true), "\"one\",\"two\",\"three\",\"four\t¢\"");
 		}
 		SUBCASE("basic-int") {
-			CHECK_EQ(h->vector_join(t2, "|", false), "1|2|3|4");
-			CHECK_EQ(h->vector_join(t2, ",", true), "\"1\",\"2\",\"3\",\"4\"");
+			CHECK_EQ(common::vector_join(t2, "|", false), "1|2|3|4");
+			CHECK_EQ(common::vector_join(t2, ",", true), "\"1\",\"2\",\"3\",\"4\"");
 		}
 		SUBCASE("empty") {
-			CHECK_EQ(h->vector_join(t0, "|", false), "");
-			CHECK_EQ(h->vector_join(t0, ",", true), "");
+			CHECK_EQ(common::vector_join(t0, "|", false), "");
+			CHECK_EQ(common::vector_join(t0, ",", true), "");
 		}
 	}
 
