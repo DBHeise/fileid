@@ -39,9 +39,7 @@ namespace oless {
 				{
 					std::ostringstream str;
 					str << "<Record>";
-					str << "<Type>" << GetRecordTypeStr(this->Type) << "</Type>";
-					str << "<Length>" << this->Length << "</Length>";
-					
+					str << this->getBaseXml();
 					str << "<Name>" << this->Name << "</Name>";
 					str << "<State>" << this->header->hsState << "</State>";
 					str << "<SheetType>" << this->header->dt << "</SheetType>";
@@ -53,10 +51,8 @@ namespace oless {
 				{
 					std::ostringstream str;
 					str << "{";
-					str << "\"Type\":\"" << GetRecordTypeStr(this->Type) << "\",";
-					str << "\"Length\":" << this->Length << ",";
-
-					str << "\"Name\":\"" << common::JsonEscape(this->Name) << "\",";
+					str << this->getBaseJson();
+					str << ",\"Name\":\"" << common::JsonEscape(this->Name) << "\",";
 					str << "\"State\":" << this->header->hsState << ",";
 					str << "\"SheetType\":" << this->header->dt;
 

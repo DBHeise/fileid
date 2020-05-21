@@ -28,21 +28,22 @@ namespace oless {
 					ans.cch = buffer[index];
 					index += 1;
 
-					ans.fHighByte = buffer[index] & 128;
-					ans.reserved1 = buffer[index] & 127;
+					ans.fHighByte = common::ExtractBits(buffer[index], 1, 1);
+					ans.reserved1 = common::ExtractBits(buffer[index], 7, 2);
 					index++;
 
-					int byteCount = 0;
+					int byteCount = ans.cch;
 					if (ans.fHighByte == 0x0) {
-						byteCount = ans.cch;
+						std::string name(reinterpret_cast<char const*>(buffer + index), byteCount);
+						ans.string = name;
 					}
 					else {
-						byteCount = ans.cch * 2;
+						std::wstring wname(reinterpret_cast<wchar_t const*>(buffer + index), byteCount);
+						ans.string = common::convert(wname);
 					}
 
-					std::string name(reinterpret_cast<char const*>(buffer + index), byteCount);
+					
 					ans.bytesRead = index + byteCount;
-					ans.string = name;
 
 					return ans;
 				}
