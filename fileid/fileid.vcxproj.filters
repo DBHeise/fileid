@@ -442,7 +442,6 @@
     <ClInclude Include="oless\excel\ParseEngine.hpp" />
     <ClInclude Include="oless\excel\structures\Cell.hpp" />
     <ClInclude Include="oless\excel\structures\formulas\BErr.hpp" />
-    <ClInclude Include="oless\excel\structures\formulas\FormulaHeader.hpp" />
     <ClInclude Include="oless\excel\structures\formulas\PtgAttrSpaceType.hpp" />
     <ClInclude Include="oless\excel\structures\formulas\PtgDataType.hpp" />
     <ClInclude Include="oless\excel\structures\formulas\PtgExtraArray.hpp" />
