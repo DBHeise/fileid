@@ -28,7 +28,7 @@ namespace oless {
 					this->colFirst = common::ReadUShort(buffer, max, index);
 					index += 2;
 
-					this->colLast = common::ReadUShort(buffer, max, max - 4);
+					this->colLast = common::ReadUShort(buffer, max, max - 2);
 
 					unsigned int count = this->colLast - this->colFirst + 1;
 					for (unsigned int i = 0; i < count; i++) {
