@@ -18,7 +18,9 @@ namespace oless {
 				public:
 					unsigned char type;
 					unsigned char subtype;
-					PtgUnknown(unsigned char type, unsigned char subtype) : type(type), subtype(subtype) {};
+					PtgUnknown(unsigned char type, unsigned char subtype) : type(type), subtype(subtype) {
+						this->bytesRead = 0;
+					};
 					std::string to_string() const override { return "UnknownPTG(type=" + std::to_string(this->type) + ",subType=" + std::to_string(this->subtype) + ")"; }
 
 					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override { }

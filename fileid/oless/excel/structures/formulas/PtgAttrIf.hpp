@@ -35,7 +35,7 @@ namespace oless {
 						ans->offset = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						ans->bytesRead = offset - index;
+						ans->bytesRead = index - offset;
 						return ans;
 					}
 

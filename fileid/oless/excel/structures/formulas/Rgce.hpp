@@ -165,9 +165,11 @@ namespace oless {
 							case 0x3D:
 							case 0x5D:
 							case 0x7D:
-								child = PtgAreaErr3d::Parse(buffer, max, index); break;
-
-							default: child = new PtgUnknown(ptgType, 0); break;
+								child = PtgAreaErr3d::Parse(buffer, max, index); break;								
+							default: 
+								child = new PtgUnknown(ptgType, 0); 
+								index++;
+								break;
 							}
 
 							index += child->bytesRead;
