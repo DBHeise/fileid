@@ -22,10 +22,23 @@ namespace oless {
 					unsigned int unused3;
 				public:
 					static PtgArray* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgArray* ans = new PtgArray(buffer, max, offset);
+						unsigned int index = offset;
+						PtgArray* ans = new PtgArray(buffer, max, index);
+						index = ans->bytesRead;
+
+						ans->unused1 = buffer[index];
+						index++;
+
+						ans->unused2 = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						ans->unused3 = common::ReadUInt(buffer, max, index);
+						index += 4;
+
+						ans->bytesRead = index - offset;
 						return ans;
 					}
-					unsigned int size() const override { return PtgSubType::size() + 7; }
+
 					std::string to_string() const override {
 						return "PtgArray";
 					}

@@ -5,7 +5,7 @@
 namespace oless {
 	namespace excel {
 		using namespace records;
-		
+
 		class ParseEngine : public IRecordParser {
 		private:
 			Sheet* currentSheet;
@@ -44,6 +44,7 @@ namespace oless {
 				}
 				return nullptr;
 			}
+
 			Record* GetPrevRecordNotOfType(unsigned short type) override {
 				if (this->lastRecord->Type != type) {
 					return this->lastRecord;
@@ -54,6 +55,23 @@ namespace oless {
 						Record* r = (*rit);
 						if (r->Type != type) {
 							return r;
+						}
+					}
+				}
+				return nullptr;
+			}
+
+			Record* GetRecordOfType(unsigned short type, unsigned short idx) override {
+				unsigned short currentIdx = 0;
+				for (auto it = this->masterList.begin(); it != this->masterList.end(); it++)
+				{
+					Record* r = (*it);
+					if (r->Type == type) {
+						if (idx == currentIdx) {
+							return r;
+						}
+						else {
+							currentIdx++;
 						}
 					}
 				}

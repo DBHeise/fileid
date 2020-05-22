@@ -6,7 +6,6 @@
 #include "../../IParsable.hpp"
 #include "Ptg.hpp"
 
-
 namespace oless {
 	namespace excel {
 		namespace structures {
@@ -18,16 +17,22 @@ namespace oless {
 				class PtgName : public PtgSubType {
 				private:
 					PtgName(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType::Parse(buffer, max, offset); }
-					unsigned int nameindex;
 				public:
+					unsigned int nameindex;
 					static PtgName* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgName* ans = new PtgName(buffer, max, offset);
-						ans->nameindex = common::ReadUInt(buffer, max, offset + 1, true);
+						unsigned int index = offset;
+						PtgName* ans = new PtgName(buffer, max, index);
+						index += ans->bytesRead;
+
+						ans->nameindex = common::ReadUInt(buffer, max, index, true);
+						index += 4;
+
+						ans->bytesRead = index - offset;
 						return ans;
 					}
-					unsigned int size() const override { return PtgSubType::size() + 4; }
+
 					std::string to_string() const override {
-						return "PtgName";
+						return "PtgName(" + std::to_string(this->nameindex) + ")";
 					}
 				};
 			}

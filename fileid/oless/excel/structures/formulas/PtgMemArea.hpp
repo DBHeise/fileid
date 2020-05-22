@@ -22,10 +22,20 @@ namespace oless {
 					unsigned short cce;
 				public:
 					static PtgMemArea* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgMemArea* ans = new PtgMemArea(buffer, max, offset);
+						unsigned int index = offset;
+						PtgMemArea* ans = new PtgMemArea(buffer, max, index);
+						index += ans->bytesRead;
+
+						ans->unused = common::ReadUInt(buffer, max, index);
+						index += 4;
+
+						ans->cce = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						ans->bytesRead = index - offset;
 						return ans;
 					}
-					unsigned int size() const override { return PtgSubType::size() + 6; }
+
 					std::string to_string() const override {
 						return "PtgMemArea";
 					}

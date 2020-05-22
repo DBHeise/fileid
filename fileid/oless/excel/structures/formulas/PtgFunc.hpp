@@ -23,9 +23,10 @@ namespace oless {
 					static PtgFunc* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
 						PtgFunc* ans = new PtgFunc(buffer, max, offset);
 						ans->iftab = common::ReadUShort(buffer, max, offset + 1);
+						ans->bytesRead += 2;
 						return ans;
 					}
-					unsigned int size() const override { return PtgSubType::size() + 2; }
+
 					std::string to_string() const override {
 						std::ostringstream ss;
 						ss << "PtgFunc(" << GetFunctionName_FTab(this->iftab) << ")";

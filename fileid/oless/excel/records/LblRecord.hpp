@@ -31,14 +31,19 @@ namespace oless {
 				unsigned char reserved7;
 			};
 
-			class LblRecord : public Record {
+			class LblRecord : public Record, public INameable {
 			private:
 				fakeLblHeader* header;
 				std::string name;
 				excel::structures::formulas::NameParsedFormula rgce;
 
 			public:
-				LblRecord(unsigned short type, std::vector<uint8_t> data) : Record(type, data) {
+
+				std::string GetName() override {
+					return this->name;
+				}
+
+				LblRecord(IRecordParser* parser, unsigned short type, std::vector<uint8_t> data) : Record(type, data), rgce(parser) {
 					auto buffer = this->Data.data();
 					auto max = this->Data.size();
 					unsigned int index = 0;

@@ -23,10 +23,22 @@ namespace oless {
 					unsigned short offset;
 				public:
 					static PtgAttrIf* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgAttrIf* ans = new PtgAttrIf(buffer, max, offset);
+						unsigned int index = offset;
+						PtgAttrIf* ans = new PtgAttrIf(buffer, max, index);
+						index += ans->bytesRead;
+
+						ans->reserved2 = common::ExtractBits(buffer[index], 1, 1);
+						ans->bitIf = common::ExtractBits(buffer[index], 1, 2);
+						ans->reserved3 = common::ExtractBits(buffer[index], 6, 3);
+						index++;
+
+						ans->offset = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						ans->bytesRead = offset - index;
 						return ans;
 					}
-					unsigned int size() const override { return PtgBasic::size() + 2; }
+
 					std::string to_string() const override {
 						return "PtgAttrIf";
 					}

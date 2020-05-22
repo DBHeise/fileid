@@ -23,11 +23,13 @@ namespace oless {
 				public:
 					static PtgErr* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
 						PtgErr* ans = new PtgErr(buffer, max, offset);
+						ans->err = (BErr)buffer[offset + 1];
+						ans->bytesRead++;
 						return ans;
 					}
-					unsigned int size() const override { return PtgBasic::size() + 1; }
+					
 					std::string to_string() const override {
-						return "PtgErr";
+						return "PtgErr('" + ErrorValueString(this->err) + "')";
 					}
 				};
 			}

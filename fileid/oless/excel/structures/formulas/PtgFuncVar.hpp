@@ -27,9 +27,10 @@ namespace oless {
 						ans->cparams = buffer[offset + 1];
 						ans->tab = common::ReadUShort(buffer, max, offset + 2) << 1 >> 1;
 						ans->fCeFunc = common::ExtractBits(buffer[offset + 3], 1, 7);
+						ans->bytesRead += 3;
 						return ans;
 					}
-					unsigned int size() const override { return PtgSubType::size() + 3; }
+
 					std::string to_string() const override {
 						std::ostringstream ss;
 						ss << "PtgFuncVar(";

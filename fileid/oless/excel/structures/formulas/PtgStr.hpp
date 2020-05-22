@@ -21,11 +21,18 @@ namespace oless {
 					std::string string;
 				public:
 					static PtgStr* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgStr* ans = new PtgStr(buffer, max, offset);
-						ans->string = ShortXLUnicodeString::Read(buffer, offset + 1).string;
+						unsigned int index = offset;
+						PtgStr* ans = new PtgStr(buffer, max, index);
+						index += ans->bytesRead;
+
+						auto tmp = ShortXLUnicodeString::Read(buffer, index);
+						index += tmp.bytesRead;
+						ans->string = tmp.string;
+
+						ans->bytesRead = index - offset;
 						return ans;
 					}
-					unsigned int size() const override { return PtgBasic::size() + 2 + this->string.length(); }
+
 					std::string to_string() const override {
 						return "PtgStr(\"" + this->string + "\")";
 					}

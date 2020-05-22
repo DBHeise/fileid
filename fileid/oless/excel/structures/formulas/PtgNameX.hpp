@@ -5,6 +5,7 @@
 #include "../../MSExcel.common.hpp"
 #include "../../IParsable.hpp"
 #include "Ptg.hpp"
+#include "../../records/ExternNameRecord.hpp"
 
 
 namespace oless {
@@ -17,17 +18,24 @@ namespace oless {
 				// The PtgNameX structure specifies a reference to a defined name in an external workbook.
 				class PtgNameX : public PtgSubType_ixti {
 				private:
-					PtgNameX(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType_ixti::Parse(buffer, max, offset); }
-					unsigned int nameindex;
+					std::string name;
+					PtgNameX(unsigned char* buffer, size_t max, unsigned int offset) : nameindex(0) { PtgSubType_ixti::Parse(buffer, max, offset); }
 				public:
+					unsigned int nameindex;					
 					static PtgNameX* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgNameX* ans = new PtgNameX(buffer, max, offset);
-						ans->nameindex = common::ReadUInt(buffer, max, offset + 3, true);
+						unsigned int index = offset;
+						PtgNameX* ans = new PtgNameX(buffer, max, index);
+						index += ans->bytesRead;
+
+						ans->nameindex = common::ReadUInt(buffer, max, index, true);
+						index += 4;
+
+						ans->bytesRead = index - offset;
 						return ans;
 					}
-					unsigned int size() const override { return PtgSubType_ixti::size() + 4; }
+
 					std::string to_string() const override {
-						return "PtgNameX";
+						return "PtgNameX(" + std::to_string(this->nameindex) + ")";
 					}
 				};
 			}

@@ -23,9 +23,11 @@ namespace oless {
 				public:
 					static PtgAreaN* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
 						PtgAreaN* ans = new PtgAreaN(buffer, max, offset);
+						ans->area.Parse(buffer, max, offset + 1);
+						ans->bytesRead += ans->area.bytesRead;
 						return ans;
 					}
-					unsigned int size() const override { return PtgSubType::size() + 8; }
+
 					std::string to_string() const override {
 						return "PtgAreaN";
 					}

@@ -24,9 +24,10 @@ namespace oless {
 					static PtgArea3d* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
 						PtgArea3d* ans = new PtgArea3d(buffer, max, offset);
 						ans->area.Parse(buffer, max, offset + 3);
+						ans->bytesRead += ans->area.bytesRead;
 						return ans;
 					}
-					unsigned int size() const override { return PtgSubType_ixti::size() + 8; }
+					
 					std::string to_string() const override {
 						return "PtgArea3d(" + this->area.to_string() + ")";
 					}

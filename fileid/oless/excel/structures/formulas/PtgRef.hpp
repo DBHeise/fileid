@@ -22,11 +22,17 @@ namespace oless {
 					RgceLoc loc;
 				public:
 					static PtgRef* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgRef* ans = new PtgRef(buffer, max, offset);
-						ans->loc.Parse(buffer, offset + 1, max);
+						unsigned int index = offset;
+						PtgRef* ans = new PtgRef(buffer, max, index);
+						index += ans->bytesRead;
+
+						ans->loc.Parse(buffer, max, index);
+						index += ans->loc.bytesRead;
+
+						ans->bytesRead = index - offset;
 						return ans;
 					}
-					unsigned int size() const override { return PtgSubType::size() + 4; }
+
 					std::string to_string() const override {
 						return "PtgRef(" + this->loc.to_string() + ")";
 					}

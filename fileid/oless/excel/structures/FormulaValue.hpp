@@ -4,6 +4,7 @@
 #include "../../../common.hpp"
 #include "../MSExcel.common.hpp"
 #include "../IParsable.hpp"
+#include "formulas/BErr.hpp"
 
 namespace oless {
 	namespace excel {
@@ -24,6 +25,21 @@ namespace oless {
 				virtual void Parse(unsigned char* buffer, std::size_t max, unsigned int offset) override {
 					unsigned int index = offset;
 
+					this->byte1 = buffer[index];
+					index++;
+					this->byte2 = buffer[index];
+					index++;
+					this->byte3 = buffer[index];
+					index++;
+					this->byte4 = buffer[index];
+					index++;
+					this->byte5 = buffer[index];
+					index++;
+					this->byte6 = buffer[index];
+					index++;
+					this->fExprO = common::ReadUShort(buffer, max, index);
+					index += 2;
+
                     this->bytesRead = index - offset;
                 }
 
@@ -34,8 +50,14 @@ namespace oless {
 						case 0x00: //String Value
 							break;
 						case 0x01: //Boolean Value
+							if (this->byte3) {
+								ans = "true";
+							} else {
+								ans = "false";
+							}
 							break;
 						case 0x02: //Error Value
+							ans = formulas::ErrorValueString((formulas::BErr)this->byte3);
 							break;
 						case 0x03: //Blank String
 							ans = "";
@@ -56,17 +78,6 @@ namespace oless {
 						data[6] = this->fExprO;
 						data[7] = this->fExprO >> 8;
 
-						/*double num;
-						*((unsigned char*)(&num) + 0) = this->byte1;
-						*((unsigned char*)(&num) + 1) = this->byte2;
-						*((unsigned char*)(&num) + 2) = this->byte3;
-						*((unsigned char*)(&num) + 3) = this->byte4;
-						*((unsigned char*)(&num) + 4) = this->byte5;
-						*((unsigned char*)(&num) + 5) = this->byte6;
-
-						*((unsigned short*)(&num) + 6) = this->fExprO;
-						ans = std::to_string(num);
-						*/
 						ans = std::to_string(num);
 					}
 

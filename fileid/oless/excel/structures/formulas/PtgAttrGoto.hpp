@@ -19,14 +19,26 @@ namespace oless {
 					PtgAttrGoto(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
 					unsigned char reserved2 : 3;
 					unsigned char bitGoto : 1;
-					unsigned char reservred3 : 4;
+					unsigned char reserved3 : 4;
 					unsigned short offset;
 				public:
 					static PtgAttrGoto* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgAttrGoto* ans = new PtgAttrGoto(buffer, max, offset);
+						unsigned int index = offset;
+						PtgAttrGoto* ans = new PtgAttrGoto(buffer, max, index);
+						index += ans->bytesRead;
+
+						ans->reserved2 = common::ExtractBits(buffer[index], 3, 1);
+						ans->bitGoto = common::ExtractBits(buffer[index], 1, 4);
+						ans->reserved3 = common::ExtractBits(buffer[index], 4, 5);
+						index++;
+
+						ans->offset = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						ans->bytesRead = offset - index;
 						return ans;
 					}
-					unsigned int size() const override { return PtgBasic::size() + 2; }
+
 					std::string to_string() const override {
 						return "PtgAttrGoto";
 					}

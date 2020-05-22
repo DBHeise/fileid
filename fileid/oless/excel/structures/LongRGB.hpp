@@ -60,6 +60,7 @@ namespace oless {
 				virtual std::string ToText() const { 
 					std::ostringstream str;
 					str << "#";
+					str << std::setfill('0') << std::uppercase;
 					str << std::hex << std::setw(2) << (unsigned short)this->red;
 					str << std::hex << std::setw(2) << (unsigned short)this->green;
 					str << std::hex << std::setw(2) << (unsigned short)this->blue;

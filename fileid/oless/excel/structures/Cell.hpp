@@ -20,13 +20,13 @@ namespace oless {
 				virtual void Parse(unsigned char* buffer, std::size_t max, unsigned int offset) override {
 					unsigned int index = offset;
 
-					this->rw = common::ReadUShort(buffer, max, index, true);
+					this->rw = common::ReadUShort(buffer, max, index);
 					index += 2;
 
-					this->col = common::ReadUShort(buffer, max, index, true);
+					this->col = common::ReadUShort(buffer, max, index);
 					index += 2;
 
-					this->ixfe = common::ReadUShort(buffer, max, index, true);
+					this->ixfe = common::ReadUShort(buffer, max, index);
 					index += 2;
 
 					this->bytesRead = index - offset;

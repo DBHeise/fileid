@@ -24,10 +24,23 @@ namespace oless {
 					unsigned short cce;
 				public:
 					static PtgMemErr* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgMemErr* ans = new PtgMemErr(buffer, max, offset);
+						unsigned int index = offset;
+						PtgMemErr* ans = new PtgMemErr(buffer, max, index);
+						index += ans->bytesRead;
+
+						ans->unused1 = buffer[index];
+						index++;
+
+						ans->unused2 = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						ans->cce = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						ans->bytesRead = index - offset;
 						return ans;
 					}
-					unsigned int size() const override { return PtgSubType::size() + 6; }
+
 					std::string to_string() const override {
 						return "PtgMemErr";
 					}

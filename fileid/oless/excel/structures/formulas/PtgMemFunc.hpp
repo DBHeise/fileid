@@ -21,10 +21,17 @@ namespace oless {
 					unsigned short cce;
 				public:
 					static PtgMemFunc* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgMemFunc* ans = new PtgMemFunc(buffer, max, offset);
+						unsigned int index = offset;
+						PtgMemFunc* ans = new PtgMemFunc(buffer, max, index);
+						index += ans->bytesRead;
+
+						ans->cce = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						ans->bytesRead = index - offset;
 						return ans;
 					}
-					unsigned int size() const override { return PtgSubType::size() + 2; }
+
 					std::string to_string() const override {
 						return "PtgMemFunc";
 					}

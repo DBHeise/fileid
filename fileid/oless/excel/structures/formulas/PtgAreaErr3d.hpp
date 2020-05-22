@@ -23,10 +23,26 @@ namespace oless {
 					unsigned short unused4;
 				public:
 					static PtgAreaErr3d* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
+						unsigned int index = offset;
 						PtgAreaErr3d* ans = new PtgAreaErr3d(buffer, max, offset);
+						index += 1;
+
+						ans->unused1 = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						ans->unused2 = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						ans->unused3 = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						ans->unused4 = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						ans->bytesRead += index - offset;
 						return ans;
 					}
-					unsigned int size() const override { return PtgSubType_ixti::size() + 8; }
+					
 					std::string to_string() const override {
 						return "PtgAreaErr3d";
 					}

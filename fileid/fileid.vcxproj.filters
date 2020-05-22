@@ -906,5 +906,6 @@
     <ClInclude Include="oless\pole.h">
       <Filter>oless</Filter>
     </ClInclude>
+    <ClInclude Include="oless\excel\structures\formulas\FormulaHeader.hpp" />
   </ItemGroup>
 </Project>

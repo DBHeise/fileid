@@ -3,6 +3,7 @@
 #include "Record.hpp"
 #include "Records.hpp"
 
+
 namespace oless {
 	namespace excel {
 		namespace records {
@@ -18,7 +19,7 @@ namespace oless {
 				Record* r = nullptr;
 				try {
 					switch (type) {
-					case 0x0006: r = (Record*)(new FormulaRecord(type, data)); break;
+					case 0x0006: r = (Record*)(new FormulaRecord(parser, type, data)); break;
 					case 0x000A: r = (Record*)(new EOFRecord(type, data)); break;
 					case 0x000C: r = (Record*)(new CalcCountRecord(type, data)); break;
 					case 0x000D: r = (Record*)(new CalcModeRecord(type, data)); break;
@@ -31,7 +32,7 @@ namespace oless {
 					case 0x0014: r = (Record*)(new HeaderRecord(type, data)); break;
 					case 0x0015: r = (Record*)(new FooterRecord(type, data)); break;
 					case 0x0017: r = (Record*)(new ExternSheetRecord(type, data)); break;
-					case 0x0018: r = (Record*)(new LblRecord(type, data)); break;
+					case 0x0018: r = (Record*)(new LblRecord(parser, type, data)); break;
 					case 0x0019: r = (Record*)(new WinProtectRecord(type, data)); break;
 					case 0x001A: r = (Record*)(new VerticalPageBreaksRecord(type, data)); break;
 					case 0x001B: r = (Record*)(new HorizontalPageBreaksRecord(type, data)); break;
@@ -379,6 +380,11 @@ namespace oless {
 					}
 				}
 				catch (const std::range_error) {
+
+#ifdef DEBUG
+					std::cerr << "Error Parsing Record: [0x" << std::hex << std::uppercase << std::setfill('0') << std::setw(2) << type;
+					std::cerr << "=" << GetRecordTypeStr(type) << "]" << std::endl;
+#endif
 					//there was an error parsing a record...ignore and move on
 				}
 				return r;

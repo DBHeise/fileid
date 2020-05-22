@@ -8,73 +8,72 @@ namespace oless {
 		namespace structures {
 			namespace formulas {
 
+				//Ptg - base class for all "Parse Things" (see https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/e7625cc8-3da9-4154-b449-49cf1bbd9703)
 				class Ptg: public IParseable {
 				public:
-					virtual unsigned int size() const = 0;
-					virtual std::string to_string() const = 0;
+					virtual std::string to_string() const = 0;					
 				};
 
 				class PtgUnknown : public Ptg {
-				private:
+				public:
 					unsigned char type;
 					unsigned char subtype;
-				public:
 					PtgUnknown(unsigned char type, unsigned char subtype) : type(type), subtype(subtype) {};
-					unsigned int size() const override { return 1; }
 					std::string to_string() const override { return "UnknownPTG(type=" + std::to_string(this->type) + ",subType=" + std::to_string(this->subtype) + ")"; }
 
 					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override { }
 				};
 
 				class PtgBasic : public Ptg {
-				private:
+				public:
 					unsigned char ptg : 7;
 					unsigned char reserved : 1;
-				public:
-					unsigned int size() const override { return 1; }
 					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
-						this->ptg = common::ExtractBits(buffer[offset], 7, 0);
-						this->reserved = common::ExtractBits(buffer[offset], 1, 7);
+						this->ptg = common::ExtractBits(buffer[offset], 7, 1);
+						this->reserved = common::ExtractBits(buffer[offset], 1, 8);
+						this->bytesRead = 1;
 					}
 				};
 
 
 				class PtgSubType : public Ptg {
-				private:
+				public:
 					unsigned char ptg : 5;
 					unsigned char type : 2;
 					unsigned char reserved : 1;
-				public:
-					unsigned int size() const override { return 1; }
 					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
-						this->ptg = common::ExtractBits(buffer[offset], 5, 0);
-						this->type = common::ExtractBits(buffer[offset], 2, 5);
-						this->reserved = common::ExtractBits(buffer[offset], 1, 7);
+						this->ptg = common::ExtractBits(buffer[offset], 5, 1);
+						this->type = common::ExtractBits(buffer[offset], 2, 6);
+						this->reserved = common::ExtractBits(buffer[offset], 1, 8);
+						this->bytesRead = 1;
 					}
 				};
 
 				class PtgBasic_elf : public Ptg {
-				private:
+				public:
 					unsigned char ptg;
 					unsigned char eptg;
 					RgceElfLoc loc;
-				public:
-					unsigned int size() const override { return 4; }
 					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
 						this->ptg = buffer[offset];
 						this->eptg = buffer[offset + 1];
-						this->loc.Parse(buffer, offset + 2, max);
+						this->loc.Parse(buffer, max, offset + 2);
+						this->bytesRead = 6;
 					}
 				};
 
 				class PtgSubType_ixti : public PtgSubType {
-				private:
-					unsigned short ixti;
 				public:
-					unsigned int size() const override { return PtgSubType::size() + 2; }
+					unsigned short ixti;
 					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
-						PtgSubType::Parse(buffer, max, offset);
-						this->ixti = buffer[offset + PtgSubType::size()];
+						unsigned int index = offset;
+						PtgSubType::Parse(buffer, max, index);
+						index += this->bytesRead;
+
+						this->ixti = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						this->bytesRead = index - offset;
 					}
 				};
 			}

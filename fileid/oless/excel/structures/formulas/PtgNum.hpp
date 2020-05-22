@@ -23,9 +23,10 @@ namespace oless {
 					static PtgNum* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
 						PtgNum* ans = new PtgNum(buffer, max, offset);
 						ans->value = ReadXNumFromBytes(&buffer[offset + 1]);
+						ans->bytesRead += 8;
 						return ans;
 					}
-					unsigned int size() const override { return PtgBasic::size() + 8; }
+
 					std::string to_string() const override {
 						return "PtgNum(" + std::to_string(this->value) + ")";
 					}

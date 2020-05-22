@@ -16,17 +16,27 @@ namespace oless {
 				// The PtgTbl structure specifies that the Rgce that contains this PtgTbl is part of a data table (1) or an ObjectParsedFormula.
 				class PtgTbl : public PtgBasic {
 				private:
-					PtgTbl(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
 					unsigned short row;
 					unsigned short col;
+					PtgTbl(unsigned char* buffer, size_t max, unsigned int offset) : row(0),col(0) { PtgBasic::Parse(buffer, max, offset); }
 				public:
 					static PtgTbl* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgTbl* ans = new PtgTbl(buffer, max, offset);
+						unsigned int index = offset;
+						PtgTbl* ans = new PtgTbl(buffer, max, index);
+						index += ans->bytesRead;
+
+						ans->row = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						ans->col = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						ans->bytesRead = index - offset;
 						return ans;
 					}
-					unsigned int size() const override { return PtgBasic::size() + 4; }
+
 					std::string to_string() const override {
-						return "PtgTbl";
+						return "PtgTbl(" + ColNumToName(this->col) + std::to_string(this->row) + ")";
 					}
 				};
 			}

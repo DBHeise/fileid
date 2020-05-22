@@ -17,9 +17,9 @@ namespace oless {
 				public:
 					unsigned short row;
 					ColElfU col;
-					void Parse(unsigned char* buffer, unsigned int offset, unsigned int max) {
+					void Parse(unsigned char* buffer, std::size_t max, unsigned int offset) {
 						this->row = common::ReadUShort(buffer, max, offset);
-						this->col.Parse(buffer, offset + 2, max);
+						this->col.Parse(buffer, max, offset + 2);
 					}
 				};
 			}

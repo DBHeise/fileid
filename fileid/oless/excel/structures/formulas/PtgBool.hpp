@@ -23,9 +23,10 @@ namespace oless {
 					static PtgBool* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
 						PtgBool* ans = new PtgBool(buffer, max, offset);
 						ans->boolean = buffer[offset + 1];
+						ans->bytesRead++;
 						return ans;
 					}
-					unsigned int size() const override { return PtgBasic::size() + 1; }
+					
 					std::string to_string() const override {
 						std::ostringstream ss;
 						ss << "PtgBool(";

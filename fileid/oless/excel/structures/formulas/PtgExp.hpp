@@ -25,9 +25,10 @@ namespace oless {
 						PtgExp* ans = new PtgExp(buffer, max, offset);
 						ans->row = common::ReadUShort(buffer, max, offset + 1);
 						ans->col = common::ReadUShort(buffer, max, offset + 3);
+						ans->bytesRead += 4;
 						return ans;
 					}
-					unsigned int size() const override { return PtgBasic::size() + 4; }
+					
 					std::string to_string() const override {
 						std::ostringstream ss;
 						ss << "PtgExp(" << ColNumToName(this->col + 1) << this->row + 1 << ")";

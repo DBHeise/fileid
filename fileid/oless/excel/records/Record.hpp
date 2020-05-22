@@ -437,6 +437,7 @@ namespace oless {
 			virtual records::Record* GetPrevRecord() = 0;
 			virtual records::Record* GetPrevRecordOfType(unsigned short type) = 0;
 			virtual records::Record* GetPrevRecordNotOfType(unsigned short type) = 0;
+			virtual records::Record* GetRecordOfType(unsigned short type, unsigned short index) = 0;
 		};
 
 		class IReParseable {

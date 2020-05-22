@@ -24,10 +24,22 @@ namespace oless {
 					unsigned short unused;
 				public:
 					static PtgAttrBaxcel* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgAttrBaxcel* ans = new PtgAttrBaxcel(buffer, max, offset);
+						unsigned int index = offset;
+						PtgAttrBaxcel* ans = new PtgAttrBaxcel(buffer, max, index);
+						index += ans->bytesRead;
+
+						ans->bitSemi = common::ExtractBits(buffer[index], 1, 1);
+						ans->reserved2 = common::ExtractBits(buffer[index], 4, 2);
+						ans->bitBaxcel = common::ExtractBits(buffer[index], 1, 6);
+						ans->reserved3 = common::ExtractBits(buffer[index], 2, 7);
+						index++;
+
+						ans->unused = common::ReadUShort(buffer, max, index);
+						index += 2;
+						
 						return ans;
 					}
-					unsigned int size() const override { return PtgBasic::size() + 2; }
+
 					std::string to_string() const override {
 						return "PtgAttrBaxcel";
 					}

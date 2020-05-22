@@ -22,10 +22,20 @@ namespace oless {
 					unsigned short unused;
 				public:
 					static PtgAttrSemi* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
+						unsigned int index = offset;
 						PtgAttrSemi* ans = new PtgAttrSemi(buffer, max, offset);
+						index++;
+
+						ans->bitSemi = common::ExtractBits(buffer[index], 1, 1);
+						ans->reserved2 = common::ExtractBits(buffer[index], 7, 2);
+						index++;
+
+						ans->unused = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						ans->bytesRead = index - offset;
 						return ans;
-					}
-					unsigned int size() const override { return PtgBasic::size() + 2; }
+					}					
 					std::string to_string() const override {
 						return "PtgAttrSemi";
 					}

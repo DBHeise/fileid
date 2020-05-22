@@ -20,13 +20,22 @@ namespace oless {
 
 			// see: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/95495582-1465-4bdd-8183-b16f8e8eaf74
 			// The ExternName record specifies an external defined name, a User Defined Function (UDF) reference on a XLL or COM add-in, a DDE data item or an OLE data item, depending on the value of the virtPath field in the preceding SupBook record.
-			class ExternNameRecord : public Record {
+			class ExternNameRecord : public Record, public INameable {
 			private:
 				ExternNameHeader* header;
 
 				bool hasAddinUdf = false;
 				std::string addinUdf;
 			public:
+
+				std::string GetName() override {
+					if (this->hasAddinUdf) {
+						return this->addinUdf;
+					} 
+
+					return "";
+				}
+
 				ExternNameRecord(IRecordParser* p, unsigned short type, std::vector<uint8_t> data) : Record(type, data) {
 					auto buffer = this->Data.data();
 					auto max = this->Data.size();

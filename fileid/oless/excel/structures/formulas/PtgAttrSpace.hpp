@@ -25,10 +25,22 @@ namespace oless {
 					PtgAttrSpaceType type;
 				public:
 					static PtgAttrSpace* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgAttrSpace* ans = new PtgAttrSpace(buffer, max, offset);
+						unsigned int index = offset;
+						PtgAttrSpace* ans = new PtgAttrSpace(buffer, max, index);
+						index += ans->bytesRead;
+
+						ans->reserved2 = common::ExtractBits(buffer[index], 1, 1);
+						ans->bitSpace = common::ExtractBits(buffer[index], 1, 2);
+						ans->reserved3 = common::ExtractBits(buffer[index], 6, 3);
+						index++;
+
+						ans->type.Parse(buffer, max, index);
+						index += ans->type.bytesRead;
+
+						ans->bytesRead = offset - index;
 						return ans;
 					}
-					unsigned int size() const override { return PtgBasic::size() + 2; }
+
 					std::string to_string() const override {
 						return "PtgAttrSpace";
 					}
