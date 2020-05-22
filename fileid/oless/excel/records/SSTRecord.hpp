@@ -7,7 +7,7 @@ namespace oless {
 	namespace excel {
 		namespace records {
 
-			class SSTRecord : public Record {
+			class SSTRecord : public Record, public IReParseable {
 			private:
 				int cstTotal;
 				int cstUnique;				
@@ -15,6 +15,10 @@ namespace oless {
 				std::vector<std::string> strings;
 				SSTRecord(unsigned short type, std::vector<uint8_t> data) : Record(type, data) 
 				{
+					this->ReParse(nullptr);
+				}
+				
+				virtual void ReParse(IRecordParser* p) override {
 					unsigned int index = 0;
 					auto buffer = this->Data.data();
 					auto max = this->Data.size();
@@ -24,11 +28,12 @@ namespace oless {
 					this->cstUnique = common::ReadSInt(buffer, max, index, true);
 					index += 4;
 
-					for (unsigned int i = 0; i < this->cstUnique; i++) {
+					for (unsigned int i = 0; i < this->cstUnique && index < max; i++) {
 						auto s = oless::excel::structures::XLUnicodeRichExtendedString::Read(buffer, index, max);
 						index += s.bytesRead;
 						this->strings.push_back(s.String());
-					}					
+					}
+
 				}
 				virtual std::string ToXml() const override
 				{
