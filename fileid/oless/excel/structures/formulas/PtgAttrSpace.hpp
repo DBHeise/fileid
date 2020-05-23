@@ -37,7 +37,7 @@ namespace oless {
 						ans->type.Parse(buffer, max, index);
 						index += ans->type.bytesRead;
 
-						ans->bytesRead = offset - index;
+						ans->bytesRead = index - offset;
 						return ans;
 					}
 

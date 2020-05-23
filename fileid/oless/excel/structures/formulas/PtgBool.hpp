@@ -30,7 +30,7 @@ namespace oless {
 					std::string to_string() const override {
 						std::ostringstream ss;
 						ss << "PtgBool(";
-						ss << std::boolalpha << this->boolean;
+						ss << std::boolalpha << (bool)this->boolean;
 						ss << ")";
 						return ss.str();
 					}

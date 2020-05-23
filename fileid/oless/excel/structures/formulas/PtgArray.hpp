@@ -24,7 +24,7 @@ namespace oless {
 					static PtgArray* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
 						unsigned int index = offset;
 						PtgArray* ans = new PtgArray(buffer, max, index);
-						index = ans->bytesRead;
+						index += ans->bytesRead;
 
 						ans->unused1 = buffer[index];
 						index++;
