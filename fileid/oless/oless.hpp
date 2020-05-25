@@ -17,7 +17,7 @@
 #include "./propset/DocumentSummary.hpp"
 
 
-namespace OleStructuredStorage {
+namespace oless {
 
 	POLE::Storage* OpenFile(const char* file) {
 		POLE::Storage *storage = new POLE::Storage(file);
@@ -48,7 +48,7 @@ namespace OleStructuredStorage {
 		const char* m_file;
 		std::vector<std::string> m_paths;
 		std::vector<common::IExportable*> m_results;
-		std::map<std::string, std::vector<OlePropertySet::Property*>> m_properties;
+		std::map<std::string, std::vector<propset::Property*>> m_properties;
 
 		void printStreamInfo(POLE::Storage* storage, std::string name, std::string fullname)
 		{
@@ -107,9 +107,9 @@ namespace OleStructuredStorage {
 					ei->SubType = ei->VersionName;
 				}
 				else if (common::iequals(fullname, "/Workbook") || common::iequals(fullname,"/Book")) {					
-					ei = new Excel::ExcelExtensionInfo();
+					ei = new excel::ExcelExtensionInfo();
 					POLE::Stream* stream = new POLE::Stream(storage, fullname);
-					((Excel::ExcelExtensionInfo*)ei)->ParseStream(stream);
+					((excel::ExcelExtensionInfo*)ei)->ParseStream(stream);
 					delete stream;
 				}
 				else if (fullname == "/WordDocument") {
@@ -220,8 +220,8 @@ namespace OleStructuredStorage {
 				}
 				else if (name == "DocumentSummaryInformation"  || name== "SummaryInformation" || name == "GlobalInfo" || name == "ImageContents" || name == "ImageInfo") {
 					POLE::Stream* stream = new POLE::Stream(storage, fullname);
-					auto props = OlePropertySet::ParseStream(stream);					
-					this->m_properties.insert(std::pair<std::string, std::vector<OlePropertySet::Property*>>(name, props));
+					auto props = propset::ParseStream(stream);
+					this->m_properties.insert(std::pair<std::string, std::vector<propset::Property*>>(name, props));
 					delete stream;
 				}
 				//TODO: msi, msp

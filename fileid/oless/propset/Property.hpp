@@ -3,8 +3,8 @@
 #include "PropertyIdentifier.hpp"
 #include "PropertyType.hpp"
 
-namespace OleStructuredStorage {
-	namespace OlePropertySet {
+namespace oless {
+	namespace propset {
 
 		struct TypedPropertyValueHeader {
 			unsigned short Type;
@@ -52,7 +52,7 @@ namespace OleStructuredStorage {
 				str << ",\"Type\":\"" << PropertyTypeToString(this->Type) << "\"";
 				str << ",\"Value\":";
 				if (this->HasString) {
-					str << "\"" << this->String << "\"";
+					str << "\"" << common::JsonEscape(this->String) << "\"";
 				}
 				else if (this->HasFloat) {
 					str << this->Float;
@@ -86,7 +86,7 @@ namespace OleStructuredStorage {
 				str << "<Type>" << PropertyTypeToString(this->Type) << "</Type>";
 				str << "<Value>";
 				if (this->HasString) {
-					str << this->String;
+					str << common::XmlEscape(this->String);
 				}
 				else if (this->HasFloat) {
 					str << this->Float;
@@ -107,7 +107,7 @@ namespace OleStructuredStorage {
 
 		};
 
-		Property* ReadProperty(const unsigned char* buffer, const unsigned int max, const unsigned int offset, const PropertyIdentifier pid) {
+		Property* ReadProperty(const unsigned char* buffer, const std::size_t max, const unsigned int offset, const PropertyIdentifier pid) {
 			unsigned int index = offset;
 
 			TypedPropertyValueHeader* tpv = (TypedPropertyValueHeader*)(buffer + index);
@@ -157,7 +157,7 @@ namespace OleStructuredStorage {
 				//codepage string
 				auto size = common::ReadUInt(buffer, max, index, true);
 				auto tmpStr = common::ReadString(buffer, max, index + 4, size);
-				ans->String = tmpStr;
+				ans->String = common::erasenulls(tmpStr);
 				break;
 			}
 			case VT_LPWSTR:

@@ -9,7 +9,7 @@
 #include "../common.hpp"
 #include "olessoffice.hpp"
 
-namespace OleStructuredStorage {
+namespace oless {
 	bool withinCheck(unsigned long num, unsigned long target, unsigned long range) {
 		return (num >= (target - range) && num <= (target + range));
 	}

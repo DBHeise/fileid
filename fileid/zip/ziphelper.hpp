@@ -81,7 +81,7 @@ namespace zip {
 				str << "<name>" << this->Name << "</name>";
 			}
 			if (this->SubType.size() > 0) {
-				str << "<subtype>" << this->SubType << "</subtype>";
+				str << "<subtype>" << common::XmlEscape(this->SubType) << "</subtype>";
 			}
 			if (this->children.size() > 0) {
 				str << "<children>";
@@ -396,8 +396,8 @@ namespace zip {
 	}
 
 	common::ExtensionInfo* GetVBA(ZipArchive::Ptr archive, ZipExtensionInfo* details) {
-		OleStructuredStorage::VBA::vbahelper* vba = new OleStructuredStorage::VBA::vbahelper();
-		common::ExtensionInfo *ei = new common::ExtensionInfo();
+		auto vba = new oless::VBA::vbahelper();
+		auto *ei = new common::ExtensionInfo();
 		//temp fix
 		ei->Extension = "vba";
 		ei->Name = "Visual Basic For Applications";
@@ -431,9 +431,9 @@ namespace zip {
 				ei = vba->Analyze("/", storage);
 			}
 			catch (std::exception ex) {
-				ei = new OleStructuredStorage::VBA::VbaExtensionInfo();
-				((OleStructuredStorage::VBA::VbaExtensionInfo*)ei)->ProjectName = ex.what();
-				((OleStructuredStorage::VBA::VbaExtensionInfo*)ei)->SubType = "ERROR";
+				ei = new oless::VBA::VbaExtensionInfo();
+				((oless::VBA::VbaExtensionInfo*)ei)->ProjectName = ex.what();
+				((oless::VBA::VbaExtensionInfo*)ei)->SubType = "ERROR";
 			}
 
 			remove(tmpFile);

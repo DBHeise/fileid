@@ -1,6 +1,6 @@
 #ifndef MSWORD_H
 #define MSWORD_H
-namespace OleStructuredStorage {
+namespace oless {
 	namespace Word {
 
 		struct FibBase {

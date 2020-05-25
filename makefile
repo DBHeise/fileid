@@ -18,8 +18,7 @@ SRC_ZIPLIB = \
 
 
 SRC_FILEID = \
-	fileid/fileid.cpp \
-	fileid/oless/pole.cpp
+	fileid/fileid.cpp	
 
 
 # Object files			

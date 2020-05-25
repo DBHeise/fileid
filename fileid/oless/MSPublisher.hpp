@@ -1,6 +1,6 @@
 #ifndef MSPUBLISHER_H
 #define MSPUBLISHER_H
-namespace OleStructuredStorage {
+namespace oless {
 	namespace Publisher {
 
 		struct PubHeader {

@@ -1,7 +1,7 @@
 #ifndef MSPOWERPOINT_H
 #define MSPOWERPOINT_H
 
-namespace OleStructuredStorage {
+namespace oless {
 	namespace PowerPoint {
 		static const char PP95SIG[] = "Microsoft (R) PowerPoint (R) Windows  "; //38
 		struct RecordHeader {

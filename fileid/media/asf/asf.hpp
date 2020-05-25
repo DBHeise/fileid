@@ -640,23 +640,23 @@ namespace media {
 				index += 2;
 				
 				std::wstring tmptitle(reinterpret_cast<wchar_t const*>(buffer + index), this->title_length / 2);
-				this->title = common::convert(tmptitle);
+				this->title = common::erasenulls(common::convert(tmptitle));
 				index += this->title_length;
 
 				std::wstring tmpauthor(reinterpret_cast<wchar_t const*>(buffer + index), this->author_length / 2);
-				this->author = common::convert(tmpauthor);
+				this->author = common::erasenulls(common::convert(tmpauthor));
 				index += this->author_length;
 				
 				std::wstring tmpcopyright(reinterpret_cast<wchar_t const*>(buffer + index), this->copyright_length / 2);
-				this->copyright = common::convert(tmpcopyright);
+				this->copyright = common::erasenulls(common::convert(tmpcopyright));
 				index += this->copyright_length;
 				
 				std::wstring tmpdescription(reinterpret_cast<wchar_t const*>(buffer + index), this->description_length / 2);
-				this->description = common::convert(tmpdescription);
+				this->description = common::erasenulls(common::convert(tmpdescription));
 				index += this->description_length;
 				
 				std::wstring tmprating(reinterpret_cast<wchar_t const*>(buffer + index), this->rating_length / 2);
-				this->rating = common::convert(tmprating);
+				this->rating = common::erasenulls(common::convert(tmprating));
 				index += this->rating_length;
 
 
@@ -683,7 +683,7 @@ namespace media {
 				str << "<description>" << this->description << "</description>";
 				str << "<rating>" << this->rating << "</rating>";
 
-				str << "<ASFObject>";
+				str << "</ASFObject>";
 				return str.str();
 			}
 		};
@@ -991,10 +991,7 @@ namespace media {
 			virtual std::string ToJson() const override {
 				std::ostringstream str;
 				str << "{";
-				str << "\"extension\" : \"" << this->Extension << "\"";
-				str << ", \"name\" : \"" << this->VersionName << "\"";
-				str << ", \"version\" : " << this->Version;
-
+				str << this->buildBaseJson();
 				if (this->headers.size() > 0) {
 					str << ", \"headers\":[";
 					for (std::vector<asf_object*>::const_iterator i = this->headers.begin(); i != this->headers.end(); i++) {
@@ -1009,9 +1006,7 @@ namespace media {
 			virtual std::string ToXml() const override {
 				std::ostringstream str;
 				str << "<item>";
-				str << "<extension>" << this->Extension << "</extension>";
-				str << "<name>" << this->VersionName << "</name>";
-				str << "<version>" << this->Version << "</version>";
+				str << this->buildBaseXml();
 				if (this->headers.size() > 0) {
 					str << "<headers>";
 					for (std::vector<asf_object*>::const_iterator i = this->headers.begin(); i != this->headers.end(); i++) {						

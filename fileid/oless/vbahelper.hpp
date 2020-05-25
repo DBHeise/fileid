@@ -18,7 +18,7 @@
 #define __max(a,b)  (((a) > (b)) ? (a) : (b))
 #define __min(a,b)  (((a) < (b)) ? (a) : (b))
 
-namespace OleStructuredStorage {
+namespace oless {
 	namespace VBA {
 
 		struct MODULEOFFSET {
@@ -152,7 +152,7 @@ namespace OleStructuredStorage {
 					str << ", \"VBAVersionMinor\" : " << this->VBAVersionMinor;
 				}
 				if (this->References.size() > 0) {
-					str << ", \"References\" : [" << common::helper::vector_join(this->References, ",", true) << "]";
+					str << ", \"References\" : [" << common::vector_join(this->References, ",", true) << "]";
 				}
 				if (this->Modules.size() > 0) {
 					str << ", \"Modules\" : [";
@@ -178,7 +178,7 @@ namespace OleStructuredStorage {
 				str << "<item>";
 				str << this->buildBaseXml();
 				if (this->ProjectName.size() > 0) {
-					str << "<projectname>" << this->ProjectName << "</projectname>";
+					str << "<projectname>" << common::XmlEscape(this->ProjectName) << "</projectname>";
 				}
 				if (this->VBAVersionMajor > 0) {
 					str << "<VBAVersionMajor>" << this->VBAVersionMajor << "</VBAVersionMajor>";
@@ -199,8 +199,8 @@ namespace OleStructuredStorage {
 					for (std::vector<ProjectModule*>::const_iterator i = this->Modules.begin(); i != this->Modules.end(); i++) {
 						if (i != this->Modules.begin()) str << ",";
 						str << "<Module>";
-						str << "<Name>" << (*i)->Name << "</Name>";
-						str << "<StreamName>" << (*i)->StreamName << "</StreamName>";
+						str << "<Name>" << common::XmlEscape((*i)->Name) << "</Name>";
+						str << "<StreamName>" << common::XmlEscape((*i)->StreamName) << "</StreamName>";
 						str << "<Offset>" << (*i)->Offset << "</Offset>";
 						str << "<isPrivate>" << (*i)->isPrivate << "</isPrivate>";
 						str << "<isReadOnly>" << (*i)->isReadOnly << "</isReadOnly>";
@@ -341,7 +341,7 @@ namespace OleStructuredStorage {
 
 				//Read VBA Version
 				POLE::Stream* stream = new POLE::Stream(vbaStorage, fullname + "/VBA/_VBA_PROJECT");
-				VBAProjectStreamHeader* header = OleStructuredStorage::OleHelper::GetStructFromStream<VBAProjectStreamHeader>(stream);
+				VBAProjectStreamHeader* header = oless::OleHelper::GetStructFromStream<VBAProjectStreamHeader>(stream);
 				ans->Version = header->Version;
 				delete stream;
 

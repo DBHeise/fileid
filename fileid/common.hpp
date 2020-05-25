@@ -59,14 +59,22 @@ namespace common {
 		time_t t = convertFILETIME(time);
 		if (t > 0) {
 			struct tm dt;
-			char buffer[STD_BUFFER_SIZE] = { 0 };			
+			char buffer[STD_BUFFER_SIZE] = { 0 };		
+			bool localTimeErr = false;
 #ifdef WIN32
 			localtime_s(&dt, &t);
+			localTimeErr = dt.tm_mon == -1;
 #else
 			localtime_r(&t, &dt);
+			localTimeErr = errno == EOVERFLOW;
 #endif
-			strftime(buffer, STD_BUFFER_SIZE, "%F %T", &dt);
-			return std::string(buffer);
+			if (!localTimeErr) {
+				strftime(buffer, STD_BUFFER_SIZE, "%F %T", &dt);
+				return std::string(buffer);
+			}
+			else {
+				return "invalid time";
+			}
 		}
 		return "1601-01-01 00:00:00";
 	}
@@ -117,8 +125,14 @@ namespace common {
 
 	//erasenulls - removes null characters from std::string
 	std::string erasenulls(std::string str) {
-		str.erase(std::find(str.begin(), str.end(), '\0'), str.end());
-		return str;
+		std::string output;
+		for (size_t i = 0; i < str.size(); i++) {
+			unsigned char c = str[i];
+			if (c != '\0') {
+				output += c;
+			}
+		}
+		return output;
 	}
 
 	//convert - Converts a wstring to a string
@@ -137,7 +151,7 @@ namespace common {
 		oss << std::setfill('0');
 		for (size_t i = 0; i < size; i++)
 		{
-			oss << std::hex << std::setw(2) << buffer[i];
+			oss << std::hex << std::setw(2) << static_cast<int>(buffer[i]);
 		}
 		return oss.str();
 
@@ -375,7 +389,7 @@ namespace common {
 	}
 
 	//JsonEscape - escapes a string to be safe for JSON
-	static std::string JsonEscape(const std::string& source) {
+	std::string JsonEscape(const std::string& source) {
 		std::string result;
 		for (const char* c = source.c_str(); *c != 0; ++c) {
 			switch (*c) {
@@ -416,13 +430,66 @@ namespace common {
 		return result;
 	}
 
-	class IExportable {
+	//XmlEscape - escapes a string to be safe for JSON
+	std::string XmlEscape(const std::string& source) {
+		std::string result;
+		for (size_t i = 0; i < source.size(); i++) {
+			const unsigned char c = source[i];
+			switch (c)
+			{
+			case '"':
+				result += "&#34;";
+				break;
+			case '&':
+				result += "&#38;";
+				break;
+			case '\'':
+				result += "&#39;";
+				break;
+			case '>':
+				result += "&#60;";
+				break;
+			case '<':
+				result += "&#62;";
+				break;
+			default:
+				if (iscntrl(c) || c > 127) {
+					std::ostringstream oss;
+					oss << "&#" << std::setfill('0') << std::setw(2) << ((static_cast<unsigned int>(c) << 24) >> 24) << ";"; //ugh!
+					result += oss.str();
+				}
+				else {
+					result += c;
+				}
+
+				break;
+			}
+		}
+		return result;
+	}
+
+	class IJsonExportable {
 	public:
 		virtual std::string ToJson() const = 0;
+	};
+	class IXmlExportable {
+	public:
 		virtual std::string ToXml() const = 0;
+	};
+	class IMiniExportable: public IJsonExportable, public IXmlExportable {
+
+	};
+	class ICsvExportable {
+	public:
 		virtual std::string ToCsv() const = 0;
+	};
+	class ITxtExportable {
+	public:
 		virtual std::string ToText() const = 0;
 	};
+	class IExportable : public IMiniExportable, public ICsvExportable, public ITxtExportable { };
+
+
 
 	class ExtensionInfo : public IExportable {
 	protected:
@@ -450,7 +517,7 @@ namespace common {
 				str << "<name>" << this->Name << "</name>";
 			}
 			if (this->SubType.size() > 0) {
-				str << "<subtype>" << this->SubType << "</subtype>";
+				str << "<subtype>" << common::XmlEscape(this->SubType) << "</subtype>";
 			}
 			if (this->Version > 0) {
 				str << "<version>" << this->Version << "</version>";
@@ -559,28 +626,18 @@ namespace common {
 		}
 	}
 
-
-	class helper
-	{
-
-	public:
-		helper() {}
-		~helper() {}
-
-
-		template<class T>
-		static std::string vector_join(const std::vector<T>& v, const std::string& token, const bool useQuotes = false) {
-			std::ostringstream result;
-			for (typename std::vector<T>::const_iterator i = v.begin(); i != v.end(); i++) {
-				if (i != v.begin()) result << token;
-				if (useQuotes)
-					result << "\"" << *i << "\"";
-				else
-					result << *i;
+	template<class T> std::string vector_join(const std::vector<T>& v, const std::string& token, const bool useQuotes = false) {
+		std::ostringstream result;
+		for (typename std::vector<T>::const_iterator i = v.begin(); i != v.end(); i++) {
+			if (i != v.begin()) result << token;
+			if (useQuotes) {
+				result << "\"" << *i << "\"";
+			} else {
+				result << *i;
 			}
-			return result.str();
 		}
-	};
+		return result.str();
+	}
 
 	template<class T>
 	void Output(OutputFormat format, std::string file, std::string headerName, std::vector<T*> summary) {
@@ -594,7 +651,7 @@ namespace common {
 			break;
 		case OutputFormat::XML:
 			std::cout << "<file>";
-			std::cout << "<name>" << file << "</name>";
+			std::cout << "<name>" << common::XmlEscape(file) << "</name>";
 			std::cout << "<" << headerName << ">";
 			for (it = summary.begin(); it != summary.end(); it++) {
 				std::cout << (*it)->ToXml();
