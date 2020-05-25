@@ -151,13 +151,13 @@ namespace oless {
 				class ConnectionTxtQry : Connection {
 				public:
 					static ConnectionTxtQry* Read(const unsigned char* buffer, const unsigned int offset, const unsigned int max) {
-						throw std::exception("Not Implemented!");
+						throw std::runtime_error("Not Implemented!");
 					}
 					virtual std::string ToXml() const {
-						throw std::exception("Not Implemented!");
+						throw std::runtime_error("Not Implemented!");
 					}
 					virtual std::string ToJson() const {
-						throw std::exception("Not Implemented!");
+						throw std::runtime_error("Not Implemented!");
 					}
 				};
 
@@ -188,14 +188,14 @@ namespace oless {
 						ans.name = tmp.ToOneString();
 
 						//ans.chunk = reinterpret_cast<DConnParameterMiddle*>(buffer + index);
-						throw std::exception("Not Implemented!");
+						throw std::runtime_error("Not Implemented!");
 						return ans;
 					}
 					virtual std::string ToJson() const {
-						throw std::exception("Not Implemented!");
+						throw std::runtime_error("Not Implemented!");
 					};
 					virtual std::string ToXml() const {
-						throw std::exception("Not Implemented!");
+						throw std::runtime_error("Not Implemented!");
 					}
 					virtual std::string ToCsv() const { return ""; }
 					virtual std::string ToText() const { return ""; }
