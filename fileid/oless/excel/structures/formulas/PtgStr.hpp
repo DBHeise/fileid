@@ -17,20 +17,20 @@ namespace oless {
 				// The PtgStr operand specifies a Unicode string value.
 				class PtgStr : public PtgBasic {
 				private:
-					PtgStr(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
 					std::string string;
 				public:
-					static PtgStr* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-						PtgStr* ans = new PtgStr(buffer, max, index);
-						index += ans->bytesRead;
+					PtgStr(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic() { 
+						this->Parse(buffer, max, offset); 
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgBasic::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
 
 						auto tmp = ShortXLUnicodeString::Read(buffer, index);
 						index += tmp.bytesRead;
-						ans->string = tmp.string;
+						this->string = tmp.string;
 
-						ans->bytesRead = index - offset;
-						return ans;
+						this->bytesRead = index - offset;
 					}
 
 					std::string to_string() const override {

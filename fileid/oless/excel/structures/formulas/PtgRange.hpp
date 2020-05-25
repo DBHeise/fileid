@@ -17,12 +17,10 @@ namespace oless {
 				// The PtgRange structure specifies the range operation, where the minimum bounding rectangle of the first expression and the second expression is generated.
 				class PtgRange : public PtgBasic {
 				private:
-					PtgRange(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgRange* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgRange* ans = new PtgRange(buffer, max, offset);
-						return ans;
-					}
+					PtgRange(unsigned char* buffer, size_t max, unsigned int offset):PtgBasic() { this->Parse(buffer, max, offset); }
+
 					std::string to_string() const override {
 						return "PtgRange";
 					}

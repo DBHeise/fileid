@@ -17,14 +17,15 @@ namespace oless {
 				// The PtgFunc structure specifies a call to a function with a fixed number of parameters, as defined in function-call.
 				class PtgFunc : public PtgSubType {
 				private:
-					PtgFunc(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType::Parse(buffer, max, offset); }
 					unsigned short iftab;
 				public:
-					static PtgFunc* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgFunc* ans = new PtgFunc(buffer, max, offset);
-						ans->iftab = common::ReadUShort(buffer, max, offset + 1);
-						ans->bytesRead += 2;
-						return ans;
+					PtgFunc(unsigned char* buffer, size_t max, unsigned int offset): iftab(0), PtgSubType() { 
+						this->Parse(buffer, max, offset);
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType::Parse(buffer, max, offset);
+						this->iftab = common::ReadUShort(buffer, max, offset + 1);
+						this->bytesRead += 2;
 					}
 
 					std::string to_string() const override {

@@ -16,27 +16,28 @@ namespace oless {
 				// The PtgArray operand specifies an array of values. There MUST be a PtgExtraArray in the RgbExtra corresponding to this PtgArray. The correspondence between PtgArray and PtgExtraArray structures is specified in RgbExtra.
 				class PtgArray : public PtgSubType {
 				private:
-					PtgArray(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType::Parse(buffer, max, offset); }
+					
 					unsigned char unused1;
 					unsigned short unused2;
 					unsigned int unused3;
 				public:
-					static PtgArray* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-						PtgArray* ans = new PtgArray(buffer, max, index);
-						index += ans->bytesRead;
+					PtgArray(unsigned char* buffer, size_t max, unsigned int offset): unused1(0),unused2(0),unused3(0),PtgSubType() {
+						this->Parse(buffer, max, offset); 
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
 
-						ans->unused1 = buffer[index];
+						this->unused1 = buffer[index];
 						index++;
 
-						ans->unused2 = common::ReadUShort(buffer, max, index);
+						this->unused2 = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						ans->unused3 = common::ReadUInt(buffer, max, index);
+						this->unused3 = common::ReadUInt(buffer, max, index);
 						index += 4;
 
-						ans->bytesRead = index - offset;
-						return ans;
+						this->bytesRead = index - offset;
 					}
 
 					std::string to_string() const override {

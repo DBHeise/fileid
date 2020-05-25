@@ -17,12 +17,9 @@ namespace oless {
 				// The PtgGe structure specifies a binary-value-operator that compares whether the first expression in a binary-value-expression is greater than or equal to the second.
 				class PtgGe : public PtgBasic {
 				private:
-					PtgGe(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
 				public:
-					static PtgGe* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgGe* ans = new PtgGe(buffer, max, offset);
-						return ans;
-					}
+					PtgGe(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic() { this->Parse(buffer, max, offset); }
+
 					std::string to_string() const override {
 						return "PtgGe";
 					}

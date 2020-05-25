@@ -17,23 +17,24 @@ namespace oless {
 				// The PtgMemArea mem token specifies that the result of a binary-reference-expression in a mem-area-expression is a range of cells. The RgbExtra corresponding to this structure MUST contain a PtgExtraMem that specifies the range of cells.
 				class PtgMemArea : public PtgSubType {
 				private:
-					PtgMemArea(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType::Parse(buffer, max, offset); }
 					unsigned int unused;
 					unsigned short cce;
 				public:
-					static PtgMemArea* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-						PtgMemArea* ans = new PtgMemArea(buffer, max, index);
-						index += ans->bytesRead;
+					PtgMemArea(unsigned char* buffer, size_t max, unsigned int offset): unused(0), cce(0), PtgSubType() { 
+						this->Parse(buffer, max, offset);
+					}
 
-						ans->unused = common::ReadUInt(buffer, max, index);
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
+
+						this->unused = common::ReadUInt(buffer, max, index);
 						index += 4;
 
-						ans->cce = common::ReadUShort(buffer, max, index);
+						this->cce = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						ans->bytesRead = index - offset;
-						return ans;
+						this->bytesRead = index - offset;
 					}
 
 					std::string to_string() const override {

@@ -17,11 +17,19 @@ namespace oless {
 				// The PtgElfRwV natural language formula operand specifies a value class reference to a range within a row which is represented by a single-cell natural language label.
 				class PtgElfRwV : public PtgBasic_elf {
 				private:
-					PtgElfRwV(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic_elf::Parse(buffer, max, offset); }
+					RgceElfLoc loc;
 				public:
-					static PtgElfRwV* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgElfRwV* ans = new PtgElfRwV(buffer, max, offset);
-						return ans;
+					PtgElfRwV(unsigned char* buffer, size_t max, unsigned int offset) : PtgBasic_elf() {
+						this->Parse(buffer, max, offset);
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgBasic_elf::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
+
+						this->loc.Parse(buffer, max, index);
+						index += this->loc.bytesRead;
+
+						this->bytesRead = index - offset;
 					}
 					std::string to_string() const override {
 						return "PtgElfRwV";

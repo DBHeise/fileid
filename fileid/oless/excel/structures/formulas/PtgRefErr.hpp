@@ -17,23 +17,24 @@ namespace oless {
 				// The PtgRefErr operand specifies an invalid reference to a cell.
 				class PtgRefErr : public PtgSubType {
 				private:
-					PtgRefErr(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType::Parse(buffer, max, offset); }
 					unsigned short unused1;
 					unsigned short unused2;
 				public:
-					static PtgRefErr* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-						PtgRefErr* ans = new PtgRefErr(buffer, max, index);
-						index += ans->bytesRead;
+					PtgRefErr(unsigned char* buffer, size_t max, unsigned int offset): unused1(0), unused2(0), PtgSubType() { 
+						this->Parse(buffer, max, offset);
+					}
 
-						ans->unused1 = common::ReadUShort(buffer, max, index);
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
+
+						this->unused1 = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						ans->unused2 = common::ReadUShort(buffer, max, index);
+						this->unused2 = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						ans->bytesRead = index - offset;
-						return ans;
+						this->bytesRead = index - offset;
 					}
 
 					std::string to_string() const override {

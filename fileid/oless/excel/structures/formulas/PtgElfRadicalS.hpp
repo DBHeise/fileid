@@ -18,12 +18,21 @@ namespace oless {
 				// The PtgElfRadicalS natural language formula operand specifies a reference class reference to a range which is represented by a multiple-cell natural language label. The range is specified by the PtgArea or PtgAreaErr record which follows this PtgElfRadicalS in the formula (section 2.2.2). There MUST be a PtgExtraElf in the RgbExtra corresponding to this PtgElfRadicalS. The correspondence between PtgElfRadicalS and PtgExtraElf structures is specified in RgbExtra.
 				class PtgElfRadicalS : public PtgBasic_elf {
 				private:
-					PtgElfRadicalS(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic_elf::Parse(buffer, max, offset); }
+					unsigned int unused;
 				public:
-					static PtgElfRadicalS* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgElfRadicalS* ans = new PtgElfRadicalS(buffer, max, offset);
-						return ans;
+					PtgElfRadicalS(unsigned char* buffer, size_t max, unsigned int offset): unused(0), PtgBasic_elf() { 
+						this->Parse(buffer, max, offset);
 					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgBasic_elf::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
+
+						this->unused = common::ReadUInt(buffer, max, offset);
+						index += 4;
+
+						this->bytesRead = index - offset;
+					}
+
 					std::string to_string() const override {
 						return "PtgElfRadicalS";
 					}

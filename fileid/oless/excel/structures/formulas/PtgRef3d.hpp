@@ -18,19 +18,20 @@ namespace oless {
 				// The PtgRef3d operand specifies a reference to a single cell on one or more sheets.
 				class PtgRef3d : public PtgSubType_ixti {
 				private:
-					PtgRef3d(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType_ixti::Parse(buffer, max, offset); }
+					
 					RgceLoc loc;
 				public:
-					static PtgRef3d* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-						PtgRef3d* ans = new PtgRef3d(buffer, max, index);
-						index += ans->bytesRead;
+					PtgRef3d(unsigned char* buffer, size_t max, unsigned int offset): PtgSubType_ixti() {
+						this->Parse(buffer, max, offset); 
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType_ixti::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
 
-						ans->loc.Parse(buffer, max, index);
-						index += ans->loc.bytesRead;
+						this->loc.Parse(buffer, max, index);
+						index += this->loc.bytesRead;
 
-						ans->bytesRead = index - offset;
-						return ans;
+						this->bytesRead = index - offset;
 					}
 
 					std::string to_string() const override {

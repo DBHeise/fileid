@@ -16,12 +16,9 @@ namespace oless {
 				// The PtgLt structure specifies a binary-value-operator that compares whether the first expression in a binary-value-expression is less than the second.
 				class PtgLt : public PtgBasic {
 				private:
-					PtgLt(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
 				public:
-					static PtgLt* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgLt* ans = new PtgLt(buffer, max, offset);
-						return ans;
-					}
+					PtgLt(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic() {this->Parse(buffer, max, offset); }
+
 					std::string to_string() const override {
 						return "PtgLt";
 					}

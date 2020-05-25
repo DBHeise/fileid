@@ -17,12 +17,10 @@ namespace oless {
 				// The PtgPower structure specifies a binary-value-operator that raises the first expression in a binary-value-expression to the power of the second.
 				class PtgPower : public PtgBasic {
 				private:
-					PtgPower(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgPower* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgPower* ans = new PtgPower(buffer, max, offset);
-						return ans;
-					}
+					PtgPower(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic() { this->Parse(buffer, max, offset); }
+
 					std::string to_string() const override {
 						return "PtgPower";
 					}

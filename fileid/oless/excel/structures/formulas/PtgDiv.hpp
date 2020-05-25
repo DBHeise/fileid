@@ -17,12 +17,12 @@ namespace oless {
 				// The PtgDiv structure specifies a binary-value-operator that divides the first expression in a binary-value-expression by the second.
 				class PtgDiv : public PtgBasic {
 				private:
-					PtgDiv(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgDiv* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgDiv* ans = new PtgDiv(buffer, max, offset);
-						return ans;
+					PtgDiv(unsigned char* buffer, size_t max, unsigned int offset) {
+						this->Parse(buffer, max, offset);
 					}
+					
 					std::string to_string() const override {
 						return "PtgDiv";
 					}

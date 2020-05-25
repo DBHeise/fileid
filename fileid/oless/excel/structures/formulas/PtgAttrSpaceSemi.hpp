@@ -18,23 +18,23 @@ namespace oless {
 				// The PtgAttrSpaceSemi structure specifies a number of space or carriage return characters that are displayed around the expression in a display-precedence-specifier and that the Rgce is volatile.
 				class PtgAttrSpaceSemi : public PtgBasic {
 				private:
-					PtgAttrSpaceSemi(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
 					unsigned char reserved2;
 					PtgAttrSpaceType type;
 				public:
-					static PtgAttrSpaceSemi* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-						PtgAttrSpaceSemi* ans = new PtgAttrSpaceSemi(buffer, max, index);
-						index += ans->bytesRead;
+					PtgAttrSpaceSemi(unsigned char* buffer, size_t max, unsigned int offset): reserved2(0), PtgBasic() { 
+						this->Parse(buffer, max, offset);
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgBasic::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
 
-						ans->reserved2 = buffer[index];
+						this->reserved2 = buffer[index];
 						index++;
 
-						ans->type.Parse(buffer, max, index);
-						index += ans->type.bytesRead;
+						this->type.Parse(buffer, max, index);
+						index += this->type.bytesRead;
 
-						ans->bytesRead = index - offset;
-						return ans;
+						this->bytesRead = index - offset;
 					}
 
 					std::string to_string() const override {

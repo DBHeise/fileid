@@ -17,19 +17,21 @@ namespace oless {
 				// The PtgMemFunc mem token specifies that the result of a binary-reference-expression in a mem-area-expression is variable.
 				class PtgMemFunc : public PtgSubType {
 				private:
-					PtgMemFunc(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType::Parse(buffer, max, offset); }
+					
 					unsigned short cce;
 				public:
-					static PtgMemFunc* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-						PtgMemFunc* ans = new PtgMemFunc(buffer, max, index);
-						index += ans->bytesRead;
+					PtgMemFunc(unsigned char* buffer, size_t max, unsigned int offset): cce(0), PtgSubType() { 
+						this->Parse(buffer, max, offset);
+					}
+					
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
 
-						ans->cce = common::ReadUShort(buffer, max, index);
+						this->cce = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						ans->bytesRead = index - offset;
-						return ans;
+						this->bytesRead = index - offset;
 					}
 
 					std::string to_string() const override {

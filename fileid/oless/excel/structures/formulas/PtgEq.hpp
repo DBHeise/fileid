@@ -17,12 +17,12 @@ namespace oless {
 				// The PtgEq structure specifies the comparison of whether the first expression is equal to the second expression.
 				class PtgEq : public PtgBasic {
 				private:
-					PtgEq(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgEq* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgEq* ans = new PtgEq(buffer, max, offset);
-						return ans;
+					PtgEq(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic() { 
+						this->Parse(buffer, max, offset); 
 					}
+
 					std::string to_string() const override {
 						return "PtgEq";
 					}

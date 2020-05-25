@@ -16,34 +16,34 @@ namespace oless {
 				// The PtgAreaErr operand specifies an invalid reference to a cell range.
 				class PtgAreaErr : public PtgSubType {
 				private:
-					PtgAreaErr(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType::Parse(buffer, max, offset); }
+					
 					unsigned short unused1;
 					unsigned short unused2;
 					unsigned short unused3;
 					unsigned short unused4;
 				public:
-					static PtgAreaErr* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-
-						PtgAreaErr* ans = new PtgAreaErr(buffer, max, index);
-						index += 1;
-
-						ans->unused1 = common::ReadUShort(buffer, max, index);
-						index += 2;
-
-						ans->unused2 = common::ReadUShort(buffer, max, index);
-						index += 2;
-
-						ans->unused3 = common::ReadUShort(buffer, max, index);
-						index += 2;
-
-						ans->unused4 = common::ReadUShort(buffer, max, index);
-						index += 2;
-
-						ans->bytesRead = index - offset;
-						return ans;
+					PtgAreaErr(unsigned char* buffer, size_t max, unsigned int offset) : unused1(0), unused2(0), unused3(0), unused4(0), PtgSubType() {
+						this->Parse(buffer, max, offset);						
 					}
-					
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
+
+						this->unused1 = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						this->unused2 = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						this->unused3 = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						this->unused4 = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						this->bytesRead = index - offset;
+					}
+										
 					std::string to_string() const override {
 						return "PtgAreaErr";
 					}

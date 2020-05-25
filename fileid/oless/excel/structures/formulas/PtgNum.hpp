@@ -17,14 +17,15 @@ namespace oless {
 				// The PtgNum operand specifies a floating-point value.
 				class PtgNum : public PtgBasic {
 				private:
-					PtgNum(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
 					double value;
 				public:
-					static PtgNum* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgNum* ans = new PtgNum(buffer, max, offset);
-						ans->value = ReadXNumFromBytes(&buffer[offset + 1]);
-						ans->bytesRead += 8;
-						return ans;
+					PtgNum(unsigned char* buffer, size_t max, unsigned int offset): value(0.0), PtgBasic() {
+						this->Parse(buffer, max, offset);
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgBasic::Parse(buffer, max, offset);
+						this->value = ReadXNumFromBytes(&buffer[offset + 1]);
+						this->bytesRead += 8;
 					}
 
 					std::string to_string() const override {

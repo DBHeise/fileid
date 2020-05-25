@@ -19,19 +19,20 @@ namespace oless {
 				class PtgNameX : public PtgSubType_ixti {
 				private:
 					std::string name;
-					PtgNameX(unsigned char* buffer, size_t max, unsigned int offset) : nameindex(0) { PtgSubType_ixti::Parse(buffer, max, offset); }
 				public:
-					unsigned int nameindex;					
-					static PtgNameX* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-						PtgNameX* ans = new PtgNameX(buffer, max, index);
-						index += ans->bytesRead;
+					unsigned int nameindex;
+					
+					PtgNameX(unsigned char* buffer, size_t max, unsigned int offset) : nameindex(0), PtgSubType_ixti() {
+						this->Parse(buffer, max, offset); 
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType_ixti::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
 
-						ans->nameindex = common::ReadUInt(buffer, max, index, true);
+						this->nameindex = common::ReadUInt(buffer, max, index, true);
 						index += 4;
 
-						ans->bytesRead = index - offset;
-						return ans;
+						this->bytesRead = index - offset;
 					}
 
 					std::string to_string() const override {

@@ -18,14 +18,17 @@ namespace oless {
 				// The PtgErr operand specifies an error code.
 				class PtgErr : public PtgBasic {
 				private:
-					PtgErr(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 					BErr err;
 				public:
-					static PtgErr* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgErr* ans = new PtgErr(buffer, max, offset);
-						ans->err = (BErr)buffer[offset + 1];
-						ans->bytesRead++;
-						return ans;
+					PtgErr(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic() { 
+						this->Parse(buffer, max, offset);
+					}
+					
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgBasic::Parse(buffer, max, offset);
+						this->err = (BErr)buffer[offset + 1];
+						this->bytesRead++;
 					}
 					
 					std::string to_string() const override {

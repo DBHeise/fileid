@@ -16,19 +16,21 @@ namespace oless {
 				// The PtgName operand specifies a reference to a defined name in the same workbook as the containing Rgce.
 				class PtgName : public PtgSubType {
 				private:
-					PtgName(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType::Parse(buffer, max, offset); }
 				public:
 					unsigned int nameindex;
-					static PtgName* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-						PtgName* ans = new PtgName(buffer, max, index);
-						index += ans->bytesRead;
 
-						ans->nameindex = common::ReadUInt(buffer, max, index, true);
+					PtgName(unsigned char* buffer, size_t max, unsigned int offset): nameindex(0), PtgSubType() {
+						this->Parse(buffer, max, offset);
+					}
+
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
+
+						this->nameindex = common::ReadUInt(buffer, max, index, true);
 						index += 4;
 
-						ans->bytesRead = index - offset;
-						return ans;
+						this->bytesRead = index - offset;
 					}
 
 					std::string to_string() const override {

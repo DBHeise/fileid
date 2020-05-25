@@ -18,16 +18,19 @@ namespace oless {
 				// The PtgArea3d operand specifies a reference to the same rectangular range of cells on one or more sheets. If the formula (section 2.2.2) containing this structure is part of a revision as specified in the Formulas overview, then there MUST be a RevExtern in the RgbExtra corresponding to this PtgArea3d, which specifies those sheets.
 				class PtgArea3d : public PtgSubType_ixti {
 				private:
-					PtgArea3d(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType_ixti::Parse(buffer, max, offset); }
+					
 					RgceArea area;
 				public:
-					static PtgArea3d* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgArea3d* ans = new PtgArea3d(buffer, max, offset);
-						ans->area.Parse(buffer, max, offset + 3);
-						ans->bytesRead += ans->area.bytesRead;
-						return ans;
+					PtgArea3d(unsigned char* buffer, size_t max, unsigned int offset) : PtgSubType_ixti() {
+						this->Parse(buffer, max, offset);
 					}
-					
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType_ixti::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
+						this->area.Parse(buffer, max, index);
+						this->bytesRead += this->area.bytesRead;
+					}
+
 					std::string to_string() const override {
 						return "PtgArea3d(" + this->area.to_string() + ")";
 					}

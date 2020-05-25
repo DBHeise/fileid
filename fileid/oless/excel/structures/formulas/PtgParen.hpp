@@ -16,12 +16,12 @@ namespace oless {
 				// The PtgParen display token specifies that parentheses are displayed around the expression in a display-precedence-expression.
 				class PtgParen : public PtgBasic {
 				private:
-					PtgParen(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgParen* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgParen* ans = new PtgParen(buffer, max, offset);
-						return ans;
+					PtgParen(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic() { 
+						this->Parse(buffer, max, offset); 
 					}
+					
 					std::string to_string() const override {
 						return "PtgParen";
 					}

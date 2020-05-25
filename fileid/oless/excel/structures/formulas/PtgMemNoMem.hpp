@@ -16,23 +16,25 @@ namespace oless {
 				// The PtgMemNoMem mem token specifies that the result of the binary-reference-expression in a mem-area-expression failed to cache.
 				class PtgMemNoMem : public PtgSubType {
 				private:
-					PtgMemNoMem(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType::Parse(buffer, max, offset); }
+					
 					unsigned int unused;
 					unsigned short cce;
 				public:
-					static PtgMemNoMem* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-						PtgMemNoMem* ans = new PtgMemNoMem(buffer, max, index);
-						index += ans->bytesRead;
+					PtgMemNoMem(unsigned char* buffer, size_t max, unsigned int offset): unused(0), cce(0), PtgSubType() { 
+						this->Parse(buffer, max, offset); 
+					}
+					
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
 
-						ans->unused = common::ReadUInt(buffer, max, index);
+						this->unused = common::ReadUInt(buffer, max, index);
 						index += 4;
 
-						ans->cce = common::ReadUShort(buffer, max, index);
+						this->cce = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						ans->bytesRead = index - offset;
-						return ans;
+						this->bytesRead = index - offset;
 					}
 
 					std::string to_string() const override {

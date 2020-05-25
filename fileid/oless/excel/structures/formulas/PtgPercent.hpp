@@ -17,12 +17,12 @@ namespace oless {
 				// The PtgPercent structure specifies a unary-operator which divides the expression in a unary-expression by 100.
 				class PtgPercent : public PtgBasic {
 				private:
-					PtgPercent(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgPercent* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgPercent* ans = new PtgPercent(buffer, max, offset);
-						return ans;
+					PtgPercent(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic() { 
+						this->Parse(buffer, max, offset); 
 					}
+
 					std::string to_string() const override {
 						return "PtgPercent";
 					}

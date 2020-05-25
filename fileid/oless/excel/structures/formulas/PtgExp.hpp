@@ -17,16 +17,23 @@ namespace oless {
 				// The PtgExp structure specifies that the containing Rgce is part of an array formula (section 2.2.2) or shared formula and specifies the row and column of the cell in which that formula exists.
 				class PtgExp : public PtgBasic {
 				private:
-					PtgExp(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
 					unsigned short row;
 					unsigned short col;
 				public:
-					static PtgExp* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgExp* ans = new PtgExp(buffer, max, offset);
-						ans->row = common::ReadUShort(buffer, max, offset + 1);
-						ans->col = common::ReadUShort(buffer, max, offset + 3);
-						ans->bytesRead += 4;
-						return ans;
+					PtgExp(unsigned char* buffer, size_t max, unsigned int offset): row(0), col(0), PtgBasic() {
+						this->Parse(buffer, max, offset);
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgBasic::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
+
+						this->row = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						this->col = common::ReadUShort(buffer, max, index);
+						index += 2;
+
+						this->bytesRead = index - offset;
 					}
 					
 					std::string to_string() const override {

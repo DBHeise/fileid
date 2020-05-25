@@ -16,12 +16,12 @@ namespace oless {
 				// The PtgElfColV natural language formula operand specifies a value class reference to a range within a column which is represented by a single-cell natural language label.
 				class PtgElfColV : public PtgBasic_elf {
 				private:
-					PtgElfColV(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic_elf::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgElfColV* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgElfColV* ans = new PtgElfColV(buffer, max, offset);
-						return ans;
-					}
+					PtgElfColV(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic_elf() { 
+						this->Parse(buffer, max, offset); 
+					}					
+
 					std::string to_string() const override {
 						return "PtgElfColV";
 					}

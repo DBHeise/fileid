@@ -17,15 +17,18 @@ namespace oless {
 				// ptg=0x2D or 0x4D or 0x6D
 				// The PtgAreaN operand specifies a reference to a rectangular range of cells as an RgceAreaRel.
 				class PtgAreaN : public PtgSubType {
-				private:
-					PtgAreaN(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType::Parse(buffer, max, offset); }
+				private:					
 					RgceAreaRel area;
 				public:
-					static PtgAreaN* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgAreaN* ans = new PtgAreaN(buffer, max, offset);
-						ans->area.Parse(buffer, max, offset + 1);
-						ans->bytesRead += ans->area.bytesRead;
-						return ans;
+					PtgAreaN(unsigned char* buffer, size_t max, unsigned int offset): PtgSubType() {
+						this->Parse(buffer,max,offset);
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
+
+						this->area.Parse(buffer, max, offset + 1);
+						this->bytesRead += this->area.bytesRead;
 					}
 
 					std::string to_string() const override {

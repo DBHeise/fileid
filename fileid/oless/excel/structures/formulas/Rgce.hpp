@@ -26,44 +26,44 @@ namespace oless {
 							unsigned char ptgType = buffer[index];
 
 							switch (ptgType) {
-							case 0x01: child = PtgExp::Parse(buffer, max, index); break;
-							case 0x02: child = PtgTbl::Parse(buffer, max, index); break;
-							case 0x03: child = PtgAdd::Parse(buffer, max, index); break;
-							case 0x04: child = PtgSub::Parse(buffer, max, index); break;
-							case 0x05: child = PtgMul::Parse(buffer, max, index); break;
-							case 0x06: child = PtgDiv::Parse(buffer, max, index); break;
-							case 0x07: child = PtgPower::Parse(buffer, max, index); break;
-							case 0x08: child = PtgConcat::Parse(buffer, max, index); break;
-							case 0x09: child = PtgLt::Parse(buffer, max, index); break;
-							case 0x0A: child = PtgLe::Parse(buffer, max, index); break;
-							case 0x0B: child = PtgEq::Parse(buffer, max, index); break;
-							case 0x0C: child = PtgGe::Parse(buffer, max, index); break;
-							case 0x0D: child = PtgGt::Parse(buffer, max, index); break;
-							case 0x0E: child = PtgNe::Parse(buffer, max, index); break;
-							case 0x0F: child = PtgIsect::Parse(buffer, max, index); break;
-							case 0x10: child = PtgUnion::Parse(buffer, max, index); break;
-							case 0x11: child = PtgRange::Parse(buffer, max, index); break;
-							case 0x12: child = PtgUplus::Parse(buffer, max, index); break;
-							case 0x13: child = PtgUminus::Parse(buffer, max, index); break;
-							case 0x14: child = PtgPercent::Parse(buffer, max, index); break;
-							case 0x15: child = PtgParen::Parse(buffer, max, index); break;
-							case 0x16: child = PtgMissArg::Parse(buffer, max, index); break;
-							case 0x17: child = PtgStr::Parse(buffer, max, index); break;
+							case 0x01: child = new PtgExp(buffer, max, index); break;
+							case 0x02: child = new PtgTbl(buffer, max, index); break;
+							case 0x03: child = new PtgAdd(buffer, max, index); break;
+							case 0x04: child = new PtgSub(buffer, max, index); break;
+							case 0x05: child = new PtgMul(buffer, max, index); break;
+							case 0x06: child = new PtgDiv(buffer, max, index); break;
+							case 0x07: child = new PtgPower(buffer, max, index); break;
+							case 0x08: child = new PtgConcat(buffer, max, index); break;
+							case 0x09: child = new PtgLt(buffer, max, index); break;
+							case 0x0A: child = new PtgLe(buffer, max, index); break;
+							case 0x0B: child = new PtgEq(buffer, max, index); break;
+							case 0x0C: child = new PtgGe(buffer, max, index); break;
+							case 0x0D: child = new PtgGt(buffer, max, index); break;
+							case 0x0E: child = new PtgNe(buffer, max, index); break;
+							case 0x0F: child = new PtgIsect(buffer, max, index); break;
+							case 0x10: child = new PtgUnion(buffer, max, index); break;
+							case 0x11: child = new PtgRange(buffer, max, index); break;
+							case 0x12: child = new PtgUplus(buffer, max, index); break;
+							case 0x13: child = new PtgUminus(buffer, max, index); break;
+							case 0x14: child = new PtgPercent(buffer, max, index); break;
+							case 0x15: child = new PtgParen(buffer, max, index); break;
+							case 0x16: child = new PtgMissArg(buffer, max, index); break;
+							case 0x17: child = new PtgStr(buffer, max, index); break;
 							case 0x18:
 							{
 								unsigned char subType = buffer[index + 1];
 								switch (subType) {
-								case 0x01: child = PtgElfLel::Parse(buffer, max, index); break;
-								case 0x02: child = PtgElfRw::Parse(buffer, max, index); break;
-								case 0x03: child = PtgElfCol::Parse(buffer, max, index); break;
-								case 0x06: child = PtgElfRwV::Parse(buffer, max, index); break;
-								case 0x07: child = PtgElfColV::Parse(buffer, max, index); break;
-								case 0x0A: child = PtgElfRadical::Parse(buffer, max, index); break;
-								case 0x0B: child = PtgElfRadicalS::Parse(buffer, max, index); break;
-								case 0x0D: child = PtgElfColS::Parse(buffer, max, index); break;
-								case 0x0F: child = PtgElfColSV::Parse(buffer, max, index); break;
-								case 0x10: child = PtgElfRadicalLel::Parse(buffer, max, index); break;
-								case 0x1D: child = PtgSxName::Parse(buffer, max, index); break;
+								case 0x01: child = new PtgElfLel(buffer, max, index); break;
+								case 0x02: child = new PtgElfRw(buffer, max, index); break;
+								case 0x03: child = new PtgElfCol(buffer, max, index); break;
+								case 0x06: child = new PtgElfRwV(buffer, max, index); break;
+								case 0x07: child = new PtgElfColV(buffer, max, index); break;
+								case 0x0A: child = new PtgElfRadical(buffer, max, index); break;
+								case 0x0B: child = new PtgElfRadicalS(buffer, max, index); break;
+								case 0x0D: child = new PtgElfColS(buffer, max, index); break;
+								case 0x0F: child = new PtgElfColSV(buffer, max, index); break;
+								case 0x10: child = new PtgElfRadicalLel(buffer, max, index); break;
+								case 0x1D: child = new PtgSxName(buffer, max, index); break;
 								default: child = new PtgUnknown(ptgType, subType); break;
 								}
 								break;
@@ -72,100 +72,100 @@ namespace oless {
 							{
 								unsigned char subType = buffer[index + 1];								
 								switch (subType) {
-								case 0x01: child = PtgAttrSemi::Parse(buffer, max, index); break;
-								case 0x02: child = PtgAttrIf::Parse(buffer, max, index); break;
-								case 0x04: child = PtgAttrChoose::Parse(buffer, max, index); break;
-								case 0x08: child = PtgAttrGoto::Parse(buffer, max, index); break;
-								case 0x10: child = PtgAttrSum::Parse(buffer, max, index); break;
+								case 0x01: child = new PtgAttrSemi(buffer, max, index); break;
+								case 0x02: child = new PtgAttrIf(buffer, max, index); break;
+								case 0x04: child = new PtgAttrChoose(buffer, max, index); break;
+								case 0x08: child = new PtgAttrGoto(buffer, max, index); break;
+								case 0x10: child = new PtgAttrSum(buffer, max, index); break;
 								case 0x20:
 								case 0x21:
-									child = PtgAttrBaxcel::Parse(buffer, max, index); break;
-								case 0x40: child = PtgAttrSpace::Parse(buffer, max, index); break;
-								case 0x41: child = PtgAttrSpaceSemi::Parse(buffer, max, index); break;
+									child = new PtgAttrBaxcel(buffer, max, index); break;
+								case 0x40: child = new PtgAttrSpace(buffer, max, index); break;
+								case 0x41: child = new PtgAttrSpaceSemi(buffer, max, index); break;
 								default: child = new PtgUnknown(ptgType, subType); break;
 								}
 								break;
 							}
-							case 0x1C: child = PtgErr::Parse(buffer, max, index); break;
-							case 0x1D: child = PtgBool::Parse(buffer, max, index); break;
-							case 0x1E: child = PtgInt::Parse(buffer, max, index); break;
-							case 0x1F: child = PtgNum::Parse(buffer, max, index); break;
+							case 0x1C: child = new PtgErr(buffer, max, index); break;
+							case 0x1D: child = new PtgBool(buffer, max, index); break;
+							case 0x1E: child = new PtgInt(buffer, max, index); break;
+							case 0x1F: child = new PtgNum(buffer, max, index); break;
 							case 0x20:
 							case 0x40:
 							case 0x60:
-								child = PtgArray::Parse(buffer, max, index); break;
+								child = new PtgArray(buffer, max, index); break;
 							case 0x21:
 							case 0x41:
 							case 0x61:
-								child = PtgFunc::Parse(buffer, max, index); break;
+								child = new PtgFunc(buffer, max, index); break;
 							case 0x22:
 							case 0x42:
 							case 0x62:
-								child = PtgFuncVar::Parse(buffer, max, index); break;
+								child = new PtgFuncVar(buffer, max, index); break;
 							case 0x23:
 							case 0x43:
 							case 0x63:
-								child = PtgName::Parse(buffer, max, index); break;
+								child = new PtgName(buffer, max, index); break;
 							case 0x24:
 							case 0x44:
 							case 0x64:
-								child = PtgRef::Parse(buffer, max, index); break;
+								child = new PtgRef(buffer, max, index); break;
 							case 0x25:
 							case 0x45:
 							case 0x65:
-								child = PtgArea::Parse(buffer, max, index); break;
+								child = new PtgArea(buffer, max, index); break;
 							case 0x26:
 							case 0x46:
 							case 0x66:
-								child = PtgMemArea::Parse(buffer, max, index); break;
+								child = new PtgMemArea(buffer, max, index); break;
 							case 0x27:
 							case 0x47:
 							case 0x67:
-								child = PtgMemErr::Parse(buffer, max, index); break;
+								child = new PtgMemErr(buffer, max, index); break;
 							case 0x28:
 							case 0x48:
 							case 0x68:
-								child = PtgMemNoMem::Parse(buffer, max, index); break;
+								child = new PtgMemNoMem(buffer, max, index); break;
 							case 0x29:
 							case 0x49:
 							case 0x69:
-								child = PtgMemFunc::Parse(buffer, max, index); break;
+								child = new PtgMemFunc(buffer, max, index); break;
 							case 0x2A:
 							case 0x4A:
 							case 0x6A:
-								child = PtgRefErr::Parse(buffer, max, index); break;
+								child = new PtgRefErr(buffer, max, index); break;
 							case 0x2B:
 							case 0x4B:
 							case 0x6B:
-								child = PtgAreaErr::Parse(buffer, max, index); break;
+								child = new PtgAreaErr(buffer, max, index); break;
 							case 0x2C:
 							case 0x4C:
 							case 0x6C:
-								child = PtgRefN::Parse(buffer, max, index); break;
+								child = new PtgRefN(buffer, max, index); break;
 							case 0x2D:
 							case 0x4D:
 							case 0x6D:
-								child = PtgAreaN::Parse(buffer, max, index); break;
+								child = new PtgAreaN(buffer, max, index); break;
 							case 0x39:
 							case 0x59:
 							case 0x79:
-								child = PtgNameX::Parse(buffer, max, index); break;
+								child = new PtgNameX(buffer, max, index); break;
 							case 0x3A:
 							case 0x5A:
 							case 0x7A:
-								child = PtgRef3d::Parse(buffer, max, index); break;
+								child = new PtgRef3d(buffer, max, index); break;
 							case 0x3B:
 							case 0x5B:
 							case 0x7B:
-								child = PtgArea3d::Parse(buffer, max, index); break;
+								child = new PtgArea3d(buffer, max, index); break;
 							case 0x3C:
 							case 0x5C:
 							case 0x7C:
-								child = PtgRefErr3d::Parse(buffer, max, index); break;
+								child = new PtgRefErr3d(buffer, max, index); break;
 							case 0x3D:
 							case 0x5D:
 							case 0x7D:
-								child = PtgAreaErr3d::Parse(buffer, max, index); break;								
+								child = new PtgAreaErr3d(buffer, max, index); break;								
 							default: 
 								child = new PtgUnknown(ptgType, 0); 
 								index++;

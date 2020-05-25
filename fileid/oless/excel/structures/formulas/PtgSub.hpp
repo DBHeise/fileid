@@ -16,12 +16,10 @@ namespace oless {
 				// The PtgSub structure specifies a binary-value operator that subtracts the second expression in a binary-value-expression from the first.
 				class PtgSub : public PtgBasic {
 				private:
-					PtgSub(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgSub* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgSub* ans = new PtgSub(buffer, max, offset);
-						return ans;
-					}
+					PtgSub(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic() { this->Parse(buffer, max, offset); }
+
 					std::string to_string() const override {
 						return "PtgSub";
 					}

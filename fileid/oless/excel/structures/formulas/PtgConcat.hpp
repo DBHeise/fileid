@@ -17,12 +17,12 @@ namespace oless {
 				// The PtgConcat structure specifies a binary-value-operator that appends the second expression in binary-value-expression to the first.
 				class PtgConcat : public PtgBasic {
 				private:
-					PtgConcat(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgConcat* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgConcat* ans = new PtgConcat(buffer, max, offset);
-						return ans;
+					PtgConcat(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic() { 
+						this->Parse(buffer, max, offset);
 					}
+					
 					std::string to_string() const override {
 						return "PtgConcat";
 					}

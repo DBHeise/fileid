@@ -17,14 +17,16 @@ namespace oless {
 				// The PtgBool operand specifies a Boolean value.
 				class PtgBool : public PtgBasic {
 				private:
-					PtgBool(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 					unsigned char boolean;
 				public:
-					static PtgBool* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgBool* ans = new PtgBool(buffer, max, offset);
-						ans->boolean = buffer[offset + 1];
-						ans->bytesRead++;
-						return ans;
+					PtgBool(unsigned char* buffer, size_t max, unsigned int offset) : boolean(0), PtgBasic() {
+						this->Parse(buffer, max, offset);
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgBasic::Parse(buffer, max, offset);
+						this->boolean = buffer[offset + 1];
+						this->bytesRead++;
 					}
 					
 					std::string to_string() const override {

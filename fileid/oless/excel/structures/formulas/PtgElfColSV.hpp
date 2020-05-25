@@ -17,12 +17,12 @@ namespace oless {
 				// The PtgElfColSV natural language formula operand specifies a value class reference to a range within a column that is identified by a multiple-cell natural language label. There MUST be a PtgExtraElf in the RgbExtra corresponding to this PtgElfColSV. The correspondence between PtgElfColSV and PtgExtraElf structures is specified in RgbExtra.
 				class PtgElfColSV : public PtgBasic_elf {
 				private:
-					PtgElfColSV(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic_elf::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgElfColSV* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgElfColSV* ans = new PtgElfColSV(buffer, max, offset);
-						return ans;
+					PtgElfColSV(unsigned char* buffer, size_t max, unsigned int offset) : PtgBasic_elf() {
+						this->Parse(buffer, max, offset); 
 					}
+
 					std::string to_string() const override {
 						return "PtgElfColSV";
 					}

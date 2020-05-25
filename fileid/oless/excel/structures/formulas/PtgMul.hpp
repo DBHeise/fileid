@@ -17,12 +17,10 @@ namespace oless {
 				// The PtgMul structure specifies a binary-value-operator that multiplies the first and second expressions in a binary-value-expression.
 				class PtgMul : public PtgBasic {
 				private:
-					PtgMul(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgMul* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgMul* ans = new PtgMul(buffer, max, offset);
-						return ans;
-					}
+					PtgMul(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic() { this->Parse(buffer, max, offset); }
+
 					std::string to_string() const override {
 						return "PtgMul";
 					}

@@ -12,11 +12,10 @@ namespace oless {
 				// The PtgAdd structure specifies a binary-value-operator that adds the second expression in a binary-value-expression to the first.
 				class PtgAdd : public PtgBasic {
 				private:
-					PtgAdd(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgAdd* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgAdd* ans = new PtgAdd(buffer, max, offset);
-						return ans;
+					PtgAdd(unsigned char* buffer, size_t max, unsigned int offset) :  PtgBasic() {
+						PtgBasic::Parse(buffer, max, offset);
 					}
 					std::string to_string() const override {
 						return "PtgAdd";

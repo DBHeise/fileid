@@ -17,12 +17,10 @@ namespace oless {
 				// The PtgMissArg operand specifies a missing value.
 				class PtgMissArg : public PtgBasic {
 				private:
-					PtgMissArg(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgMissArg* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgMissArg* ans = new PtgMissArg(buffer, max, offset);
-						return ans;
-					}
+					PtgMissArg(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic() { this->Parse(buffer, max, offset); }
+
 					std::string to_string() const override {
 						return "PtgMissArg";
 					}

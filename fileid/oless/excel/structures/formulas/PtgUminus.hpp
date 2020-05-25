@@ -17,12 +17,10 @@ namespace oless {
 				// The PtgUminus structure specifies a unary-operator which generates the additive inverse of a unary-expression.
 				class PtgUminus : public PtgBasic {
 				private:
-					PtgUminus(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgUminus* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgUminus* ans = new PtgUminus(buffer, max, offset);
-						return ans;
-					}
+					PtgUminus(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic() { this->Parse(buffer, max, offset); }
+
 					std::string to_string() const override {
 						return "PtgUminus";
 					}

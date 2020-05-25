@@ -18,19 +18,19 @@ namespace oless {
 				// The PtgRef operand specifies a reference to a single cell as an RgceLoc.
 				class PtgRef : public PtgSubType {
 				private:
-					PtgRef(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType::Parse(buffer, max, offset); }
 					RgceLoc loc;
 				public:
-					static PtgRef* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-						PtgRef* ans = new PtgRef(buffer, max, index);
-						index += ans->bytesRead;
+					PtgRef(unsigned char* buffer, size_t max, unsigned int offset): PtgSubType() {
+						this->Parse(buffer, max, offset); 
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
 
-						ans->loc.Parse(buffer, max, index);
-						index += ans->loc.bytesRead;
+						this->loc.Parse(buffer, max, index);
+						index += this->loc.bytesRead;
 
-						ans->bytesRead = index - offset;
-						return ans;
+						this->bytesRead = index - offset;
 					}
 
 					std::string to_string() const override {

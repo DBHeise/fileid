@@ -17,14 +17,16 @@ namespace oless {
 				// The PtgInt operand specifies an unsigned integer value.
 				class PtgInt : public PtgBasic {
 				private:
-					PtgInt(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 					unsigned short integer;
 				public:
-					static PtgInt* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgInt* ans = new PtgInt(buffer, max, offset);
-						ans->integer = common::ReadUShort(buffer, max, offset + 1);
-						ans->bytesRead += 2;
-						return ans;
+					PtgInt(unsigned char* buffer, size_t max, unsigned int offset): integer(0), PtgBasic() {
+						this->Parse(buffer, max, offset); 
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgBasic::Parse(buffer, max, offset);
+						this->integer = common::ReadUShort(buffer, max, offset + 1);
+						this->bytesRead += 2;
 					}
 
 					std::string to_string() const override {

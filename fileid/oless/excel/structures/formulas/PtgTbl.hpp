@@ -18,21 +18,21 @@ namespace oless {
 				private:
 					unsigned short row;
 					unsigned short col;
-					PtgTbl(unsigned char* buffer, size_t max, unsigned int offset) : row(0),col(0) { PtgBasic::Parse(buffer, max, offset); }
 				public:
-					static PtgTbl* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-						PtgTbl* ans = new PtgTbl(buffer, max, index);
-						index += ans->bytesRead;
+					PtgTbl(unsigned char* buffer, size_t max, unsigned int offset) : row(0), col(0), PtgBasic() { 
+						this->Parse(buffer, max, offset); 
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgBasic::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
 
-						ans->row = common::ReadUShort(buffer, max, index);
+						this->row = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						ans->col = common::ReadUShort(buffer, max, index);
+						this->col = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						ans->bytesRead = index - offset;
-						return ans;
+						this->bytesRead = index - offset;
 					}
 
 					std::string to_string() const override {

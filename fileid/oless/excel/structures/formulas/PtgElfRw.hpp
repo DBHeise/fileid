@@ -5,7 +5,7 @@
 #include "../../MSExcel.common.hpp"
 #include "../../IParsable.hpp"
 #include "Ptg.hpp"
-
+#include "RgceElfLoc.hpp"
 
 namespace oless {
 	namespace excel {
@@ -17,12 +17,21 @@ namespace oless {
 				// The PtgElfRw natural language formula operand specifies a reference class reference to a range within a row which is represented by a single-cell natural language label.
 				class PtgElfRw : public PtgBasic_elf {
 				private:
-					PtgElfRw(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic_elf::Parse(buffer, max, offset); }
+					RgceElfLoc loc;
 				public:
-					static PtgElfRw* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgElfRw* ans = new PtgElfRw(buffer, max, offset);
-						return ans;
+					PtgElfRw(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic_elf() { 
+						this->Parse(buffer, max, offset);
 					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgBasic_elf::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
+
+						this->loc.Parse(buffer, max, index);
+						index += this->loc.bytesRead;
+
+						this->bytesRead = index - offset;
+					}
+
 					std::string to_string() const override {
 						return "PtgElfRw";
 					}

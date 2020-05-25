@@ -17,23 +17,24 @@ namespace oless {
 				// The PtgRefErr3d operand specifies an invalid reference to a cell on one or more sheets. If the formula (section 2.2.2) containing this structure is part of a revision as specified in the Formulas overview (section 2.2.2), then there MUST be a RevExtern in the RgbExtra corresponding to this PtgRefErr3d, which specifies those sheets.
 				class PtgRefErr3d : public PtgSubType_ixti {
 				private:
-					PtgRefErr3d(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType_ixti::Parse(buffer, max, offset); }
+					
 					unsigned short unused1;
 					unsigned short unused2;
 				public:
-					static PtgRefErr3d* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-						PtgRefErr3d* ans = new PtgRefErr3d(buffer, max, index);
-						index += ans->bytesRead;
+					PtgRefErr3d(unsigned char* buffer, size_t max, unsigned int offset): unused1(0),unused2(0),PtgSubType_ixti() { 
+						this->Parse(buffer, max, offset); 
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType_ixti::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
 
-						ans->unused1 = common::ReadUShort(buffer, max, index);
+						this->unused1 = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						ans->unused2 = common::ReadUShort(buffer, max, index);
+						this->unused2 = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						ans->bytesRead = index - offset;
-						return ans;
+						this->bytesRead = index - offset;
 					}
 
 					std::string to_string() const override {

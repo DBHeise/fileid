@@ -15,32 +15,32 @@ namespace oless {
 				// ptg=0x3D or  0x5D or  0x7D
 				// The PtgAreaErr3d operand specifies an invalid reference to the same rectangular range of cells on one or more sheets. If the formula (section 2.2.2) containing this structure is part of a revision as specified in the Formulas overview, then there MUST be a RevExtern in the RgbExtra corresponding to this PtgAreaErr3d, which specifies those sheets.
 				class PtgAreaErr3d : public PtgSubType_ixti {
-				private:
-					PtgAreaErr3d(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType_ixti::Parse(buffer, max, offset); }
+				private:					
 					unsigned short unused1;
 					unsigned short unused2;
 					unsigned short unused3;
 					unsigned short unused4;
 				public:
-					static PtgAreaErr3d* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-						PtgAreaErr3d* ans = new PtgAreaErr3d(buffer, max, offset);
-						index += 1;
+					PtgAreaErr3d(unsigned char* buffer, size_t max, unsigned int offset) : unused1(0), unused2(0), unused3(0), unused4(0), PtgSubType_ixti() {
+						this->Parse(buffer, max, offset);
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType_ixti::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
 
-						ans->unused1 = common::ReadUShort(buffer, max, index);
+						this->unused1 = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						ans->unused2 = common::ReadUShort(buffer, max, index);
+						this->unused2 = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						ans->unused3 = common::ReadUShort(buffer, max, index);
+						this->unused3 = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						ans->unused4 = common::ReadUShort(buffer, max, index);
+						this->unused4 = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						ans->bytesRead += index - offset;
-						return ans;
+						this->bytesRead += index - offset;
 					}
 					
 					std::string to_string() const override {

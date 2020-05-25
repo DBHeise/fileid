@@ -18,8 +18,10 @@ namespace oless {
 					unsigned char type;
 					unsigned char cch;
 				public:
-					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) {
+					PtgAttrSpaceType() : type(0), cch(0) {}
 
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+					
 						if (((size_t)offset) + 1 <= max) {
 							this->type = buffer[offset];
 							this->cch = buffer[offset + 1];

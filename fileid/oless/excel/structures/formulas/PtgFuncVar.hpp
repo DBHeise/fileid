@@ -17,18 +17,19 @@ namespace oless {
 				// The PtgFuncVar structure specifies a call to a function with a variable number of parameters as defined in function-call.
 				class PtgFuncVar : public PtgSubType {
 				private:
-					PtgFuncVar(unsigned char* buffer, size_t max, unsigned int offset) { PtgSubType::Parse(buffer, max, offset); }
 					unsigned char cparams;
 					unsigned short tab : 15;
 					unsigned char fCeFunc : 1;
 				public:
-					static PtgFuncVar* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgFuncVar* ans = new PtgFuncVar(buffer, max, offset);
-						ans->cparams = buffer[offset + 1];
-						ans->tab = common::ReadUShort(buffer, max, offset + 2) << 1 >> 1;
-						ans->fCeFunc = common::ExtractBits(buffer[offset + 3], 1, 7);
-						ans->bytesRead += 3;
-						return ans;
+					PtgFuncVar(unsigned char* buffer, size_t max, unsigned int offset): cparams(0), tab(0), fCeFunc(0), PtgSubType() { 
+						this->Parse(buffer, max, offset); 
+					}
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgSubType::Parse(buffer, max, offset);
+						this->cparams = buffer[offset + 1];
+						this->tab = common::ReadUShort(buffer, max, offset + 2) << 1 >> 1;
+						this->fCeFunc = common::ExtractBits(buffer[offset + 3], 1, 7);
+						this->bytesRead += 3;
 					}
 
 					std::string to_string() const override {

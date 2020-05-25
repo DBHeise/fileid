@@ -18,27 +18,29 @@ namespace oless {
 				// The PtgAttrSpace display token specifies a number of space or carriage return characters that are displayed around the expression in a display-precedence-expression.
 				class PtgAttrSpace : public PtgBasic {
 				private:
-					PtgAttrSpace(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 					unsigned char reserved2 : 6;
 					unsigned char bitSpace : 1;
 					unsigned char reserved3 : 1;
 					PtgAttrSpaceType type;
 				public:
-					static PtgAttrSpace* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						unsigned int index = offset;
-						PtgAttrSpace* ans = new PtgAttrSpace(buffer, max, index);
-						index += ans->bytesRead;
+					PtgAttrSpace(unsigned char* buffer, size_t max, unsigned int offset): reserved2(0), bitSpace(0), reserved3(0), PtgBasic() {
+						this->Parse(buffer, max, offset);
+					}
+					
+					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
+						PtgBasic::Parse(buffer, max, offset);
+						unsigned int index = offset + this->bytesRead;
 
-						ans->reserved2 = common::ExtractBits(buffer[index], 1, 1);
-						ans->bitSpace = common::ExtractBits(buffer[index], 1, 2);
-						ans->reserved3 = common::ExtractBits(buffer[index], 6, 3);
+						this->reserved2 = common::ExtractBits(buffer[index], 1, 1);
+						this->bitSpace = common::ExtractBits(buffer[index], 1, 2);
+						this->reserved3 = common::ExtractBits(buffer[index], 6, 3);
 						index++;
 
-						ans->type.Parse(buffer, max, index);
-						index += ans->type.bytesRead;
+						this->type.Parse(buffer, max, index);
+						index += this->type.bytesRead;
 
-						ans->bytesRead = index - offset;
-						return ans;
+						this->bytesRead = index - offset;
 					}
 
 					std::string to_string() const override {

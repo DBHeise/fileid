@@ -30,6 +30,8 @@ namespace oless {
 				public:
 					unsigned char ptg : 7;
 					unsigned char reserved : 1;
+					PtgBasic() : ptg(0), reserved(0) {}
+
 					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
 						this->ptg = common::ExtractBits(buffer[offset], 7, 1);
 						this->reserved = common::ExtractBits(buffer[offset], 1, 8);
@@ -43,6 +45,7 @@ namespace oless {
 					unsigned char ptg : 5;
 					unsigned char type : 2;
 					unsigned char reserved : 1;
+					PtgSubType() : ptg(0), type(0), reserved(0) {}
 					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
 						this->ptg = common::ExtractBits(buffer[offset], 5, 1);
 						this->type = common::ExtractBits(buffer[offset], 2, 6);
@@ -56,6 +59,7 @@ namespace oless {
 					unsigned char ptg;
 					unsigned char eptg;
 					RgceElfLoc loc;
+					PtgBasic_elf() : ptg(0), eptg(0) {}
 					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
 						this->ptg = buffer[offset];
 						this->eptg = buffer[offset + 1];
@@ -67,6 +71,7 @@ namespace oless {
 				class PtgSubType_ixti : public PtgSubType {
 				public:
 					unsigned short ixti;
+					PtgSubType_ixti() : ixti(0), PtgSubType() {}
 					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
 						unsigned int index = offset;
 						PtgSubType::Parse(buffer, max, index);

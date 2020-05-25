@@ -16,12 +16,10 @@ namespace oless {
 				// The PtgLe structure specifies a binary-value-operator that compares whether the first expression in a binary-value-expression is less than or equal to the second.
 				class PtgLe : public PtgBasic {
 				private:
-					PtgLe(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgLe* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgLe* ans = new PtgLe(buffer, max, offset);
-						return ans;
-					}
+					PtgLe(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic() { this->Parse(buffer, max, offset); }
+
 					std::string to_string() const override {
 						return "PtgLe";
 					}

@@ -17,12 +17,10 @@ namespace oless {
 				// The PtgUnion structure specifies a binary-reference-operator that specifies a union of the first expression in a binary-reference-expression with the second.
 				class PtgUnion : public PtgBasic {
 				private:
-					PtgUnion(unsigned char* buffer, size_t max, unsigned int offset) { PtgBasic::Parse(buffer, max, offset); }
+					
 				public:
-					static PtgUnion* Parse(unsigned char* buffer, size_t max, unsigned int offset) {
-						PtgUnion* ans = new PtgUnion(buffer, max, offset);
-						return ans;
-					}
+					PtgUnion(unsigned char* buffer, size_t max, unsigned int offset): PtgBasic() { this->Parse(buffer, max, offset); }
+
 					std::string to_string() const override {
 						return "PtgUnion";
 					}
