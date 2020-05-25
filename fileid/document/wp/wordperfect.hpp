@@ -106,7 +106,7 @@ namespace document {
 				str << "<FileType>" << fileTypeToString(this->Header->file_type) << "</FileType>";
 				str << "<MajorVersion>" << (unsigned short)this->Header->major_ver << "</MajorVersion>";
 				str << "<MinorVersion>" << (unsigned short)this->Header->minor_ver << "</MinorVersion>";
-				str << "<Encrypt>" << this->Header->encrypt << "<Encrypt>";
+				str << "<Encrypt>" << this->Header->encrypt << "</Encrypt>";
 				str << "</Header>";
 				str << "</item>";
 				return str.str();
