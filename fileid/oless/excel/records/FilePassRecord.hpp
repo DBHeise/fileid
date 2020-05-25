@@ -198,15 +198,13 @@ namespace oless {
 							offset += 4;
 							this->encHeader = reinterpret_cast<EncryptionHeader*>(buffer + offset);
 							offset += 32;
-							int byteCount = headerSize - 32;
-							std::wstring cspName(reinterpret_cast<wchar_t const*>(buffer[offset]), byteCount/2);
-							this->cspName = cspName;
+							int byteCount = headerSize - 32;							
+							this->cspName = common::ReadWString(buffer, max, offset, byteCount);
 							offset += byteCount;
 
 							this->verifier = reinterpret_cast<EncryptionVerifierHeader*>(buffer + offset);
-							offset += 40;
-							std::vector<unsigned char> hash(buffer[offset], this->verifier->verifierHashSize);
-							this->verifierHash = hash;
+							offset += 40;							
+							this->verifierHash = common::readBuffer(buffer, this->verifier->verifierHashSize);
 							offset += this->verifier->verifierHashSize;
 						}
 						else if (vMajor == 0x01 && vMinor == 0x01) {
