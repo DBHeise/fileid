@@ -18,7 +18,7 @@ namespace oless {
 				str << ", \"Paths\": [";
 				for (auto i = this->paths.begin(); i != this->paths.end(); i++) {
 					if (i != this->paths.begin()) str << ",";
-					str << "\"" << (i)->c_str() << "\"";
+					str << "\"" << common::JsonEscape((i)->c_str()) << "\"";
 				}
 				str << "]";
 			}
@@ -29,7 +29,7 @@ namespace oless {
 					std::string key = n->first;
 					std::vector<propset::Property*> props = n->second;
 
-					str << "{\"Group\":\"" << key << "\",\"properties\": [";
+					str << "{\"Group\":\"" << common::JsonEscape(key) << "\",\"properties\": [";
 
 					for (auto i = props.begin(); i != props.end(); i++) {
 						if (i != props.begin()) str << ",";
@@ -48,7 +48,7 @@ namespace oless {
 				str << "<Paths>";
 				for (auto i = this->paths.begin(); i != this->paths.end(); i++) {
 					if (i != this->paths.begin()) str << ",";
-					str << "<Path>" << (i)->c_str() << "</Path>";
+					str << "<Path>" << common::XmlEscape((i)->c_str()) << "</Path>";
 				}
 				str << "</Paths>";
 			}
@@ -59,7 +59,7 @@ namespace oless {
 					std::vector<propset::Property*> props = n->second;
 
 					str << "<Group>";
-					str << "<Name>" << key << "</Name>";
+					str << "<Name>" << common::XmlEscape(key) << "</Name>";
 					str << "<properties>";
 					for (auto i = props.begin(); i != props.end(); i++) {
 						str << (*i)->ToXML();
