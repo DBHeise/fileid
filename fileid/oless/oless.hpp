@@ -221,7 +221,7 @@ namespace oless {
 				else if (name == "DocumentSummaryInformation"  || name== "SummaryInformation" || name == "GlobalInfo" || name == "ImageContents" || name == "ImageInfo") {
 					POLE::Stream* stream = new POLE::Stream(storage, fullname);
 					auto props = propset::ParseStream(stream);
-					this->m_properties.insert(std::pair<std::string, std::vector<propset::Property*>>(name, props));
+					this->m_properties.insert(std::pair<std::string, std::vector<propset::Property*>>(fullname, props));
 					delete stream;
 				}
 				//TODO: msi, msp
