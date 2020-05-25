@@ -89,10 +89,10 @@ namespace document {
 				str << "{";
 				str << this->buildBaseJson();
 				str << ", \"Header\": {";
-				str << "\"ProductType\":\"" << this->Header->prod_type << "\"";
+				str << "\"ProductType\":\"" << (unsigned short)this->Header->prod_type << "\"";
 				str << ",\"FileType\":\"" << fileTypeToString(this->Header->file_type) << "\"";
-				str << ",\"MajorVersion\":\"" << this->Header->major_ver << "\"";
-				str << ",\"MinorVersion\":\"" << this->Header->minor_ver << "\"";
+				str << ",\"MajorVersion\":\"" << (unsigned short)this->Header->major_ver << "\"";
+				str << ",\"MinorVersion\":\"" << (unsigned short)this->Header->minor_ver << "\"";
 				str << ",\"Encrypt\":\"" << this->Header->encrypt << "\"";
 				str << "}}";
 				return str.str();
@@ -102,10 +102,10 @@ namespace document {
 				str << "<item>";
 				str << this->buildBaseXml();
 				str << "<Header>";
-				str << "<ProductType>" << this->Header->prod_type << "</ProductType>";
+				str << "<ProductType>" << (unsigned short)this->Header->prod_type << "</ProductType>";
 				str << "<FileType>" << fileTypeToString(this->Header->file_type) << "</FileType>";
-				str << "<MajorVersion>" << this->Header->major_ver << "</MajorVersion>";
-				str << "<MinorVersion>" << this->Header->minor_ver << "</MinorVersion>";
+				str << "<MajorVersion>" << (unsigned short)this->Header->major_ver << "</MajorVersion>";
+				str << "<MinorVersion>" << (unsigned short)this->Header->minor_ver << "</MinorVersion>";
 				str << "<Encrypt>" << this->Header->encrypt << "<Encrypt>";
 				str << "</Header>";
 				str << "</item>";
