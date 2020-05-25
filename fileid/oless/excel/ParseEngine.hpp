@@ -100,6 +100,8 @@ namespace oless {
 				}
 
 				this->global = new SubStream;
+				unsigned short version = 0;
+				unsigned int sheetIndex = 0;
 
 				while (this->index + 4 < streamSize)
 				{
@@ -112,25 +114,43 @@ namespace oless {
 					if (this->index + recordSize < streamSize) {
 						data.insert(data.end(), &buffer[this->index], &buffer[this->index + recordSize]);
 					}
-					auto r = ParseRecord(this, recordType, data);
+					auto r = ParseRecord(recordType, data, version, this);
 					if (r != nullptr) {
 						switch (recordType)
 						{
-						case 0x0809: //BOFRecord
+						case 0x0009://BOFRecord (BIFF2)
+						case 0x0209://BOFRecord (BIFF3)
+						case 0x0409://BOFRecord (BIFF4)
+						case 0x0809://BOFRecord (BIFF5 and BIFF8)
 						{
 							if (index == 4) { //Global BOF
-								auto bof = ((BOFRecord*)r)->GetRawBOF();
+								BOFRecord* bofr = ((BOFRecord*)r);
+								auto bof = bofr->GetRawBOF();
 								this->Version = bof->vers;
 								this->VersionName = GetVersion_Excel(bof->vers);
 								this->SubType = this->VersionName;
+								version = bof->vers;
 							}
 							else { //SubStream BOF
-								if (lookup.count(index - 4) == 1) {
-									currentSheet = &(this->sheets[lookup[index - 4]]);
+								if (version == (unsigned short)ExcelVersion::BIFF8) {
+									if (lookup.count(index - 4) == 1) { //BIFF8
+										auto idx = lookup[index - 4];
+										if (idx >= 0) {
+											currentSheet = &(this->sheets[idx]);
+										}
+									}
+								}
+								else if (version == (unsigned short)ExcelVersion::BIFF5) { //BIFF5
+									if (currentSheet == nullptr) {
+										sheetIndex = 0;
+									} else {
+										sheetIndex++;
+									}
+									if (sheetIndex < this->sheets.size()) {
+										currentSheet = &(this->sheets[sheetIndex]);
+									}
 								}
 								else {
-									//this case is where the BOF doesn't match the known sheets 
-									// ...so we just add it to the global??
 									currentSheet = nullptr;
 								}
 							}
@@ -139,14 +159,21 @@ namespace oless {
 						case 0x0085: //BoundSheet8Record
 						{
 							Sheet si;
-							auto header = ((BoundSheet8Record*)r)->GetRawHeader();
-							si.Name = ((BoundSheet8Record*)r)->Name;
-							si.Type = header->dt;
-							si.Visiblity = header->hsState;
-							si.Offset = header->lbPlyPos;
+							if (version == (unsigned short)ExcelVersion::BIFF8) {
+								auto bs8r = (BoundSheet8Record*)r;
+								auto header = bs8r->GetRawHeader();
+								si.Name = bs8r->Name;
+								si.Type = header->dt;
+								si.Visiblity = header->hsState;
+								si.Offset = header->lbPlyPos;
+								lookup[si.Offset] = this->sheets.size();
+							}
+							else if (version == (unsigned short)ExcelVersion::BIFF5) {
+								auto bs5r = (BoundSheet5Record*)r;
+								si.Name = bs5r->Name;
+							}
 
 							this->sheets.push_back(si);
-							lookup[si.Offset] = this->sheets.size() - 1;
 							break;
 						}
 						case 0x002F: //FilePassRecord

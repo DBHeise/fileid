@@ -6,15 +6,30 @@
 namespace oless {
 	namespace excel {
 
-		std::string GetVersion_Excel(unsigned short version) {
+		enum class ExcelVersion: unsigned short {
+			Unknown = 0,
+			BIFF2 = 512,
+			BIFF3 = 768,
+			BIFF4 = 1024,
+			BIFF5 = 1280,
+			BIFF8 = 1536
+		};
+
+		std::string GetVersionFromVer(ExcelVersion version) {
 			std::string ans;
 
 			switch (version) {
-			case 1280: ans = "BIFF5"; break;
-			case 1536: ans = "BIFF8"; break;
+			case ExcelVersion::BIFF2: ans = "BIFF2"; break;
+			case ExcelVersion::BIFF3: ans = "BIFF3"; break;
+			case ExcelVersion::BIFF4: ans = "BIFF4"; break;
+			case ExcelVersion::BIFF5: ans = "BIFF5"; break;
+			case ExcelVersion::BIFF8: ans = "BIFF8"; break;
 			default:  ans = "Unknown"; break;
 			}
 			return ans;
+		}
+		std::string GetVersion_Excel(unsigned short version) {
+			return GetVersionFromVer(static_cast<ExcelVersion>(version));
 		}
 
 		std::string GetVisibilityStr(unsigned short visibility) {

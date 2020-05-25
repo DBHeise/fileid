@@ -179,6 +179,7 @@
     <ClInclude Include="media\riff\riff.hpp" />
     <ClInclude Include="oless\excel\ExcelExtensionInfo.hpp" />
     <ClInclude Include="oless\excel\MSExcel.common.hpp" />
+    <ClInclude Include="oless\excel\records\BoundSheet5Record.hpp" />
     <ClInclude Include="oless\excel\structures\AddinUdf.hpp" />
     <ClInclude Include="oless\excel\structures\AF12CellIcon.hpp" />
     <ClInclude Include="oless\excel\structures\AF12Criteria.hpp" />

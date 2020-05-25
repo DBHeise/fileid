@@ -907,5 +907,6 @@
       <Filter>oless</Filter>
     </ClInclude>
     <ClInclude Include="oless\excel\structures\formulas\FormulaHeader.hpp" />
+    <ClInclude Include="oless\excel\records\BoundSheet5Record.hpp" />
   </ItemGroup>
 </Project>

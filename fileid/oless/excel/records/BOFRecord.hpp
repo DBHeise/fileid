@@ -6,9 +6,12 @@ namespace oless {
 	namespace excel {
 		namespace records {
 
+
+
+
 			// from: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/4d6a3d1e-d7c5-405f-bbae-d01e9cb79366
 			// The BOF record specifies the beginning of the individual substreams as specified by the workbook section. It also specifies history information for the substreams. 
-			struct BOF {
+			struct BOF8 {
 				unsigned short vers;
 				unsigned short dt;
 				unsigned short rubBuild;
@@ -33,18 +36,47 @@ namespace oless {
 				unsigned long reserved2 : 20;
 			};
 
+			struct BOF2 {
+				unsigned short vers;
+				unsigned short type;
+			};
+
+			struct BOF34 {
+				unsigned short vers;
+				unsigned short type;
+				unsigned short unused;
+			};
+			struct BOF5 {
+				unsigned short vers;
+				unsigned short type;
+				unsigned short build;
+				unsigned short year;
+			};
+
+			std::string GetBOFType(unsigned int type) {
+				switch (type)
+				{
+				case 0x0005: return "Globals";
+				case 0x0006: return "VB Module";
+				case 0x0010: return "Sheet";
+				case 0x0020: return "Chart";
+				case 0x0040: return "Macro";
+				case 0x0100: return "Workspace";
+				default: return "Unknown";
+				}
+			}
 
 
 			class BOFRecord : public Record {
 			private:
-				BOF* bof = nullptr;
+				BOF8* bof = nullptr;
 			public:
 				BOFRecord(unsigned short type, std::vector<uint8_t> data) : Record(type, data)
 				{					
-					this->bof = (BOF*)this->Data.data();
+					this->bof = (BOF8*)this->Data.data();
 				}
 
-				BOF* GetRawBOF() {
+				BOF8* GetRawBOF() {
 					return this->bof;
 				}
 
@@ -52,11 +84,11 @@ namespace oless {
 				{					
 					std::ostringstream str;
 					str << "<Record>";
-					str << "<Type>" << GetRecordTypeStr(this->Type) << "</Type>";
-					str << "<Length>" << this->Length << "</Length>";
+					str << this->getBaseXml();
 
 					str << "<Version>" << this->bof->vers << "</Version>";
 					str << "<DocumentType>" << this->bof->dt << "</DocumentType>";
+					str << "<DocumentTypeStr>" << GetBOFType(this->bof->dt) << "</DocumentTypeStr>";
 					str << "<RUPBuild>" << this->bof->rubBuild << "</RUPBuild>";
 					str << "<RUPYear>" << this->bof->rupYear << "</RUPYear>";
 
@@ -84,11 +116,11 @@ namespace oless {
 				{
 					std::ostringstream str;
 					str << "{";
-					str << "\"Type\":\"" << GetRecordTypeStr(this->Type) << "\",";
-					str << "\"Length\":" << this->Length << ",";
+					str << this->getBaseJson() << ",";
 
 					str << "\"Version\":" << this->bof->vers << ",";
 					str << "\"DocumentType\":" << this->bof->dt << ",";
+					str << "\"DocumentTypeStr\":\"" << GetBOFType(this->bof->dt) << "\",";
 					str << "\"RUPBuild\":" << this->bof->rubBuild << ",";
 					str << "\"RUPYear\":" << this->bof->rupYear << ",";
 

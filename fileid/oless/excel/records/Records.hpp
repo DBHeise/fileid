@@ -58,6 +58,7 @@
 #include "HCenterRecord.hpp"
 #include "VCenterRecord.hpp"
 #include "BoundSheet8Record.hpp"
+#include "BoundSheet5Record.hpp"
 #include "WriteProtectRecord.hpp"
 #include "CountryRecord.hpp"
 #include "HideObjRecord.hpp"

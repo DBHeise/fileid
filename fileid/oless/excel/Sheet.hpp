@@ -20,6 +20,8 @@ namespace oless {
 			unsigned short  Type;
 			unsigned int    Offset;
 			
+			Sheet() : Name{ "" }, Visiblity(0), Type(0), Offset(0) {}
+
 			void AddRecord(records::Record* r) {
 				this->children.AddRecord(r);
 			}
