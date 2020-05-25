@@ -16,7 +16,7 @@ namespace oless {
 				XLUnicodeStringMin2() {};
 			public:
 				static XLUnicodeStringMin2 Read(const unsigned char* buffer, const unsigned int offset, const unsigned int max) {
-					throw std::exception("Not Implemented!");
+					throw std::runtime_error("Not Implemented!");
 				}
 			};
 

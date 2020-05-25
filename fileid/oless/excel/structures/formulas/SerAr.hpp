@@ -20,7 +20,7 @@ namespace oless {
 						unsigned int index = offset;
 						this->bytesRead = index - offset;
 
-						throw std::exception("Not Implemented!");
+						throw std::runtime_error("Not Implemented!");
 					}
 				};
 			}

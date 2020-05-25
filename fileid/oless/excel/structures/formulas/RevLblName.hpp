@@ -20,7 +20,7 @@ namespace oless {
 					unsigned char iBuiltin;
 					XLNameUnicodeString st;
 					void Parse(unsigned char* buffer, unsigned int offset, unsigned int max) {
-						throw std::exception("Not Implemented!");
+						throw std::runtime_error("Not Implemented!");
 					}
 
 				};

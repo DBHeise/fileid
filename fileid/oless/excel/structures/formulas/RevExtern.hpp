@@ -23,7 +23,7 @@ namespace oless {
 					RevItab itabFirst;
 					RevItab itabLast;
 					void Parse(unsigned char* buffer, unsigned int offset, unsigned int max) {
-						throw std::exception("Not Implemented!");
+						throw std::runtime_error("Not Implemented!");
 					}
 
 				};
