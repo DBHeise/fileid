@@ -143,6 +143,13 @@ namespace common {
 		std::string converted_str = converter.to_bytes(str);
 		return converted_str;
 	}
+	//convert - Converts a string to a wstring
+	std::wstring convert(std::string str) {
+		using convert_type = std::codecvt_utf8<wchar_t>;
+		std::wstring_convert<convert_type, wchar_t> converter;
+		std::wstring converted_str = converter.from_bytes(str);
+		return converted_str;
+	}
 
 
 	//bin2hex11 - Outputs the bytes in a HEX string 

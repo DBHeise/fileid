@@ -65,7 +65,7 @@ namespace oless {
 		//Powerpoint (.ppt) specific
 		unsigned short GetPptVersion(POLE::Storage* storage, POLE::Stream* stream) {
 			unsigned short version = 0;
-			POLE::Stream *strmCurrentUser = new POLE::Stream(storage, "/Current User");
+			POLE::Stream *strmCurrentUser = new POLE::Stream(storage, L"/Current User");
 
 			PowerPoint::CurrentUserAtom* cua = OleHelper::GetStructFromStream<PowerPoint::CurrentUserAtom>(strmCurrentUser);
 

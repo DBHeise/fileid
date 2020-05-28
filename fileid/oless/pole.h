@@ -127,17 +127,17 @@ namespace POLE
         /**
          * Finds all stream and directories in given path.
          **/
-        std::list<std::string> entries(const std::string& path = "/");
+        std::list<std::wstring> entries(const std::wstring& path = L"/");
 
         /**
          * Returns true if specified entry name is a directory.
          */
-        bool isDirectory(const std::string& name);
+        bool isDirectory(const std::wstring& name);
 
         /**
          * Returns true if specified entry name exists.
          */
-        bool exists(const std::string& name);
+        bool exists(const std::wstring& name);
 
         /**
          * Returns true if storage can be modified.
@@ -149,7 +149,7 @@ namespace POLE
          * recursively delete everything underneath said directory.
          * returns true for success
          */
-        bool deleteByName(const std::string& name);
+        bool deleteByName(const std::wstring& name);
 
         /**
          * Returns an accumulation of information, hopefully useful for determining if the storage
@@ -160,7 +160,7 @@ namespace POLE
             uint64* pBigBlocks, uint64* pUnusedBigBlocks,
             uint64* pSmallBlocks, uint64* pUnusedSmallBlocks);
 
-        std::list<std::string> GetAllStreams(const std::string& storageName);
+        std::list<std::wstring> GetAllStreams(const std::wstring& storageName);
 
     private:
         StorageIO* io;
@@ -182,7 +182,7 @@ namespace POLE
          * Creates a new stream.
          */
          // name must be absolute, e.g "/Workbook"
-        Stream(Storage* storage, const std::string& name, bool bCreate = false, int64 streamSize = 0);
+        Stream(Storage* storage, const std::wstring& name, bool bCreate = false, int64 streamSize = 0);
 
         /**
          * Destroys the stream.
@@ -192,7 +192,7 @@ namespace POLE
         /**
          * Returns the full stream name.
          */
-        std::string fullName();
+        std::wstring fullName();
 
         /**
          * Returns the stream size.
@@ -386,7 +386,7 @@ namespace POLE
     public:
         DirEntry() : valid(), name(), dir(), size(), start(), prev(), next(), child() {}
         bool valid;          // false if invalid (should be skipped)
-        std::string name;    // the name, not in unicode anymore 
+        std::wstring name;    // the name 
         bool dir;            // true if directory   
         uint64 size;         // size (not valid if directory)
         uint64 start;        // starting block
@@ -394,7 +394,7 @@ namespace POLE
         uint64 next;         // next sibling
         uint64 child;        // first child
         int compare(const DirEntry& de);
-        int compare(const std::string& name2);
+        int compare(const std::wstring& name2);
 
     };
 
@@ -407,12 +407,12 @@ namespace POLE
         inline uint64 entryCount();
         uint64 unusedEntryCount();
         DirEntry* entry(uint64 index);
-        DirEntry* entry(const std::string& name, bool create = false, int64 bigBlockSize = 0, StorageIO* const io = 0, int64 streamSize = 0);
+        DirEntry* entry(const std::wstring& name, bool create = false, int64 bigBlockSize = 0, StorageIO* const io = 0, int64 streamSize = 0);
         int64 indexOf(DirEntry* e);
         int64 parent(uint64 index);
-        std::string fullName(uint64 index);
+        std::wstring fullName(uint64 index);
         std::vector<uint64> children(uint64 index);
-        uint64 find_child(uint64 index, const std::string& name, uint64& closest);
+        uint64 find_child(uint64 index, const std::wstring& name, uint64& closest);
         void load(unsigned char* buffer, uint64 len);
         void save(unsigned char* buffer);
         uint64 size();
@@ -421,9 +421,9 @@ namespace POLE
         void markAsDirty(uint64 dataIndex, int64 bigBlockSize);
         void flush(std::vector<uint64> blocks, StorageIO* const io, int64 bigBlockSize, uint64 sb_start, uint64 sb_size);
         uint64 unused();
-        void findParentAndSib(uint64 inIdx, const std::string& inFullName, uint64& parentIdx, uint64& sibIdx);
+        void findParentAndSib(uint64 inIdx, const std::wstring& inFullName, uint64& parentIdx, uint64& sibIdx);
         uint64 findSib(uint64 inIdx, uint64 sibIdx);
-        void deleteEntry(DirEntry* entry, const std::string& inFullName, int64 bigBlockSize);
+        void deleteEntry(DirEntry* entry, const std::wstring& inFullName, int64 bigBlockSize);
     private:
         std::vector<DirEntry> entries;
         std::vector<uint64> dirtyBlocks;
@@ -463,11 +463,11 @@ namespace POLE
         void load(bool bWriteAccess);
         void create();
         void init();
-        bool deleteByName(const std::string& fullName);
+        bool deleteByName(const std::wstring& fullName);
 
-        bool deleteNode(DirEntry* entry, const std::string& fullName);
+        bool deleteNode(DirEntry* entry, const std::wstring& fullName);
 
-        bool deleteLeaf(DirEntry* entry, const std::string& fullName);
+        bool deleteLeaf(DirEntry* entry, const std::wstring& fullName);
 
         uint64 loadBigBlocks(std::vector<uint64> blocks, unsigned char* buffer, uint64 maxlen);
 
@@ -485,7 +485,7 @@ namespace POLE
 
         uint64 saveSmallBlock(uint64 block, uint64 offset, unsigned char* buffer, uint64 len);
 
-        StreamIO* streamIO(const std::string& name, bool bCreate = false, int64 streamSize = 0);
+        StreamIO* streamIO(const std::wstring& name, bool bCreate = false, int64 streamSize = 0);
 
         void flushbbat();
 
@@ -509,7 +509,7 @@ namespace POLE
     public:
         StorageIO* io;
         int64 entryIdx; //needed because a pointer to DirEntry will change whenever entries vector changes.
-        std::string fullName;
+        std::wstring fullName;
         bool eof;
         bool fail;
 
@@ -898,7 +898,7 @@ int DirEntry::compare(const DirEntry& de)
     return compare(de.name);
 }
 
-int DirEntry::compare(const std::string& name2)
+int DirEntry::compare(const std::wstring& name2)
 {
     if (name.length() < name2.length())
         return -1;
@@ -925,7 +925,7 @@ void DirTree::clear(int64 bigBlockSize)
     // leave only root entry
     entries.resize(1);
     entries[0].valid = true;
-    entries[0].name = "Root Entry";
+    entries[0].name = L"Root Entry";
     entries[0].dir = true;
     entries[0].size = 0;
     entries[0].start = End;
@@ -980,13 +980,13 @@ int64 DirTree::parent(uint64 index)
     return -1;
 }
 
-std::string DirTree::fullName(uint64 index)
+std::wstring DirTree::fullName(uint64 index)
 {
     // don't use root name ("Root Entry"), just give "/"
-    if (index == 0) return "/";
+    if (index == 0) return L"/";
 
-    std::string result = entry(index)->name;
-    result.insert(0, "/");
+    std::wstring result = entry(index)->name;
+    result.insert(0, L"/");
     uint64 p = parent(index);
     DirEntry* _entry = 0;
     while (p > 0)
@@ -995,7 +995,7 @@ std::string DirTree::fullName(uint64 index)
         if (_entry->dir && _entry->valid)
         {
             result.insert(0, _entry->name);
-            result.insert(0, "/");
+            result.insert(0, L"/");
         }
         --p;
         index = p;
@@ -1007,17 +1007,17 @@ std::string DirTree::fullName(uint64 index)
 // given a fullname (e.g "/ObjectPool/_1020961869"), find the entry
 // if not found and create is false, return 0
 // if create is true, a new entry is returned
-DirEntry* DirTree::entry(const std::string& name, bool create, int64 bigBlockSize, StorageIO* const io, int64 streamSize)
+DirEntry* DirTree::entry(const std::wstring& name, bool create, int64 bigBlockSize, StorageIO* const io, int64 streamSize)
 {
     if (!name.length()) return (DirEntry*)0;
 
     // quick check for "/" (that's root)
-    if (name == "/") return entry(0);
+    if (name == L"/") return entry(0);
 
     // split the names, e.g  "/ObjectPool/_1020961869" will become:
     // "ObjectPool" and "_1020961869" 
-    std::list<std::string> names;
-    std::string::size_type start = 0, end = 0;
+    std::list<std::wstring> names;
+    std::wstring::size_type start = 0, end = 0;
     if (name[0] == '/') start++;
     int levelsLeft = 0;
     while (start < name.length())
@@ -1033,7 +1033,7 @@ DirEntry* DirTree::entry(const std::string& name, bool create, int64 bigBlockSiz
     int64 index = 0;
 
     // trace one by one   
-    std::list<std::string>::iterator it;
+    std::list<std::wstring>::iterator it;
 
     for (it = names.begin(); it != names.end(); ++it)
     {
@@ -1152,7 +1152,7 @@ std::vector<uint64> DirTree::children(uint64 index)
     return result;
 }
 
-uint64 dirtree_find_sibling(DirTree* dirtree, uint64 index, const std::string& name, uint64& closest) {
+uint64 dirtree_find_sibling(DirTree* dirtree, uint64 index, const std::wstring& name, uint64& closest) {
 
     uint64 count = dirtree->entryCount();
     DirEntry* e = dirtree->entry(index);
@@ -1174,7 +1174,7 @@ uint64 dirtree_find_sibling(DirTree* dirtree, uint64 index, const std::string& n
     return 0;
 }
 
-uint64 DirTree::find_child(uint64 index, const std::string& name, uint64& closest) {
+uint64 DirTree::find_child(uint64 index, const std::wstring& name, uint64& closest) {
 
     uint64 count = entryCount();
     DirEntry* p = entry(index);
@@ -1195,19 +1195,13 @@ void DirTree::load(unsigned char* buffer, uint64 size)
         // would be < 32 if first char in the name isn't printable
         unsigned prefix = 32;
 
-        // parse name of this entry, which stored as Unicode 16-bit
-        std::string name;
+        // parse name of this entry, which stored as Unicode 16-bit        
         int name_len = readU16(buffer + 0x40 + p);
         if (name_len > 64) name_len = 64;
-        for (int j = 0; (buffer[j + p]) && (j < name_len); j += 2)
-            name.append(1, buffer[j + p]);
+        int acutal_len = 0;
+        while (acutal_len < name_len && buffer[p + acutal_len] != 0) { acutal_len += 2; }
+        std::wstring name((wchar_t*)&buffer[p], acutal_len/2);
 
-        // first char isn't printable ? remove it...
-        if (buffer[p] < 32)
-        {
-            prefix = buffer[0];
-            name.erase(0, 1);
-        }
 
         // 2 = file (aka stream), 1 = directory (aka storage), 5 = root
         unsigned type = buffer[0x42 + p];
@@ -1265,7 +1259,7 @@ void DirTree::save(unsigned char* buffer)
         }
 
         // max length for name is 32 chars
-        std::string name = e->name;
+        std::wstring name = e->name;
         if (name.length() > 32)
             name.erase(32, name.length());
 
@@ -1348,21 +1342,21 @@ uint64 DirTree::unused()
 // Then look for a sibling dirEntry that points to inIdx. In some circumstances, the dirEntry at inIdx will be the direct child
 // of the parent, in which case sibIdx will be returned as 0. A failure is indicated if both parentIdx and sibIdx are returned as 0.
 
-void DirTree::findParentAndSib(uint64 inIdx, const std::string& inFullName, uint64& parentIdx, uint64& sibIdx)
+void DirTree::findParentAndSib(uint64 inIdx, const std::wstring& inFullName, uint64& parentIdx, uint64& sibIdx)
 {
     sibIdx = 0;
     parentIdx = 0;
-    if (inIdx == 0 || inIdx >= entryCount() || inFullName == "/" || inFullName == "")
+    if (inIdx == 0 || inIdx >= entryCount() || inFullName == L"/" || inFullName == L"")
         return;
-    std::string localName = inFullName;
+    std::wstring localName = inFullName;
     if (localName[0] != '/')
-        localName = '/' + localName;
-    std::string parentName = localName;
+        localName = L'/' + localName;
+    std::wstring parentName = localName;
     if (parentName[parentName.size() - 1] == '/')
         parentName = parentName.substr(0, parentName.size() - 1);
-    std::string::size_type lastSlash;
+    std::wstring::size_type lastSlash;
     lastSlash = parentName.find_last_of('/');
-    if (lastSlash == std::string::npos)
+    if (lastSlash == std::wstring::npos)
         return;
     if (lastSlash == 0)
         lastSlash = 1; //leave root
@@ -1392,7 +1386,7 @@ uint64 DirTree::findSib(uint64 inIdx, uint64 sibIdx)
         return findSib(inIdx, sib->next);
 }
 
-void DirTree::deleteEntry(DirEntry* dirToDel, const std::string& inFullName, int64 bigBlockSize)
+void DirTree::deleteEntry(DirEntry* dirToDel, const std::wstring& inFullName, int64 bigBlockSize)
 {
     uint64 parentIdx;
     uint64 sibIdx;
@@ -1462,7 +1456,7 @@ void DirTree::debug()
         if (!e) continue;
         std::cout << i << ": ";
         if (!e->valid) std::cout << "INVALID ";
-        std::cout << e->name << " ";
+        std::cout << UTF16toUTF8(e->name) << " ";
         if (e->dir) std::cout << "(Dir) ";
         else std::cout << "(File) ";
         std::cout << e->size << " ";
@@ -1747,7 +1741,7 @@ void StorageIO::close()
 }
 
 
-StreamIO* StorageIO::streamIO(const std::string& name, bool bCreate, int64 streamSize)
+StreamIO* StorageIO::streamIO(const std::wstring& name, bool bCreate, int64 streamSize)
 {
     // sanity check
     if (!name.length()) return (StreamIO*)0;
@@ -1765,7 +1759,7 @@ StreamIO* StorageIO::streamIO(const std::string& name, bool bCreate, int64 strea
     return result2;
 }
 
-bool StorageIO::deleteByName(const std::string& fullName)
+bool StorageIO::deleteByName(const std::wstring& fullName)
 {
     if (!fullName.length())
         return false;
@@ -1784,16 +1778,16 @@ bool StorageIO::deleteByName(const std::string& fullName)
     return retVal;
 }
 
-bool StorageIO::deleteNode(DirEntry* entry, const std::string& fullName)
+bool StorageIO::deleteNode(DirEntry* entry, const std::wstring& fullName)
 {
-    std::string lclName = fullName;
+    std::wstring lclName = fullName;
     if (lclName[lclName.size() - 1] != '/')
         lclName += '/';
     bool retVal = true;
     while (entry->child && entry->child < dirtree->entryCount())
     {
         DirEntry* childEnt = dirtree->entry(entry->child);
-        std::string childFullName = lclName + childEnt->name;
+        std::wstring childFullName = lclName + childEnt->name;
         if (childEnt->dir)
             retVal = deleteNode(childEnt, childFullName);
         else
@@ -1805,7 +1799,7 @@ bool StorageIO::deleteNode(DirEntry* entry, const std::string& fullName)
     return retVal;
 }
 
-bool StorageIO::deleteLeaf(DirEntry* entry, const std::string& fullName)
+bool StorageIO::deleteLeaf(DirEntry* entry, const std::wstring& fullName)
 {
     std::vector<uint64> blocks;
     if (entry->size >= header->threshold)
@@ -2470,9 +2464,9 @@ void Storage::close()
     io->close();
 }
 
-std::list<std::string> Storage::entries(const std::string& path)
+std::list<std::wstring> Storage::entries(const std::wstring& path)
 {
-    std::list<std::string> localResult;
+    std::list<std::wstring> localResult;
     DirTree* dt = io->dirtree;
     DirEntry* e = dt->entry(path, false);
     if (e && e->dir)
@@ -2486,13 +2480,13 @@ std::list<std::string> Storage::entries(const std::string& path)
     return localResult;
 }
 
-bool Storage::isDirectory(const std::string& name)
+bool Storage::isDirectory(const std::wstring& name)
 {
     DirEntry* e = io->dirtree->entry(name, false);
     return e ? e->dir : false;
 }
 
-bool Storage::exists(const std::string& name)
+bool Storage::exists(const std::wstring& name)
 {
     DirEntry* e = io->dirtree->entry(name, false);
     return (e != 0);
@@ -2503,7 +2497,7 @@ bool Storage::isWriteable()
     return io->writeable;
 }
 
-bool Storage::deleteByName(const std::string& name)
+bool Storage::deleteByName(const std::wstring& name)
 {
     return io->deleteByName(name);
 }
@@ -2521,7 +2515,7 @@ void Storage::GetStats(uint64* pEntries, uint64* pUnusedEntries,
 }
 
 // recursively collect stream names
-void CollectStreams(std::list<std::string>& result, DirTree* tree, DirEntry* parent, const std::string& path)
+void CollectStreams(std::list<std::wstring>& result, DirTree* tree, DirEntry* parent, const std::wstring& path)
 {
     DirEntry* c = tree->entry(parent->child);
     std::queue<DirEntry*> queue;
@@ -2530,7 +2524,7 @@ void CollectStreams(std::list<std::string>& result, DirTree* tree, DirEntry* par
         DirEntry* e = queue.front();
         queue.pop();
         if (e->dir)
-            CollectStreams(result, tree, e, path + e->name + "/");
+            CollectStreams(result, tree, e, path + e->name + L"/");
         else
             result.push_back(path + e->name);
         DirEntry* p = tree->entry(e->prev);
@@ -2542,9 +2536,9 @@ void CollectStreams(std::list<std::string>& result, DirTree* tree, DirEntry* par
     }
 }
 
-std::list<std::string> Storage::GetAllStreams(const std::string& storageName)
+std::list<std::wstring> Storage::GetAllStreams(const std::wstring& storageName)
 {
-    std::list<std::string> vresult;
+    std::list<std::wstring> vresult;
     DirEntry* e = io->dirtree->entry(storageName, false);
     if (e && e->dir) CollectStreams(vresult, io->dirtree, e, storageName);
     return vresult;
@@ -2552,7 +2546,7 @@ std::list<std::string> Storage::GetAllStreams(const std::string& storageName)
 
 // =========== Stream ==========
 
-Stream::Stream(Storage* storage, const std::string& name, bool bCreate, int64 streamSize)
+Stream::Stream(Storage* storage, const std::wstring& name, bool bCreate, int64 streamSize)
     : io(storage->io->streamIO(name, bCreate, (int)streamSize))
 {
 }
@@ -2563,9 +2557,9 @@ Stream::~Stream()
     delete io;
 }
 
-std::string Stream::fullName()
+std::wstring Stream::fullName()
 {
-    return io ? io->fullName : std::string();
+    return io ? io->fullName : std::wstring();
 }
 
 uint64 Stream::tell()

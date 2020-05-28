@@ -267,7 +267,7 @@ namespace oless {
 				return  (header >> 15) & 0x1; //(header & 0x8000) << 15;
 			}
 
-			static std::tuple<unsigned int, unsigned char*> FetchStream(POLE::Storage *storage, std::string streamFullName, unsigned int offset) {
+			static std::tuple<unsigned int, unsigned char*> FetchStream(POLE::Storage *storage, std::wstring streamFullName, unsigned int offset) {
 				POLE::Stream* stream = new POLE::Stream(storage, streamFullName);
 				if (stream) {
 					unsigned int len = (unsigned int)(stream->size() - offset);
@@ -282,7 +282,7 @@ namespace oless {
 				}
 			}
 
-			static std::tuple<unsigned int, unsigned char*> FetchAndDecompress(POLE::Storage *storage, std::string streamFullName, unsigned int offset) {
+			static std::tuple<unsigned int, unsigned char*> FetchAndDecompress(POLE::Storage *storage, std::wstring streamFullName, unsigned int offset) {
 				unsigned int compressedLength;
 				unsigned char* compressed;
 				std::tie(compressedLength, compressed) = FetchStream(storage, streamFullName, offset);
@@ -323,7 +323,7 @@ namespace oless {
 				return std::make_pair(startIndex + len + 4, str);*/
 			}
 
-			static std::string GetCode(POLE::Storage* storage, std::string fullname, unsigned int offset) {
+			static std::string GetCode(POLE::Storage* storage, std::wstring fullname, unsigned int offset) {
 				unsigned int len;
 				unsigned char* buffer;
 				std::tie(len, buffer) = FetchAndDecompress(storage, fullname, offset);
@@ -333,21 +333,21 @@ namespace oless {
 			vbahelper() {}
 			~vbahelper() {}
 
-			VbaExtensionInfo* Analyze(std::string fullname, POLE::Storage* vbaStorage) {
+			VbaExtensionInfo* Analyze(std::wstring fullname, POLE::Storage* vbaStorage) {
 
 				VbaExtensionInfo* ans = new VbaExtensionInfo();
 				unsigned int len;
 				unsigned char* buffer;
 
 				//Read VBA Version
-				POLE::Stream* stream = new POLE::Stream(vbaStorage, fullname + "/VBA/_VBA_PROJECT");
+				POLE::Stream* stream = new POLE::Stream(vbaStorage, fullname + L"/VBA/_VBA_PROJECT");
 				VBAProjectStreamHeader* header = oless::OleHelper::GetStructFromStream<VBAProjectStreamHeader>(stream);
 				ans->Version = header->Version;
 				delete stream;
 
 
 				//Read Project Information
-				std::tie(len, buffer) = FetchAndDecompress(vbaStorage, fullname + "/VBA/dir", 0);
+				std::tie(len, buffer) = FetchAndDecompress(vbaStorage, fullname + L"/VBA/dir", 0);
 				unsigned int index = 40;
 
 				std::string tmpStr;
@@ -468,7 +468,7 @@ namespace oless {
 					}
 					index += 4;
 					if (!(mod->StreamName.empty())) {
-						std::string newStreamName = fullname + "/VBA/" + (std::string)(mod->StreamNamePole);
+						std::wstring newStreamName = fullname + L"/VBA/" + mod->StreamNameW;
 						mod->Code = GetCode(vbaStorage, newStreamName, (unsigned int)(mod->Offset));
 						ans->Modules.push_back(mod);
 					}

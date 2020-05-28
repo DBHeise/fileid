@@ -428,7 +428,7 @@ namespace zip {
 
 			POLE::Storage *storage = new POLE::Storage(tmpFile);
 			try {
-				ei = vba->Analyze("/", storage);
+				ei = vba->Analyze(L"/", storage);
 			}
 			catch (std::exception ex) {
 				ei = new oless::VBA::VbaExtensionInfo();
