@@ -79,9 +79,9 @@ namespace oless {
 			public:
 				CountryRecord(unsigned short type, std::vector<uint8_t> data) : Record(type, data) {
 					auto buffer = this->Data.data();
-					unsigned int max = this->Data.size();
+					auto max = this->Data.size();
 					this->iCountryDef = common::ReadUShort(buffer, max, 0);
-					this->iCountryWinIni = common::ReadUShort(buffer, max, 2);
+					this->iCountryWinIni = common::ReadUShort(buffer, max, 2);					
 				}
 				std::string ToXml() const override
 				{

@@ -18,6 +18,9 @@ namespace oless {
 					auto max = this->Data.size();
 					unsigned int index = 0;
 
+					if (index + 6 > max) {
+						throw std::range_error("Offset would read past end of buffer");
+					}
 					this->cell = reinterpret_cast<excel::structures::Cell*>(buffer);
 					index += 6;
 				}

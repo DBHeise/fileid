@@ -25,11 +25,13 @@ namespace oless {
 				virtual void Parse(unsigned char* buffer, std::size_t max, unsigned int offset) override {
 					unsigned int index = offset;
 
-					this->col = common::ReadSShort(buffer, max, offset) << 1 >> 1;
-					this->colRelative = common::ExtractBits(buffer[offset + 1], 1, 6);
-					this->rowRelative = common::ExtractBits(buffer[offset + 1], 1, 7);
+					this->col = common::ReadSShort(buffer, max, index) << 1 >> 1;
+					index += 2;
 
-                    this->bytesRead = 2;
+					this->colRelative = common::ExtractBits(buffer[index-1], 1, 6);
+					this->rowRelative = common::ExtractBits(buffer[index-1], 1, 7);					
+                    
+					this->bytesRead = index - offset;
                 }
             };
         }
