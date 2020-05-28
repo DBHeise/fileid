@@ -38,25 +38,36 @@ namespace oless {
 		std::vector<Property*> ParseStream(POLE::Stream* stream) {
 			POLE::uint64 size = stream->size();
 			unsigned char* buffer = new unsigned char[size];
-			unsigned int currentIndex = 0;
+			unsigned int index = 0;
 			std::vector<Property*> children;
-			if (stream->read(buffer, size) == size) {
+			if (stream->read(buffer, size) == size && size > 0) {
 
+				if (index + sizeof(PropertySetStreamHeader) > size) {
+					throw std::range_error("Offset would read past end of buffer");
+				}
 				PropertySetStreamHeader* pssh = (PropertySetStreamHeader*)buffer;
+				index += sizeof(PropertySetStreamHeader);
+
 
 				for (unsigned int propertySetIndex = 0; propertySetIndex < pssh->NumPropertySets; propertySetIndex++) {
-					currentIndex = sizeof(PropertySetStreamHeader) + (propertySetIndex * sizeof(PropertySetGroup));
+					index = sizeof(PropertySetStreamHeader) + (propertySetIndex * sizeof(PropertySetGroup));
 
-					PropertySetGroup* psg = (PropertySetGroup*)(buffer + currentIndex);
-					currentIndex = psg->Offset;
+					if (index + sizeof(PropertySetGroup) > size) {
+						throw std::range_error("Offset would read past end of buffer");
+					}
+					PropertySetGroup* psg = (PropertySetGroup*)(buffer + index);
+					index = psg->Offset;
 
-					PropertySetHeader* psh = (PropertySetHeader*)(buffer + currentIndex);
-					currentIndex += sizeof(PropertySetHeader);
+					if (index + sizeof(PropertySetHeader) > size) {
+						throw std::range_error("Offset would read past end of buffer");
+					}
+					PropertySetHeader* psh = (PropertySetHeader*)(buffer + index);
+					index += sizeof(PropertySetHeader);
 
 					for (unsigned int pidaoIndex = 0; pidaoIndex < psh->NumProperties; pidaoIndex++) {
 
-						PropertyIdentifierAndOffset* piao = (PropertyIdentifierAndOffset*)(buffer + currentIndex);
-						currentIndex += sizeof(PropertyIdentifierAndOffset);
+						PropertyIdentifierAndOffset* piao = (PropertyIdentifierAndOffset*)(buffer + index);
+						index += sizeof(PropertyIdentifierAndOffset);
 
 						Property* p = ReadProperty(buffer, size, psg->Offset + piao->Offset, piao->PropertyId);
 						if (p != nullptr) {
