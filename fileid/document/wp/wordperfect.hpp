@@ -69,7 +69,7 @@ namespace document {
 			case 0x37: { return "Reserved"; break; }
 			case 0x38: { return "WPWin 5.1 Application Resource Library added for WPWin 5.1"; break; }
 			default:
-				return "Unknown File Type: " + std::to_string(file_type);
+				return "Unknown";
 				break;
 			}
 		}
@@ -127,15 +127,18 @@ namespace document {
 			}
 
 		};
+				
+		void StreamDetailer(common::ExtensionInfo*& e, const std::string filename, const POLE::Storage* storage, const std::wstring streamName, const std::vector<uint8_t> stream) {
+			e = new WordPerfectExtensionInfo();
+			wpheader* head = (wpheader*)stream.data();
+			((WordPerfectExtensionInfo*)e)->Header = head;
+		}
 
 		std::vector<common::ExtensionInfo*> Detailer(std::string file, std::vector<unsigned char> buffer) {
 			std::vector<common::ExtensionInfo*> ans;
-			WordPerfectExtensionInfo* info = new WordPerfectExtensionInfo();
-			
-			wpheader* head = (wpheader*)buffer.data();
-			info->Header = head;
-
-			ans.push_back(info);
+			common::ExtensionInfo* e = nullptr;
+			StreamDetailer(e, file, nullptr, L"", buffer);
+			ans.push_back(e);
 			return ans;
 		}
 	

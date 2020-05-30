@@ -128,11 +128,11 @@ namespace oless {
 			}
 			case VT_I2:
 				ans->HasInt = true;
-				ans->Int = common::ReadSShort(buffer, max, index, true);
+				ans->Int = common::ReadSShort(buffer, max, index);
 				break;
 			case VT_I4:
 				ans->HasInt = true;
-				ans->Int = common::ReadSInt(buffer, max, index, true);
+				ans->Int = common::ReadSInt(buffer, max, index);
 				break;
 			case VT_R4:
 				ans->HasFloat = true;

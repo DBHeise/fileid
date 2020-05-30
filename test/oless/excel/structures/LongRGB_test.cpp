@@ -1,7 +1,7 @@
 #pragma
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "../../../doctest.h"
-#include "../../../../fileid/oless/excel/structures/LongRGB.hpp"
+#include "../../../../fileid/document/excel/structures/LongRGB.hpp"
 
 TEST_SUITE("LongRGB") {
 	TEST_CASE("cTor") {

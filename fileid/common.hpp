@@ -592,8 +592,8 @@ namespace common {
 	};
 
 	// Extra Information Functions
-	typedef std::vector<ExtensionInfo*>(*ExtraDataFunc)(const std::string, std::vector<unsigned char>);
-
+	typedef std::vector<ExtensionInfo*>(*ExtraDataFunc)(const std::string, std::vector<uint8_t>);
+	typedef ExtensionInfo* (*SimpleDataFunc)(const std::string, std::vector<uint8_t>);
 
 	struct MagicInfo {
 		std::string Extension;
@@ -615,6 +615,9 @@ namespace common {
 			this->magic = m;
 			this->extraFunc = ename;
 		}
+	};
+	struct ZipInfo {
+
 	};
 
 	OutputFormat ParseOutputFormat(std::string input) {

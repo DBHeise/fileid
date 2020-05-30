@@ -21,6 +21,9 @@
     <ClInclude Include="doctest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="testhelp.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="common_test.cpp">

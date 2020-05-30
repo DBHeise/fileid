@@ -5,9 +5,82 @@
 #include <sstream>
 #include <stdexcept>
 #include "../common.hpp"
+#include "pole.h"
 #include "./propset/DocumentSummary.hpp"
 
 namespace oless {
+
+	//OpenFile - opens an OLESS file
+	POLE::Storage* OpenFile(const char* file) {
+		POLE::Storage* storage = new POLE::Storage(file);
+		storage->open();
+		if (storage->result() != POLE::Storage::Ok)
+		{
+			storage->close();
+			delete storage;
+			return NULL;
+		}
+		else {
+			return storage;
+		}
+	}
+
+
+	//GetStructFromStream - reads a given Struct from the first bytes of the stream
+	template<typename T> T* GetStructFromStream(POLE::Stream* stream) {
+		size_t size = sizeof(T);
+		unsigned char* bytes = new unsigned char[size];
+
+		POLE::uint64 read = stream->read(bytes, size);
+		if (read > size) {
+			throw std::runtime_error("how is this even possible!");
+		}
+		T* s = (T*)bytes;
+
+		return s;
+	}
+
+	//ReadStream - reads an entire stream into a vector
+	std::vector<uint8_t> ReadStream(POLE::Storage* storage, const std::wstring streamName) {
+		std::vector<uint8_t> ans;
+
+		auto stream = new POLE::Stream(storage, streamName);
+
+		POLE::uint64 size = stream->size();
+		unsigned char* buffer = new unsigned char[size];
+
+		if (stream->read(buffer, size) == size) {
+			ans.insert(ans.end(), &buffer[0], &buffer[size]);
+		}
+		delete stream;
+
+		return ans;
+	}
+
+	typedef void (*OlessDataFunc)(common::ExtensionInfo*&, const std::string, const POLE::Storage*, const std::wstring, const std::vector<uint8_t>);
+
+	struct OlessInfo {
+		std::string Extension;
+		std::string Name;
+		std::string Version;
+		std::string SubType;
+		bool ignoreCase;
+		OlessDataFunc extraFunc;
+		std::wstring matcher;
+		OlessInfo(const char* ext, const char* n, const char* ver, const char* sub, bool ignore, const wchar_t* match, OlessDataFunc ename) {
+			std::string t(ext);
+			this->Extension = t;
+			std::string n2(n);
+			this->Name = n2;
+			std::string v(ver);
+			this->Version = v;
+			this->ignoreCase = ignore;
+			std::wstring m(match);
+			this->matcher = m;
+			this->extraFunc = ename;
+		}
+	};
+
 
 	class OLESSExtensionInfo : public common::ExtensionInfo {
 	protected:
@@ -109,8 +182,6 @@ namespace oless {
 		}
 	};
 
-
-
 	class OleSummary : public common::IExportable {
 	public:
 		std::string FullName;
@@ -140,23 +211,4 @@ namespace oless {
 			return str.str();
 		}
 	};
-
-	class OleHelper {
-	public:
-		template<typename T>
-		static  T* GetStructFromStream(POLE::Stream* stream) {
-			size_t size = sizeof(T);
-			unsigned char* bytes = new unsigned char[size];
-
-			POLE::uint64 read = stream->read(bytes, size);
-			if (read > size) {
-				throw std::runtime_error("how is this even possible!");
-			}
-			T* s = (T *)bytes;
-
-			return s;
-		}
-	};
-
-
 }

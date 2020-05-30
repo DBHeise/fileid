@@ -80,6 +80,8 @@ namespace oless {
 			case FormatId::FMTID_SummaryInformation:
 			{
 				switch (pi) {
+				case DICTIONARY_PROPERTY_IDENTIFIER: { return "Dictionary"; break; }
+				case CODEPAGE_PROPERTY_IDENTIFIER: { return "CodePage"; break; }
 				case PIDSI_TITLE: { return "Title"; break; }
 				case PIDSI_SUBJECT: { return "Subject"; break; }
 				case PIDSI_AUTHOR: { return "Author"; break; }

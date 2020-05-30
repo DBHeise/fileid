@@ -1,5 +1,5 @@
 // magic.h
-// Generated on: 05/18/2020 12:56:14
+// Generated on: 05/30/2020 08:53:42
 
 #pragma once
 #include "common.hpp"
@@ -146,6 +146,7 @@ unsigned char magic_html_h8u[8] = {0xEF,0xBB,0xBF,0x3C,0x48,0x54,0x4d,0x4c};
 unsigned char magic_html_d8u[8] = {0xEF,0xBB,0xBF,0x3C,0x21,0x44,0x4f,0x43};
 
 std::vector<common::MagicInfo*> list;
+
 void initList() {
 	list.push_back(new common::MagicInfo("exe", "DOS Executable", "", 0, 2, magic_dosexe, Exec::Detailer));
 	list.push_back(new common::MagicInfo("elf", "ELF Executable", "", 0, 4, magic_elf, nullptr));

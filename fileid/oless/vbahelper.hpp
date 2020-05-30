@@ -12,7 +12,6 @@
 #include "pole.h"
 #include "../common.hpp"
 #include "OleCommon.hpp"
-#include "olessoffice.hpp"
 
 #include <math.h>
 #define __max(a,b)  (((a) > (b)) ? (a) : (b))
@@ -341,7 +340,7 @@ namespace oless {
 
 				//Read VBA Version
 				POLE::Stream* stream = new POLE::Stream(vbaStorage, fullname + L"/VBA/_VBA_PROJECT");
-				VBAProjectStreamHeader* header = oless::OleHelper::GetStructFromStream<VBAProjectStreamHeader>(stream);
+				VBAProjectStreamHeader* header = oless::GetStructFromStream<VBAProjectStreamHeader>(stream);
 				ans->Version = header->Version;
 				delete stream;
 
@@ -565,6 +564,5 @@ namespace oless {
 
 			}
 		};
-
 	}
 }

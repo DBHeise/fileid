@@ -60,8 +60,9 @@ mp3|MPEG-1 Layer 3 file||Identification| |
 mp4|Mp4 Container||Identification| |
 mpp|Microsoft Project File|oless|Identification| |
 msg|Microsoft Outlook Mail Message|oless|Identification| |
-msi|Microsoft Installer File|oless|None| |
-msp|Microsoft Patch File|oless|None| |
+msi|Microsoft Installer File|oless|Identification| |
+msm|Microsoft Installer Merge Module|oless|Identification| |
+msp|Microsoft Patch File|oless|Identification| |
 obj|Microsoft Common Object File Format relocatable object code||Identification| |
 odb|Microsoft Office Binder|oless|Identification| |
 odb|Open Document Database|zip|Identification| |
@@ -69,8 +70,8 @@ odc|Open Document Graphics|zip|Identification| |
 odf|Open Document Formula|zip|Identification| |
 odg|Open Document Graphics|zip|Identification| |
 odi|Open Document Image|zip|Identification| |
-odp|Open Document Presentation|zip|Identification| |
 odm|Open Document Master Document|zip|Identification| |
+odp|Open Document Presentation|zip|Identification| |
 ods|Open Document Spreadsheet|zip|Identification| |
 odt|Open Document Text|zip|Identification| |
 oless|OLE Structured Storage||Metadata 8|[Link](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-cfb/53989ce4-7b05-4f8d-829b-d08d6148375b)|

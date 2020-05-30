@@ -10,5 +10,3 @@
 #include "media/jpeg.hpp"
 
 #include "document/dwg/autocad.hpp"
-#include "document/wp/wordperfect.hpp"
-

@@ -1,11 +1,8 @@
 ﻿#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
-#include <fstream>
-#include <random>
+#include "testhelp.hpp"
 #include "..\fileid\common.hpp"
 
-std::random_device rd{};
-std::mt19937 gen{ rd() };
 
 TEST_SUITE("common") {
 	TEST_CASE("checkMagic") {
@@ -227,12 +224,7 @@ TEST_SUITE("common") {
 	}
 	TEST_CASE("readBuffer") {
 		SUBCASE("basic") {			
-
-			std::uniform_int_distribution<int> d(0, 255);
-			unsigned char buffer[100] = { 0 };
-			for (size_t i = 0; i < 100; i++) {
-				buffer[i] = (char)(d(gen));
-			}
+			auto buffer = testhelper::randomBuffer(100);
 			auto ans = common::readBuffer(buffer, 100);
 			
 			CHECK_GE(ans.capacity(), 100);
@@ -252,11 +244,11 @@ TEST_SUITE("common") {
 
 		//fill file with random amount of random bytes
 		std::uniform_int_distribution<size_t> d( 1, 2048);
-		std::size_t fillSize = d(gen);
+		std::size_t fillSize = d(testhelper::gen);
 		
 		std::uniform_int_distribution<int> d2(0, 255);
 		for (std::size_t i = 0; i < fillSize; i++) {
-			char a = (char)( d2(gen));
+			char a = (char)( d2(testhelper::gen));
 			fout.write(&a, 1);
 		}
 		//close file
@@ -278,13 +270,13 @@ TEST_SUITE("common") {
 
 		//fill file with random amount of random bytes
 		std::uniform_int_distribution<size_t> d(1, 2048);
-		std::size_t fillSize = d(gen);
+		std::size_t fillSize = d(testhelper::gen);
 
 		std::uniform_int_distribution<int> d2(0, 255);
 		unsigned char* buffer = new unsigned char[fillSize];
 
 		for (std::size_t i = 0; i < fillSize; i++) {
-			buffer[i] = (unsigned char)(d2(gen));					
+			buffer[i] = (unsigned char)(d2(testhelper::gen));
 		}		
 		fout.write((char*)&buffer[0], fillSize);
 		//close file
