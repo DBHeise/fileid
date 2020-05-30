@@ -1450,7 +1450,7 @@ void DirTree::deleteEntry(DirEntry* dirToDel, const std::wstring& inFullName, in
 
 void DirTree::debug()
 {
-    for (unsigned i = 0; i < entryCount(); i++)
+    /*for (unsigned i = 0; i < entryCount(); i++)
     {
         DirEntry* e = entry(i);
         if (!e) continue;
@@ -1469,7 +1469,7 @@ void DirTree::debug()
         if (e->next == End) std::cout << "-"; else std::cout << e->next;
         std::cout << ")";
         std::cout << std::endl;
-    }
+    }*/
 }
 
 // =========== StorageIO ==========
