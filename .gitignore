@@ -225,3 +225,6 @@ pip-log.txt
 ##############
 .ntvs_analysis.dat
 .VC.db
+
+*-cppcheck-build-dir/
+*.cppcheck

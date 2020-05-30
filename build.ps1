@@ -1,10 +1,17 @@
-$msbuildPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -requires Microsoft.Component.MSBuild -find MSBuild\Current\Bin\amd64\MSBuild.exe | Select-Object -First 1
+[CmdletBinding()] 
+param(
+	[ValidateSet("x64", "x86")][String[]]$Platforms = @("x64", "x86"),
+	[ValidateSet("Debug", "Release")][String[]]$Flavors = @("Debug", "Release"),
+	[Switch]$KeepPDB
+)
 
+$msbuildPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -requires Microsoft.Component.MSBuild -find MSBuild\Current\Bin\amd64\MSBuild.exe | Select-Object -First 1
 Set-Alias -name msbuild -Value $msbuildPath
 
-@("x86", "x64") | ForEach-Object {
+
+$Platforms | ForEach-Object {
 	$platform = $_
-	@("Debug", "Release") | ForEach-Object {
+	$Flavors | ForEach-Object {
 		$config = $_
 		
 		Write-Progress -Activity "Building" -Status ($platform + "," + $config)
@@ -14,5 +21,9 @@ Set-Alias -name msbuild -Value $msbuildPath
 	}
 }
 
-#Clean up other artifacts
-Get-ChildItem -Path .\Bin -Recurse -Exclude @("*.exe") -File | Remove-Item
+if ($KeepPDB) {
+	Get-ChildItem -Path .\Bin -Recurse -Exclude @("*.exe", "*.pdb") -File | Remove-Item
+} else {
+	#Clean up other artifacts
+	Get-ChildItem -Path .\Bin -Recurse -Exclude @("*.exe") -File | Remove-Item
+}

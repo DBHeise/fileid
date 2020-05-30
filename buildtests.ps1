@@ -1,3 +1,10 @@
+[CmdletBinding()] 
+param(
+	[ValidateSet("x64", "x86")][String[]]$Platforms = @("x64", "x86"),
+	[ValidateSet("Debug", "Release")][String[]]$Flavors = @("Debug", "Release"),
+	[Switch]$KeepPDB
+)
+
 $msbuildPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -requires Microsoft.Component.MSBuild -find MSBuild\Current\Bin\amd64\MSBuild.exe | Select-Object -First 1
 
 Set-Alias -name msbuild -Value $msbuildPath
@@ -5,18 +12,18 @@ Set-Alias -name msbuild -Value $msbuildPath
 $scriptFolder = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
 $baseFolder = Resolve-Path "."
 
-@("x86", "x64") | ForEach-Object {
+$Platforms | ForEach-Object {
 	$platform = $_
-	@("Debug", "Release") | ForEach-Object {
+	$Flavors | ForEach-Object {
 		$config = $_
 		
-$testFolder = Join-Path $baseFolder 'test'
-$SolutionDir = $baseFolder.Path + "\"
+        $testFolder = Join-Path $baseFolder 'test'
+        $SolutionDir = $baseFolder.Path + "\"
 
-Get-ChildItem -Path $testFolder -Recurse -Include @("*.cpp") -File | ForEach-Object {
-	$name = $_.Name.Replace(".cpp", "")
-    $relFile = $_.FullName.Replace($testFolder, ".")
-    $projFile = ".\test\" + $name + ".vcxproj"
+        Get-ChildItem -Path $testFolder -Recurse -Include @("*.cpp") -File | ForEach-Object {
+	        $name = $_.Name.Replace(".cpp", "")
+            $relFile = $_.FullName.Replace($testFolder, ".")
+            $projFile = ".\test\" + $name + ".vcxproj"
 
 $msbuildXml = @"
 <?xml version="1.0" encoding="utf-8"?>
@@ -93,22 +100,22 @@ $msbuildXml = @"
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'`$(Configuration)|`$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>`$(SolutionDir)Bin\`$(Platform)\`$(Configuration)\</OutDir>
+    <OutDir>`$(SolutionDir)Bin\`$(PlatformShortName)\`$(Configuration)\</OutDir>
     <IntDir>`$(SolutionDir)Obj\`$(ProjectName)_`$(PlatformShortName)_`$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'`$(Configuration)|`$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>`$(SolutionDir)Bin\`$(Platform)\`$(Configuration)\</OutDir>
+    <OutDir>`$(SolutionDir)Bin\`$(PlatformShortName)\`$(Configuration)\</OutDir>
     <IntDir>`$(SolutionDir)Obj\`$(ProjectName)_`$(PlatformShortName)_`$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'`$(Configuration)|`$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>`$(SolutionDir)Bin\`$(Platform)\`$(Configuration)\</OutDir>
+    <OutDir>`$(SolutionDir)Bin\`$(PlatformShortName)\`$(Configuration)\</OutDir>
     <IntDir>`$(SolutionDir)Obj\`$(ProjectName)_`$(PlatformShortName)_`$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'`$(Configuration)|`$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>`$(SolutionDir)Bin\`$(Platform)\`$(Configuration)\</OutDir>
+    <OutDir>`$(SolutionDir)Bin\`$(PlatformShortName)\`$(Configuration)\</OutDir>
     <IntDir>`$(SolutionDir)Obj\`$(ProjectName)_`$(PlatformShortName)_`$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'`$(Configuration)|`$(Platform)'=='Debug|Win32'">
@@ -187,20 +194,23 @@ $msbuildXml = @"
 </Project>
 "@
 		
-    $msbuildXml | Out-File -FilePath $projFile -Encoding ascii
+        $msbuildXml | Out-File -FilePath $projFile -Encoding ascii
 
-    Write-Progress -Activity "Building" -Status ($projFile + "," + $platform + "," + $config)
-    msbuild -noLogo -m -verbosity:detailed -restore -target:Rebuild -property:Configuration=$config -property:Platform=$platform -clp:"ErrorsOnly;NoSummary" $projFile
-    Write-Progress -Activity "Building" -Status ($projFile + "," + $platform + "," + $config) -Completed
+        Write-Progress -Activity "Building" -Status ($projFile + "," + $platform + "," + $config)
+        msbuild -noLogo -m -verbosity:detailed -restore -target:Rebuild -property:Configuration=$config -property:Platform=$platform -clp:"ErrorsOnly;NoSummary" $projFile
+        Write-Progress -Activity "Building" -Status ($projFile + "," + $platform + "," + $config) -Completed
 
-    if ($LASTEXITCODE) { exit $LASTEXITCODE }
+        if ($LASTEXITCODE) { exit $LASTEXITCODE }
 
-    ri $projFile
+        ri $projFile
 	
-}
-}
+        }
+    }
 }
 
-
-#Clean up other artifacts
-Get-ChildItem -Path .\Bin -Recurse -Exclude @("*.exe") -File | Remove-Item
+if ($KeepPDB) {
+	Get-ChildItem -Path .\Bin -Recurse -Exclude @("*.exe", "*.pdb") -File | Remove-Item
+} else {
+	#Clean up other artifacts
+	Get-ChildItem -Path .\Bin -Recurse -Exclude @("*.exe") -File | Remove-Item
+}
