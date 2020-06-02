@@ -1,5 +1,6 @@
 import requests, json, argparse, os, subprocess, xmltodict
 
+envDict = {}
 ignoreFiles = [".gitignore",".gitattributes","LICENSE"]
 ignoreExt = [".md",".txt",".json",".ps1",".py"]
 
@@ -16,7 +17,7 @@ def findBinaries(basefolder):
 
 def runTestBinary(file):
 	print("Running Test: " + file)
-	process = subprocess.Popen(file)
+	process = subprocess.Popen(file, shell=True, env=envDict)
 	process.wait()
 	return process.returncode == 0
 
@@ -65,6 +66,9 @@ if __name__ == "__main__":
 	args = parser.parse_args()
 
 	fileids, testbins = findBinaries(args.build)
+
+	envDict = dict(os.environ)
+	envDict["TESTFOLDER"] = args.files
 
 	allgood = True
 
