@@ -31,9 +31,9 @@ namespace oless {
 	class Oless {
 	private:
 		std::string m_file;
-		std::vector<std::string> m_paths;
+		std::vector<std::wstring> m_paths;
 		std::vector<common::IExportable*> m_results;
-		std::map<std::string, std::vector<propset::Property*>> m_properties;
+		std::map<std::wstring, std::vector<propset::Property*>> m_properties;
 
 		void printStreamInfo(POLE::Storage* storage, std::wstring name, std::wstring fullname)
 		{
@@ -70,7 +70,7 @@ namespace oless {
 					POLE::Stream* stream = new POLE::Stream(storage, fullname);
 					try {
 						auto props = propset::ParseStream(stream);
-						this->m_properties.insert(std::pair<std::string, std::vector<propset::Property*>>(common::convert(fullname), props));
+						this->m_properties.insert(std::pair<std::wstring, std::vector<propset::Property*>>(fullname, props));
 					}
 					catch (const std::range_error) {
 #ifdef DEBUG
@@ -108,7 +108,7 @@ namespace oless {
 			}
 		}
 		void recurse(POLE::Storage* storage, const std::wstring path, void(Oless::*pCallback)(POLE::Storage*, std::wstring, std::wstring)) {
-			this->m_paths.push_back(common::convert(path));
+			this->m_paths.push_back(path);
 			std::list<std::wstring> entries;
 			entries = storage->entries(path);
 
@@ -124,7 +124,7 @@ namespace oless {
 				}
 				else 
 				{
-					this->m_paths.push_back(common::convert(fullname));
+					this->m_paths.push_back(fullname);
 				}
 			}
 		}

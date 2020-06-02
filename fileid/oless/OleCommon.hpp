@@ -91,7 +91,7 @@ namespace oless {
 				str << ", \"Paths\": [";
 				for (auto i = this->paths.begin(); i != this->paths.end(); i++) {
 					if (i != this->paths.begin()) str << ",";
-					str << "\"" << common::JsonEscape((i)->c_str()) << "\"";
+					str << "\"" << common::JsonEscape(common::convert((i)->c_str())) << "\"";
 				}
 				str << "]";
 			}
@@ -99,10 +99,10 @@ namespace oless {
 				str << ",\"properties\": [";
 				for (auto n = this->properties.begin(); n != this->properties.end(); n++) {
 					if (n != this->properties.begin()) str << ",";
-					std::string key = n->first;
+					std::wstring key = n->first;
 					std::vector<propset::Property*> props = n->second;
 
-					str << "{\"Group\":\"" << common::JsonEscape(key) << "\",\"properties\": [";
+					str << "{\"Group\":\"" << common::JsonEscape(common::convert(key)) << "\",\"properties\": [";
 
 					for (auto i = props.begin(); i != props.end(); i++) {
 						if (i != props.begin()) str << ",";
@@ -121,18 +121,18 @@ namespace oless {
 				str << "<Paths>";
 				for (auto i = this->paths.begin(); i != this->paths.end(); i++) {
 					if (i != this->paths.begin()) str << ",";
-					str << "<Path>" << common::XmlEscape((i)->c_str()) << "</Path>";
+					str << "<Path>" << common::XmlEscape(common::convert((i)->c_str())) << "</Path>";
 				}
 				str << "</Paths>";
 			}
 			if (this->properties.size() > 0) {
 				str << "<properties>";
 				for (auto n = this->properties.begin(); n != this->properties.end(); n++) {
-					std::string key = n->first;
+					std::wstring key = n->first;
 					std::vector<propset::Property*> props = n->second;
 
 					str << "<Group>";
-					str << "<Name>" << common::XmlEscape(key) << "</Name>";
+					str << "<Name>" << common::XmlEscape(common::convert(key)) << "</Name>";
 					str << "<properties>";
 					for (auto i = props.begin(); i != props.end(); i++) {
 						str << (*i)->ToXML();
@@ -145,8 +145,8 @@ namespace oless {
 			return str.str();
 		}
 	public:
-		std::vector<std::string> paths;
-		std::map<std::string, std::vector<propset::Property*>> properties;		
+		std::vector<std::wstring> paths;
+		std::map<std::wstring, std::vector<propset::Property*>> properties;		
 		OLESSExtensionInfo() {
 			this->Extension = "oless";
 			this->VersionName = "OLE Structured Storage";
