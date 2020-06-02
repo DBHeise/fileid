@@ -3,11 +3,10 @@
 #include "../testhelp.hpp"
 #include "../../fileid/oless/OleCommon.hpp"
 
-TEST_SUITE("olecommon") {
+TEST_SUITE("olecommon") {	
+	std::string testfile = testhelper::GetTestFile("oless/File001.oless");
 
-	std::string testfile = "C:\\dev.public\\fileid.testfiles\\oless\\File001.oless";
-
-	TEST_CASE("OpenFile") {
+	TEST_CASE("OpenFile") {		
 		auto storage = oless::OpenFile(testfile.c_str());
 		CHECK(storage);
 

@@ -18,4 +18,13 @@ namespace testhelper {
 
 		return buffer;
 	}
+
+	std::string GetTestFileFolder() {
+		char const* val = getenv("TESTFOLDER");
+		return val == nullptr ? std::string("") : std::string(val);
+	}
+
+	std::string GetTestFile(std::string filekey) {
+		return GetTestFileFolder() + filekey;
+	}
 }

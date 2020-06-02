@@ -1,7 +1,7 @@
 ﻿#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 #include "testhelp.hpp"
-#include "..\fileid\common.hpp"
+#include "../fileid/common.hpp"
 
 
 TEST_SUITE("common") {
@@ -41,10 +41,18 @@ TEST_SUITE("common") {
 				CHECK_EQ(common::FileTimeToString(1), "1601-01-01 00:00:00");
 			}
 			SUBCASE("normal") {
+#ifdef WIN32
 				CHECK_EQ(common::FileTimeToString(132223284000000000), "2020-01-01 00:00:00");
+#else
+				CHECK_EQ(common::FileTimeToString(132223284000000000), "2020-01-01 05:00:00");
+#endif
 			}
 			SUBCASE("real") {
-				CHECK_EQ(common::FileTimeToString(14757395258967641292), "invalid time");
+#ifdef WIN32
+				CHECK_EQ(common::FileTimeToString(ULLONG_MAX), "invalid time");
+#else
+				CHECK_EQ(common::FileTimeToString(ULLONG_MAX), "60056-05-28 05:36:10");
+#endif
 			}
 		}
 	}
@@ -346,7 +354,11 @@ TEST_SUITE("common") {
 			CHECK_EQ(common::JsonEscape("test"), "test");
 			CHECK_EQ(common::JsonEscape("\ttest\r\n"), "\\ttest\\r\\n");
 			CHECK_EQ(common::JsonEscape("\"test\""), "\\\"test\\\"");
-			CHECK_EQ(common::JsonEscape("foo¢bar"), "foo\\u00A2bar");
+
+			char test[8] = "foo bar";
+			test[3] = 0xA2;
+			//this makes test = "foo¢bar" but different compilers will handle the literal string differently!
+			CHECK_EQ(common::JsonEscape(test), "foo\\u00A2bar");
 		}
 	}
 	TEST_CASE("vector_join") {
