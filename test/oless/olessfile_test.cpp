@@ -26,7 +26,7 @@ TEST_SUITE("olessfile") {
 			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/Storage 3/Stream7"), "Stream/Storage not found in paths");
 			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/Storage 3/Stream8"), "Stream/Storage not found in paths");
 		} else {
-			REQUIRE_MESSAGE(FALSE, "Extenion could not be cast to OLESSExtensionInfo");
+			REQUIRE_MESSAGE(false, "Extenion could not be cast to OLESSExtensionInfo");
 		}
 	}
 
@@ -38,6 +38,17 @@ TEST_SUITE("olessfile") {
 		CHECK_EQ(extension->Extension, "oless");
 		if (oless::OLESSExtensionInfo* e = dynamic_cast<oless::OLESSExtensionInfo*>(extension)) {
 			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/"), "Stream/Storage not found in paths");
+			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/\u0005DocumentSummaryInformation"), "Stream/Storage not found in paths");
+			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/one"), "Stream/Storage not found in paths");
+			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/two"), "Stream/Storage not found in paths");
+			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/three"), "Stream/Storage not found in paths");
+			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/four"), "Stream/Storage not found in paths");
+			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/five"), "Stream/Storage not found in paths");
+			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/six"), "Stream/Storage not found in paths");
+			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/seven"), "Stream/Storage not found in paths");
+			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/eight"), "Stream/Storage not found in paths");
+			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/nine"), "Stream/Storage not found in paths");
+			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/ten"), "Stream/Storage not found in paths");
 			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/001/"), "Stream/Storage not found in paths");
 			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/001/\u0005BffeaaaaAaaaaadaAaaaaaaaGc"), "Stream/Storage not found in paths");
 			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/002/"), "Stream/Storage not found in paths");
@@ -56,21 +67,11 @@ TEST_SUITE("olessfile") {
 			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/008/\u0005RebiesnrMkudrfcoIaamtykdDa"), "Stream/Storage not found in paths");
 			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/009/"), "Stream/Storage not found in paths");
 			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/009/\u0005SebiesnrMkudrfcoIaamtykdDa"), "Stream/Storage not found in paths");
-			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/one"), "Stream/Storage not found in paths");
-			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/six"), "Stream/Storage not found in paths");
-			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/ten"), "Stream/Storage not found in paths");
-			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/two"), "Stream/Storage not found in paths");
-			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/five"), "Stream/Storage not found in paths");
-			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/four"), "Stream/Storage not found in paths");
-			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/nine"), "Stream/Storage not found in paths");
-			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/eight"), "Stream/Storage not found in paths");
-			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/seven"), "Stream/Storage not found in paths");
-			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/three"), "Stream/Storage not found in paths");
 
 			//TODO: Verify PropertySets
 
 		} else {
-			REQUIRE_MESSAGE(FALSE, "Extenion could not be cast to OLESSExtensionInfo");
+			REQUIRE_MESSAGE(false, "Extenion could not be cast to OLESSExtensionInfo");
 		}
 	}
 
@@ -100,7 +101,7 @@ TEST_SUITE("olessfile") {
 			CHECK_MESSAGE(testhelper::ListContains(e->paths, L"/GrsdTKswuOwh1v2sAb"), "Stream/Storage not found in paths");
 
 		} else {
-			REQUIRE_MESSAGE(FALSE, "Extenion could not be cast to OLESSExtensionInfo");
+			REQUIRE_MESSAGE(false, "Extenion could not be cast to OLESSExtensionInfo");
 		}
 	}
 }
