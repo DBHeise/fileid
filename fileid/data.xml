@@ -155,6 +155,7 @@
     <Item extension="html" shortname="html_d8l" version="utf8 lowercase doctype" name="HTML Document">0xEF,0xBB,0xBF,0x3C,0x21,0x64,0x6F,0x63</Item>
     <Item extension="html" shortname="html_h8u" version="utf8 uppercase html" name="HTML Document">0xEF,0xBB,0xBF,0x3C,0x48,0x54,0x4d,0x4c</Item>
     <Item extension="html" shortname="html_d8u" version="utf8 uppercase doctype" name="HTML Document">0xEF,0xBB,0xBF,0x3C,0x21,0x44,0x4f,0x43</Item>
+    <Item extension="slk" shortname="slk1" name="Microsoft SYLK (Symbolic Link) file">ID;P</Item>
 
 
     <!--  <Item extension="txt" shortname="utf8" version="UTF8" name="Text File">0xEF,0xBB,0xBF</Item> -->

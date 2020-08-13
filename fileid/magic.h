@@ -1,5 +1,5 @@
 // magic.h
-// Generated on: 05/30/2020 08:53:42
+// Generated on: 08/13/2020 15:57:39
 
 #pragma once
 #include "common.hpp"
@@ -144,6 +144,7 @@ unsigned char magic_html_h8l[8] = {0xEF,0xBB,0xBF,0x3C,0x68,0x74,0x6D,0x6C};
 unsigned char magic_html_d8l[8] = {0xEF,0xBB,0xBF,0x3C,0x21,0x64,0x6F,0x63};
 unsigned char magic_html_h8u[8] = {0xEF,0xBB,0xBF,0x3C,0x48,0x54,0x4d,0x4c};
 unsigned char magic_html_d8u[8] = {0xEF,0xBB,0xBF,0x3C,0x21,0x44,0x4f,0x43};
+unsigned char magic_slk1[4] = {0x49,0x44,0x3B,0x50};
 
 std::vector<common::MagicInfo*> list;
 
@@ -286,4 +287,5 @@ void initList() {
 	list.push_back(new common::MagicInfo("html", "HTML Document", "utf8 lowercase doctype", 0, 8, magic_html_d8l, nullptr));
 	list.push_back(new common::MagicInfo("html", "HTML Document", "utf8 uppercase html", 0, 8, magic_html_h8u, nullptr));
 	list.push_back(new common::MagicInfo("html", "HTML Document", "utf8 uppercase doctype", 0, 8, magic_html_d8u, nullptr));
+	list.push_back(new common::MagicInfo("slk", "Microsoft SYLK (Symbolic Link) file", "", 0, 4, magic_slk1, nullptr));
 }}
