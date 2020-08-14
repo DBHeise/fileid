@@ -1,5 +1,5 @@
 ﻿// olessmagic.h
-// Generated on: 08/13/2020 15:57:39
+// Generated on: 08/14/2020 11:38:10
 
 #pragma once
 #include "../common.hpp"

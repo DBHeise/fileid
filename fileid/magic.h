@@ -1,5 +1,5 @@
 // magic.h
-// Generated on: 08/13/2020 15:57:39
+// Generated on: 08/14/2020 11:38:10
 
 #pragma once
 #include "common.hpp"
@@ -44,6 +44,8 @@ unsigned char magic_dos_c2[8] = {0x4B,0x57,0x41,0x4A,0x88,0xF0,0x27,0xD1};
 unsigned char magic_dos_c3[8] = {0x53,0x5A,0x20,0x88,0xF0,0x27,0x33,0xD1};
 unsigned char magic_sdi1[8] = {0x24,0x53,0x44,0x49,0x30,0x30,0x30,0x31};
 unsigned char magic_wim1[7] = {0x4D,0x53,0x57,0x49,0x4D,0x00,0x00};
+unsigned char magic_ace1[7] = {0x2A,0x2A,0x41,0x43,0x45,0x2A,0x2A};
+unsigned char magic_ace2[7] = {0x2A,0x2A,0x41,0x43,0x45,0x2A,0x2A};
 unsigned char magic_ico[4] = {0x00,0x00,0x01,0x00};
 unsigned char magic_gif87[6] = {0x47,0x49,0x46,0x38,0x37,0x61};
 unsigned char magic_gif89[6] = {0x47,0x49,0x46,0x38,0x39,0x61};
@@ -187,6 +189,8 @@ void initList() {
 	list.push_back(new common::MagicInfo("_", "MS-DOS Installtion Compressed File", "QBasic SZDD", 0, 8, magic_dos_c3, nullptr));
 	list.push_back(new common::MagicInfo("sdi", "Microsoft System Deployment Image", "", 0, 8, magic_sdi1, nullptr));
 	list.push_back(new common::MagicInfo("wim", "Windows Imaging File Format", "", 0, 7, magic_wim1, nullptr));
+	list.push_back(new common::MagicInfo("ace", "ACE Archive", "", 7, 7, magic_ace1, nullptr));
+	list.push_back(new common::MagicInfo("ace", "ACE Archive", "", 0, 7, magic_ace2, nullptr));
 	list.push_back(new common::MagicInfo("ico", "Icon File", "", 0, 4, magic_ico, nullptr));
 	list.push_back(new common::MagicInfo("gif", "GIF Image", "GIF87a", 0, 6, magic_gif87, nullptr));
 	list.push_back(new common::MagicInfo("gif", "GIF Image", "GIF89a", 0, 6, magic_gif89, nullptr));
