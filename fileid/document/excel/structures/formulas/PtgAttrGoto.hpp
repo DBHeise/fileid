@@ -36,7 +36,7 @@ namespace oless {
 						this->offset = common::ReadUShort(buffer, max, index);
 						index += 2;
 
-						this->bytesRead = offset - index;
+						this->bytesRead = 4;
 					}
 
 					std::string to_string() const override {

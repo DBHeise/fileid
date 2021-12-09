@@ -43,7 +43,7 @@ namespace oless {
 					}
 
 					
-					ans.bytesRead = index + byteCount;
+					ans.bytesRead = 2 + byteCount;
 
 					return ans;
 				}

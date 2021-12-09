@@ -26,7 +26,7 @@ namespace oless {
 					virtual void Parse(unsigned char* buffer, size_t max, unsigned int offset) override {
 						PtgBasic::Parse(buffer, max, offset);
 						this->integer = common::ReadUShort(buffer, max, offset + 1);
-						this->bytesRead += 2;
+						this->bytesRead = 3;
 					}
 
 					std::string to_string() const override {
