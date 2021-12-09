@@ -36,7 +36,7 @@ namespace oless {
 						this->unused3 = common::ReadUInt(buffer, max, index);
 						index += 4;
 
-						this->bytesRead = index - offset;
+						this->bytesRead = 8;
 					}
 
 					std::string to_string() const override {

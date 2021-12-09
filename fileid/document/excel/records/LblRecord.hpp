@@ -55,7 +55,7 @@ namespace oless {
 					this->name = tmpName.string;
 					index += tmpName.bytesRead;
 
-					this->rgce.Parse(buffer, max, index);
+					this->rgce.Parse2(buffer, this->header->cce, max, index);
 					index += this->rgce.bytesRead;
 				}
 

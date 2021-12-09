@@ -25,17 +25,20 @@ namespace oless {
 					{
 						this->parser = parser;
 					}
-
-					virtual void Parse(unsigned char* buffer, std::size_t max, unsigned int offset) override {
+					virtual void Parse2(unsigned char* buffer, unsigned int rgceSize, std::size_t max, unsigned int offset) {
 						unsigned int index = offset;
 
-						this->rgce.Parse(buffer, max, index);
+						this->rgce.Parse(buffer, index + rgceSize, index);
 						index += this->rgce.bytesRead;
 
 						this->rgcb.Parse(buffer, max, index);
 						index += this->rgcb.bytesRead;
 
-						this->bytesRead = index - offset;
+						this->bytesRead = max - offset;
+					}
+
+					virtual void Parse(unsigned char* buffer, std::size_t max, unsigned int offset) override {
+						this->bytesRead = max - offset;
 					}
 					virtual std::string ToXml() const override {
 						std::ostringstream str;

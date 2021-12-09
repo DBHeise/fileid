@@ -13,9 +13,10 @@ namespace oless {
 					Record* r = p->GetPrevRecordNotOfType(type);
 					r->Data.insert(r->Data.end(), data.begin(), data.end());
 					
-					if (IReParseable* pr = dynamic_cast<IReParseable*>(r)) {
-						pr->ReParse(p);
-					}
+					//TODO: it is problematic to do this during parsing....need a better way
+					//if (IReParseable* pr = dynamic_cast<IReParseable*>(r)) {
+					//	pr->ReParse(p);
+					//}
 
 				}
 
