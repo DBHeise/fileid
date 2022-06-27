@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <stdexcept>
 #include "../../oless/pole.h"
 #include "../../common.hpp"
 #include "../../oless/OleCommon.hpp"
@@ -18,6 +19,7 @@ namespace oless {
 			//Global SubStream
 			SubStream* global;
 			std::vector<Sheet> sheets;
+			std::string error;
 
 			ExcelExtensionInfo() : OLESSExtensionInfo() {
 				this->Extension = "xls";
@@ -39,6 +41,9 @@ namespace oless {
 					}
 					str << "]";
 				}
+				if (!this->error.empty()) {
+					str << ", \"ERROR\": \"" << this->error << "\"";
+				}
 				str << "}";
 				return str.str();
 			}
@@ -58,6 +63,9 @@ namespace oless {
 					}
 					str << "</sheets>";
 				}
+				if (!this->error.empty()) {
+					str << "<ERROR>" << this->error << "</ERROR>";
+				}
 				str << "</item>";
 				return str.str();
 			}
@@ -65,9 +73,17 @@ namespace oless {
 	
 		void Detailer(common::ExtensionInfo*& e, const std::string filename, const POLE::Storage* storage, const std::wstring streamName, const std::vector<uint8_t> stream) {
 			auto p = new ParseEngine();
-			p->ParseStream(stream);
-
 			auto xl = new ExcelExtensionInfo();
+			try {
+				p->ParseStream(stream);
+			}
+			catch (const std::exception& e) {
+				xl->error = e.what();
+			}
+			catch (...) {
+				xl->error = "Unhandled exception";
+			}
+
 			xl->global = p->global;
 			xl->sheets = p->sheets;
 			xl->Version = p->Version;

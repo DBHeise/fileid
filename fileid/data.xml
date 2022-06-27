@@ -1,205 +1,216 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Data>
-  <Items>
-	<!-- Executables -->
-	<Item extension="exe" shortname="dosexe" name="DOS Executable" extra="Exec::Detailer">0x4D,0x5A</Item>
-	<Item extension="elf" shortname="elf" name="ELF Executable">0x7F,0x45,0x4C,0x46</Item>
-	<Item extension="dex" shortname="dex" name="Dalvik Executable">0x64,0x65,0x78,0x0A,0x30,0x33</Item>
-	<Item extension="lib" shortname="lib" name="Microsoft Program Library Common Object File Format">0x21,0x3C,0x61,0x72,0x63,0x68,0x3E,0x0A</Item>
-	<Item extension="obj" shortname="obj" name="Microsoft Common Object File Format relocatable object code">0x4C,0x01</Item>
-	<Item extension="pdb" shortname="pdb1" version="2" name="Microsoft Program Database 2.0">0x4D,0x69,0x63,0x72,0x6F,0x73,0x6F,0x66,0x74,0x20,0x43,0x2F,0x43,0x2B,0x2B,0x20,0x70,0x72,0x6F,0x67,0x72,0x61,0x6D,0x20,0x64,0x61,0x74,0x61,0x62,0x61,0x73,0x65,0x20,0x32,0x2E,0x30,0x30,0x0D,0x0A</Item>
-	<Item extension="pdb" shortname="pdb2" version="7" name="Microsoft Program Database 7.0">0x4D,0x69,0x63,0x72,0x6F,0x73,0x6F,0x66,0x74,0x20,0x43,0x2F,0x43,0x2B,0x2B,0x20,0x4D,0x53,0x46,0x20,0x37,0x2E,0x30,0x30,0x0D,0x0A,0x1A,0x44,0x53</Item>
+	<Items>
+		<!-- Executables -->
+		<Item extension="exe" shortname="dosexe" name="DOS Executable" extra="Exec::Detailer">0x4D,0x5A</Item>
+		<Item extension="elf" shortname="elf" name="ELF Executable">0x7F,0x45,0x4C,0x46</Item>
+		<Item extension="dex" shortname="dex" name="Dalvik Executable">0x64,0x65,0x78,0x0A,0x30,0x33</Item>
+		<Item extension="lib" shortname="lib" name="Microsoft Program Library Common Object File Format">0x21,0x3C,0x61,0x72,0x63,0x68,0x3E,0x0A</Item>
+		<Item extension="obj" shortname="obj" name="Microsoft Common Object File Format relocatable object code">0x4C,0x01</Item>
+		<Item extension="pdb" shortname="pdb1" version="2" name="Microsoft Program Database 2.0">0x4D,0x69,0x63,0x72,0x6F,0x73,0x6F,0x66,0x74,0x20,0x43,0x2F,0x43,0x2B,0x2B,0x20,0x70,0x72,0x6F,0x67,0x72,0x61,0x6D,0x20,0x64,0x61,0x74,0x61,0x62,0x61,0x73,0x65,0x20,0x32,0x2E,0x30,0x30,0x0D,0x0A</Item>
+		<Item extension="pdb" shortname="pdb2" version="7" name="Microsoft Program Database 7.0">0x4D,0x69,0x63,0x72,0x6F,0x73,0x6F,0x66,0x74,0x20,0x43,0x2F,0x43,0x2B,0x2B,0x20,0x4D,0x53,0x46,0x20,0x37,0x2E,0x30,0x30,0x0D,0x0A,0x1A,0x44,0x53</Item>
+		<Item extension="o" shortname="macho1" version="32-bit, big-endian" extra="Exec::MachO::Detailer" name="Mach-O Executable">0xfe,0xed,0xfa,0xce</Item>
+		<Item extension="o" shortname="macho2" version="32-bit, little-endian" extra="Exec::MachO::Detailer" name="Mach-O Executable">0xce,0xfa,0xed,0xfe</Item>
+		<Item extension="o" shortname="macho3" version="64-bit, big-endian" extra="Exec::MachO::Detailer" name="Mach-O Executable">0xfe,0xed,0xfa,0xcf</Item>
+		<Item extension="o" shortname="macho4" version="64-bit, little-endian" extra="Exec::MachO::Detailer" name="Mach-O Executable">0xcf,0xfa,0xed,0xfe</Item>
+		<Item extension="class" shortname="javaclass" name="Java Class File">0xCA,0xFE,0xBA,0xBE</Item>
 
-	<!-- Compression / Containers -->
-	<Item extension="zip" shortname="zip" name="Zip Archive" extra="zip::Detailer">0x50,0x4B</Item>
-	<Item extension="rar" shortname="rar" name="Rar Archive">0x52,0x61,0x72,0x21,0x1A,0x07</Item>
-	<Item extension="7z" shortname="7z" name="7z Archive">0x37,0x7A,0xBC,0xAF,0x27,0x1C</Item>
-	<Item extension="tar.z" shortname="tarzlzw" version="LZW Compression" name="Tar.Zip Container">0x1F,0x9D</Item>
-	<Item extension="tar.z" shortname="tarzlzh" version="LZH Compression" name="Tar.Zip Container">0x1f,0xA0</Item>
-	<Item extension="bz2" shortname="bz2" name="BZip2 Container">0x42,0x5A,0x68</Item>
-	<Item extension="tar" shortname="tar" name="Tar Archive">0x75,0x73,0x74,0x61,0x72</Item>
-	<Item extension="gz" shortname="gz" name="GZIP Archive">0x1F,0x8B</Item>
-	<Item extension="cab" shortname="cab" name="Microsoft Cabinet file">0x4D,0x53,0x43,0x46</Item>
-	<Item extension="lha" shortname="lha" offset="2" name="LHArc (lha/lzh) Archive">0x2D,0x6C,0x68</Item>
-	<Item extension="vhd" shortname="vhd" name="Microsoft Virtual HardDisk">0x63,0x6F,0x6E,0x65,0x63,0x74,0x69,0x78</Item>
-	<Item extension="xz" shortname="xz" name="XZ Compressed File">0xFD,0x37,0x7A,0x58,0x5A,0x00</Item>
-	<Item extension="iso" shortname="iso1" name="ISO 9660 Disk Image" offset="32769">0x43,0x44,0x30,0x30,0x31</Item>
-	<Item extension="iso" shortname="iso2" name="ISO 9660 Disk Image" offset="34817">0x43,0x44,0x30,0x30,0x31</Item>
-	<Item extension="iso" shortname="iso3" name="ISO 9660 Disk Image" offset="36864">0x43,0x44,0x30,0x30,0x31</Item>
-	<Item extension="iso" shortname="udf1" name="Universal Disk Format (ISO 13490/Ecma-168) - Beginning Extended Area Descriptor" offset="32769">BEA01</Item>
-	<Item extension="iso" shortname="udf2" name="Universal Disk Format (ISO 13490/Ecma-168) - Boot Descriptor" offset="32769">BOOT2</Item>
-	<Item extension="iso" shortname="udf3" name="Universal Disk Format (ISO 13490/Ecma-168) - CD001 - ECMA-119" offset="32769">CD001</Item>
-	<Item extension="iso" shortname="udf4" name="Universal Disk Format (ISO 13490/Ecma-168) - Volume Descriptor" offset="32769">CDW02</Item>
-	<Item extension="iso" shortname="udf5" name="Universal Disk Format (ISO 13490/Ecma-168) - NSR02 - ECMA-168" offset="32769">NSR02</Item>
-	<Item extension="iso" shortname="udf6" name="Universal Disk Format (ISO 13490/Ecma-168) - NSR03 - ECMA-167" offset="32769">NSR03</Item>
-	<Item extension="iso" shortname="udf7" name="Universal Disk Format (ISO 13490/Ecma-168) - Terminating Extended Area Descriptor" offset="32769">TEA01</Item>
-	<Item extension="vmdk" shortname="vmdk" name="VMWare Virtual Disk">0x4B,0x44,0x4D</Item>
-	<Item extension="pcap" shortname="pcap" name="Network Packet Capture File">0xD4,0xC3,0xB2,0xA1</Item>
-	<Item extension="pcap" shortname="pcapn" name="Network Packet Capture File" version="Nanosecond-precision timestamps">0x4D,0x3C,0xB2,0xA1</Item>
-	<Item extension="rpm" shortname="rpm" name="Red Hat Package Manager File">0xED,0xAB,0xEE,0xDB</Item>
-	<Item extension="_" shortname="dos_c1" name="MS-DOS Installtion Compressed File" version="SZDD">0x53,0x5A,0x44,0x44,0x88,0xF0,0x27,0x33</Item>
-	<Item extension="_" shortname="dos_c2" name="MS-DOS Installtion Compressed File" version="KWAJ">0x4B,0x57,0x41,0x4A,0x88,0xF0,0x27,0xD1</Item>
-	<Item extension="_" shortname="dos_c3" name="MS-DOS Installtion Compressed File" version="QBasic SZDD">0x53,0x5A,0x20,0x88,0xF0,0x27,0x33,0xD1</Item>
-	<Item extension="sdi" shortname="sdi1" name="Microsoft System Deployment Image">$SDI0001</Item>
-	<Item extension="wim" shortname="wim1" name="Windows Imaging File Format">0x4D,0x53,0x57,0x49,0x4D,0x00,0x00</Item>
-	<Item extension="ace" shortname="ace1" offset="7" name="ACE Archive">**ACE**</Item>
-	<Item extension="ace" shortname="ace2" offset="0" name="ACE Archive">**ACE**</Item>
+		<!-- Compression / Containers -->
+		<Item extension="zip" shortname="zip" name="Zip Archive" extra="zip::Detailer">0x50,0x4B</Item>
+		<Item extension="rar" shortname="rar" name="Rar Archive">0x52,0x61,0x72,0x21,0x1A,0x07</Item>
+		<Item extension="7z" shortname="7z" name="7z Archive">0x37,0x7A,0xBC,0xAF,0x27,0x1C</Item>
+		<Item extension="tar.z" shortname="tarzlzw" version="LZW Compression" name="Tar.Zip Container">0x1F,0x9D</Item>
+		<Item extension="tar.z" shortname="tarzlzh" version="LZH Compression" name="Tar.Zip Container">0x1f,0xA0</Item>
+		<Item extension="bz2" shortname="bz2" name="BZip2 Container">0x42,0x5A,0x68</Item>
+		<Item extension="tar" shortname="tar2" name="TAR Container" offset="257">ustar</Item>
+		<Item extension="tar" shortname="tar" name="Tar Archive">0x75,0x73,0x74,0x61,0x72</Item>
+		<Item extension="gz" shortname="gz" name="GZIP Archive">0x1F,0x8B</Item>
+		<Item extension="cab" shortname="cab" name="Microsoft Cabinet file">0x4D,0x53,0x43,0x46</Item>
+		<Item extension="lha" shortname="lha" offset="2" name="LHArc (lha/lzh) Archive">0x2D,0x6C,0x68</Item>
+		<Item extension="vhd" shortname="vhd" name="Microsoft Virtual HardDisk">0x63,0x6F,0x6E,0x65,0x63,0x74,0x69,0x78</Item>
+		<Item extension="vhdx" shortname="vhdx" name="Microsoft Virtual HardDisk v2">0x76,0x68,0x64,0x78,0x66,0x69,0x6C,0x65</Item>
+		<Item extension="xz" shortname="xz" name="XZ Compressed File">0xFD,0x37,0x7A,0x58,0x5A,0x00</Item>
+		<Item extension="iso" shortname="iso1" name="ISO 9660 Disk Image" offset="32769">0x43,0x44,0x30,0x30,0x31</Item>
+		<Item extension="iso" shortname="iso2" name="ISO 9660 Disk Image" offset="34817">0x43,0x44,0x30,0x30,0x31</Item>
+		<Item extension="iso" shortname="iso3" name="ISO 9660 Disk Image" offset="36864">0x43,0x44,0x30,0x30,0x31</Item>
+		<Item extension="iso" shortname="udf1" name="Universal Disk Format (ISO 13490/Ecma-168) - Beginning Extended Area Descriptor" offset="32769">BEA01</Item>
+		<Item extension="iso" shortname="udf2" name="Universal Disk Format (ISO 13490/Ecma-168) - Boot Descriptor" offset="32769">BOOT2</Item>
+		<Item extension="iso" shortname="udf3" name="Universal Disk Format (ISO 13490/Ecma-168) - CD001 - ECMA-119" offset="32769">CD001</Item>
+		<Item extension="iso" shortname="udf4" name="Universal Disk Format (ISO 13490/Ecma-168) - Volume Descriptor" offset="32769">CDW02</Item>
+		<Item extension="iso" shortname="udf5" name="Universal Disk Format (ISO 13490/Ecma-168) - NSR02 - ECMA-168" offset="32769">NSR02</Item>
+		<Item extension="iso" shortname="udf6" name="Universal Disk Format (ISO 13490/Ecma-168) - NSR03 - ECMA-167" offset="32769">NSR03</Item>
+		<Item extension="iso" shortname="udf7" name="Universal Disk Format (ISO 13490/Ecma-168) - Terminating Extended Area Descriptor" offset="32769">TEA01</Item>
+		<Item extension="vmdk" shortname="vmdk" name="VMWare Virtual Disk">0x4B,0x44,0x4D</Item>
+		<Item extension="pcap" shortname="pcap" name="Network Packet Capture File">0xD4,0xC3,0xB2,0xA1</Item>
+		<Item extension="pcap" shortname="pcapn" name="Network Packet Capture File" version="Nanosecond-precision timestamps">0x4D,0x3C,0xB2,0xA1</Item>
+		<Item extension="rpm" shortname="rpm" name="Red Hat Package Manager File">0xED,0xAB,0xEE,0xDB</Item>
+		<Item extension="_" shortname="dos_c1" name="MS-DOS Installtion Compressed File" version="SZDD">0x53,0x5A,0x44,0x44,0x88,0xF0,0x27,0x33</Item>
+		<Item extension="_" shortname="dos_c2" name="MS-DOS Installtion Compressed File" version="KWAJ">0x4B,0x57,0x41,0x4A,0x88,0xF0,0x27,0xD1</Item>
+		<Item extension="_" shortname="dos_c3" name="MS-DOS Installtion Compressed File" version="QBasic SZDD">0x53,0x5A,0x20,0x88,0xF0,0x27,0x33,0xD1</Item>
+		<Item extension="sdi" shortname="sdi1" name="Microsoft System Deployment Image">$SDI0001</Item>
+		<Item extension="wim" shortname="wim1" name="Windows Imaging File Format">0x4D,0x53,0x57,0x49,0x4D,0x00,0x00</Item>
+		<Item extension="ace" shortname="ace1" offset="7" name="ACE Archive">**ACE**</Item>
+		<Item extension="ace" shortname="ace2" offset="0" name="ACE Archive">**ACE**</Item>
 
-	<!-- Images -->
-	<Item extension="ico" shortname="ico" name="Icon File">0x00,0x00,0x01,0x00</Item>
-	<Item extension="gif" shortname="gif87" version="GIF87a" name="GIF Image">0x47,0x49,0x46,0x38,0x37,0x61</Item>
-	<Item extension="gif" shortname="gif89" version="GIF89a" name="GIF Image">0x47,0x49,0x46,0x38,0x39,0x61</Item>
-	<Item extension="tiff" shortname="tiff_l" version="little endian" name="Tagged Image File">0x49,0x49,0x2A,0x00</Item>
-	<Item extension="tiff" shortname="tiff_b" version="big endian" name="Tagged Image File">0x4D,0x4D,0x00,0x2A</Item>
-	<Item extension="jpg" shortname="jpg" name="JPEG Image" extra="media::jpeg::Detailer">0xFF,0xD8</Item>
-	<Item extension="png" shortname="png" name="Portable Network Graphics">0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A</Item>
-	<Item extension="bmp" shortname="bmp" name="Bitmap Image">0x42,0x4D</Item>
-	<Item extension="cur" shortname="cur" name="Cursor">0x00,0x00,0x02,0x00</Item>
-	<Item extension="bmp" shortname="bmpOS2a" version="OS/2 Array" name="Bitmap Image">0x42,0x41</Item>
-	<Item extension="bmp" shortname="bmpOS2ci" version="OS/2 Color Icon" name="Bitmap Image">0x43,0x49</Item>
-	<Item extension="bmp" shortname="bmpOS2cp" version="OS/2 Color Pointer" name="Bitmap Image">0x43,0x50</Item>
-	<Item extension="bmp" shortname="bmpOS2i" version="OS/2 Icon" name=" Bitmap Icon">0x49,0x43</Item>
-	<Item extension="bmp" shortname="bmpOS2p" version="OS/2 Pointer" name="Bitmap Image">0x50,0x54</Item>
-	<Item extension="psp" shortname="psp" name="Corel Paint Shop Pro Image file">0x50,0x61,0x69,0x6E,0x74,0x20,0x53,0x68,0x6F,0x70,0x20,0x50,0x72,0x6F,0x20,0x49,0x6D,0x61,0x67,0x65,0x20,0x46,0x69,0x6C,0x65</Item>
-	<Item extension="jbf" shortname="jbf" name="Corel Paint Shop Pro browse file">0x4A,0x41,0x53,0x43,0x20,0x42,0x52,0x4F,0x57,0x53,0x20,0x46,0x49,0x4C,0x45</Item>
+		<!-- Images -->
+		<Item extension="ico" shortname="ico" name="Icon File">0x00,0x00,0x01,0x00</Item>
+		<Item extension="gif" shortname="gif87" version="GIF87a" name="GIF Image">0x47,0x49,0x46,0x38,0x37,0x61</Item>
+		<Item extension="gif" shortname="gif89" version="GIF89a" name="GIF Image">0x47,0x49,0x46,0x38,0x39,0x61</Item>
+		<Item extension="tiff" shortname="tiff_l" version="little endian" name="Tagged Image File">0x49,0x49,0x2A,0x00</Item>
+		<Item extension="tiff" shortname="tiff_b" version="big endian" name="Tagged Image File">0x4D,0x4D,0x00,0x2A</Item>
+		<Item extension="jpg" shortname="jpg" name="JPEG Image" extra="media::jpeg::Detailer">0xFF,0xD8</Item>
+		<Item extension="png" shortname="png" name="Portable Network Graphics">0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A</Item>
+		<Item extension="bmp" shortname="bmp" name="Bitmap Image">0x42,0x4D</Item>
+		<Item extension="cur" shortname="cur" name="Cursor">0x00,0x00,0x02,0x00</Item>
+		<Item extension="bmp" shortname="bmpOS2a" version="OS/2 Array" name="Bitmap Image">0x42,0x41</Item>
+		<Item extension="bmp" shortname="bmpOS2ci" version="OS/2 Color Icon" name="Bitmap Image">0x43,0x49</Item>
+		<Item extension="bmp" shortname="bmpOS2cp" version="OS/2 Color Pointer" name="Bitmap Image">0x43,0x50</Item>
+		<Item extension="bmp" shortname="bmpOS2i" version="OS/2 Icon" name=" Bitmap Icon">0x49,0x43</Item>
+		<Item extension="bmp" shortname="bmpOS2p" version="OS/2 Pointer" name="Bitmap Image">0x50,0x54</Item>
+		<Item extension="psp" shortname="psp" name="Corel Paint Shop Pro Image file">0x50,0x61,0x69,0x6E,0x74,0x20,0x53,0x68,0x6F,0x70,0x20,0x50,0x72,0x6F,0x20,0x49,0x6D,0x61,0x67,0x65,0x20,0x46,0x69,0x6C,0x65</Item>
+		<Item extension="jbf" shortname="jbf" name="Corel Paint Shop Pro browse file">0x4A,0x41,0x53,0x43,0x20,0x42,0x52,0x4F,0x57,0x53,0x20,0x46,0x49,0x4C,0x45</Item>
+		<Item extension="emf" shortname="emf" name="Microsoft Enchanced Metafile" offset="41">EMF</Item>
+		<Item extension="eps" shortname="eps" name="Encapsulated PostScript" offset="41">EPSF</Item>
 
-	<!-- Documents -->
-	<Item extension="oless" shortname="oless" name="OLE Structured Storage" extra="oless::Detailer">0xD0,0xCF,0x11,0xE0</Item>
-	<Item extension="ps" shortname="ps" name="PostScript document">0x25,0x21,0x50,0x53</Item>
-	<Item extension="pdf" shortname="pdf" name="PDF document">0x25,0x50,0x44,0x46</Item>
-	<Item extension="db" shortname="db" name="SQLLite Database File">0x53,0x51,0x4C,0x69,0x74,0x65,0x20,0x66,0x6F,0x72,0x6D,0x61,0x74,0x20,0x33,0x00</Item>
-	<Item extension="dwg" shortname="dwg" name="Autocad Drawing" extra="document::dwg::DwgHelper">0x41,0x43,0x31,0x30</Item>
-	<Item extension="lnk" shortname="lnk" name="LNK File">0x4C,0x00,0x00,0x00,0x01,0x14,0x02,0x00,0x00,0x00,0x00,0x00,0xC0,0x00,0x00,0x00,0x00,0x00,0x00,0x46</Item>
-	<Item extension="xls" shortname="biff2" version="BIFF2" name="Microsoft Excel">0x09,0x00</Item>
-	<Item extension="xls" shortname="biff3" version="BIFF3" name="Microsoft Excel">0x09,0x02</Item>
-	<Item extension="xls" shortname="biff4" version="BIFF4" name="Microsoft Excel">0x09,0x04</Item>
-	<Item extension="ppt" shortname="ppt95" version="PPT95" name="Microsoft Powerpoint">0x4D,0x69,0x63,0x72,0x6F,0x73,0x6F,0x66,0x74,0x20,0x28,0x52,0x29,0x20,0x50,0x6F,0x77,0x65,0x72,0x50,0x6F,0x69,0x6E,0x74,0x20,0x28,0x52,0x29,0x20,0x57,0x69,0x6E,0x64,0x6F,0x77,0x73,0x20,0x20</Item>
-	<Item extension="ppt" shortname="ppt3" version="PPT3" name="Microsoft Powerpoint">0xED,0xDE,0xAD,0x0B</Item>
-	<Item extension="ppt" shortname="ppt3s" version="PPT3 Swap" name="Microsoft Powerpoint">0x0B,0xAD,0xDE,0xED</Item>
-	<Item extension="mdb" shortname="mdbsys" version="MDB_System" name="Microsoft Access Database">0x00,0x01,0x00,0x00,0x4A,0x65,0x74,0x20,0x53,0x79,0x73,0x74,0x65,0x6D,0x20,0x44,0x42,0x20,0x20</Item>
-	<Item extension="mdb" shortname="mdbstd" version="MDB_Standard" name="Microsoft Access Database">0x00,0x01,0x00,0x00,0x53,0x74,0x61,0x6E,0x64,0x61,0x72,0x64,0x20,0x4A,0x65,0x74,0x20,0x44,0x42</Item>
-	<Item extension="mdb" shortname="mdbtmp" version="MDB_Temp" name="Microsoft Access Database">0x00,0x01,0x00,0x00,0x54,0x65,0x6D,0x70,0x20,0x4A,0x65,0x74,0x20,0x44,0x42,0x20,0x20,0x20,0x20</Item>
-	<Item extension="accdb" shortname="accdbsys" version="ACCDB_System" name="Microsoft Access Database">0x00,0x01,0x00,0x00,0x41,0x43,0x45,0x20,0x53,0x79,0x73,0x74,0x65,0x6D,0x20,0x44,0x42,0x20,0x20</Item>
-	<Item extension="accdb" shortname="accdbstd" version="ACCDB_Standard" name="Microsoft Access Database">0x00,0x01,0x00,0x00,0x53,0x74,0x61,0x6E,0x64,0x61,0x72,0x64,0x20,0x41,0x43,0x45,0x20,0x44,0x42</Item>
-	<Item extension="accdb" shortname="accdbtmp" version="ACCDB_Temp" name="Microsoft Access Database">0x00,0x01,0x00,0x00,0x54,0x65,0x6D,0x70,0x20,0x41,0x43,0x45,0x20,0x44,0x42,0x20,0x20,0x20,0x20</Item>
-	<Item extension="one" shortname="one" name="Microsoft OneNote">0xE4,0x52,0x5C,0x7B,0x8C,0xD8,0xA7,0x4D,0xAE,0xB1,0x53,0x78,0xD0,0x29,0x96,0xD3</Item>
-	<Item extension="onetoc2" shortname="onetoc" name="Microsoft OneNote Table of Contents">0xA1,0x2F,0xFF,0x43,0xD9,0xEF,0x76,0x4C,0x9E,0xE2,0x10,0xEA,0x57,0x22,0x76,0x5F</Item>
-	<Item extension="pst" shortname="pst" name="Microsoft Outlook Personal Storage Table">0x21,0x42,0x44,0x4E</Item>
-	<Item extension="wab" shortname="wab" name="Microsoft Outlook Address File">0x9C,0xCB,0xCB,0x8D,0x13,0x75,0xD2,0x11,0x91,0x58,0x00,0xC0,0x4F,0x79,0x56,0xA4</Item>
-	<Item extension="chm" shortname="chm" name="Complied Help File">0x49,0x54,0x53,0x46</Item>
-	<Item extension="dmp" shortname="dmp32" version="32-bit" name="Windows Dump File">0x50,0x41,0x47,0x45,0x44,0x55,0x4D,0x50</Item>
-	<Item extension="dmp" shortname="dmp64" version="64-bit" name="Windows Dump File">0x50,0x41,0x47,0x45,0x44,0x55,0x36,0x34</Item>
-	<Item extension="hdmp" shortname="hdmp" version="with heap" name="Windows Dump File">0x4D,0x44,0x4D,0x50,0x93,0xA7</Item>
-	<Item extension="rtf" shortname="rtf" name="Rich Text Format">0x7B,0x5C,0x72,0x74,0x66,0x31</Item>
-	<Item extension="skp" shortname="skp" name="SketchUp Model">0xFF,0xFE,0xFF,0x0E,0x53,0x00,0x6B,0x00,0x65,0x00,0x74,0x00,0x63,0x00,0x68,0x00,0x55,0x00,0x70,0x00,0x20,0x00,0x4D,0x00,0x6F,0x00,0x64,0x00,0x65,0x00,0x6C,0x00</Item>
-	<Item extension="mdi" shortname="mdi" name="Microsoft Office Document Imaging">0x45,0x50,0x2a,0x00</Item>
-	<Item extension="hlp" shortname="hlp1" name="Microsoft Help File">0x3f,0x5f,0x03,0x00</Item>
-	<Item extension="hlp" shortname="hlp2" name="Ubuntu Help File">0x04,0x12,0x46,0x31,0x14</Item>
+		<!-- Documents -->
+		<Item extension="oless" shortname="oless" name="OLE Structured Storage" extra="oless::Detailer">0xD0,0xCF,0x11,0xE0</Item>
+		<Item extension="ps" shortname="ps" name="PostScript document">0x25,0x21,0x50,0x53</Item>
+		<Item extension="pdf" shortname="pdf" name="PDF document">0x25,0x50,0x44,0x46</Item>
+		<Item extension="db" shortname="db" name="SQLLite Database File">0x53,0x51,0x4C,0x69,0x74,0x65,0x20,0x66,0x6F,0x72,0x6D,0x61,0x74,0x20,0x33,0x00</Item>
+		<Item extension="dwg" shortname="dwg" name="Autocad Drawing" extra="document::dwg::DwgHelper">0x41,0x43,0x31,0x30</Item>
+		<Item extension="lnk" shortname="lnk" name="LNK File">0x4C,0x00,0x00,0x00,0x01,0x14,0x02,0x00,0x00,0x00,0x00,0x00,0xC0,0x00,0x00,0x00,0x00,0x00,0x00,0x46</Item>
+		<Item extension="xls" shortname="biff2" version="BIFF2" name="Microsoft Excel">0x09,0x00</Item>
+		<Item extension="xls" shortname="biff3" version="BIFF3" name="Microsoft Excel">0x09,0x02</Item>
+		<Item extension="xls" shortname="biff4" version="BIFF4" name="Microsoft Excel">0x09,0x04</Item>
+		<Item extension="ppt" shortname="ppt95" version="PPT95" name="Microsoft Powerpoint">0x4D,0x69,0x63,0x72,0x6F,0x73,0x6F,0x66,0x74,0x20,0x28,0x52,0x29,0x20,0x50,0x6F,0x77,0x65,0x72,0x50,0x6F,0x69,0x6E,0x74,0x20,0x28,0x52,0x29,0x20,0x57,0x69,0x6E,0x64,0x6F,0x77,0x73,0x20,0x20</Item>
+		<Item extension="ppt" shortname="ppt3" version="PPT3" name="Microsoft Powerpoint">0xED,0xDE,0xAD,0x0B</Item>
+		<Item extension="ppt" shortname="ppt3s" version="PPT3 Swap" name="Microsoft Powerpoint">0x0B,0xAD,0xDE,0xED</Item>
+		<Item extension="mdb" shortname="mdbsys" version="MDB_System" name="Microsoft Access Database">0x00,0x01,0x00,0x00,0x4A,0x65,0x74,0x20,0x53,0x79,0x73,0x74,0x65,0x6D,0x20,0x44,0x42,0x20,0x20</Item>
+		<Item extension="mdb" shortname="mdbstd" version="MDB_Standard" name="Microsoft Access Database">0x00,0x01,0x00,0x00,0x53,0x74,0x61,0x6E,0x64,0x61,0x72,0x64,0x20,0x4A,0x65,0x74,0x20,0x44,0x42</Item>
+		<Item extension="mdb" shortname="mdbtmp" version="MDB_Temp" name="Microsoft Access Database">0x00,0x01,0x00,0x00,0x54,0x65,0x6D,0x70,0x20,0x4A,0x65,0x74,0x20,0x44,0x42,0x20,0x20,0x20,0x20</Item>
+		<Item extension="accdb" shortname="accdbsys" version="ACCDB_System" name="Microsoft Access Database">0x00,0x01,0x00,0x00,0x41,0x43,0x45,0x20,0x53,0x79,0x73,0x74,0x65,0x6D,0x20,0x44,0x42,0x20,0x20</Item>
+		<Item extension="accdb" shortname="accdbstd" version="ACCDB_Standard" name="Microsoft Access Database">0x00,0x01,0x00,0x00,0x53,0x74,0x61,0x6E,0x64,0x61,0x72,0x64,0x20,0x41,0x43,0x45,0x20,0x44,0x42</Item>
+		<Item extension="accdb" shortname="accdbtmp" version="ACCDB_Temp" name="Microsoft Access Database">0x00,0x01,0x00,0x00,0x54,0x65,0x6D,0x70,0x20,0x41,0x43,0x45,0x20,0x44,0x42,0x20,0x20,0x20,0x20</Item>
+		<Item extension="one" shortname="one" name="Microsoft OneNote">0xE4,0x52,0x5C,0x7B,0x8C,0xD8,0xA7,0x4D,0xAE,0xB1,0x53,0x78,0xD0,0x29,0x96,0xD3</Item>
+		<Item extension="onetoc2" shortname="onetoc" name="Microsoft OneNote Table of Contents">0xA1,0x2F,0xFF,0x43,0xD9,0xEF,0x76,0x4C,0x9E,0xE2,0x10,0xEA,0x57,0x22,0x76,0x5F</Item>
+		<Item extension="pst" shortname="pst" name="Microsoft Outlook Personal Storage Table">0x21,0x42,0x44,0x4E</Item>
+		<Item extension="wab" shortname="wab" name="Microsoft Outlook Address File">0x9C,0xCB,0xCB,0x8D,0x13,0x75,0xD2,0x11,0x91,0x58,0x00,0xC0,0x4F,0x79,0x56,0xA4</Item>
+		<Item extension="chm" shortname="chm" name="Complied Help File">0x49,0x54,0x53,0x46</Item>
+		<Item extension="dmp" shortname="dmp32" version="32-bit" name="Windows Dump File">0x50,0x41,0x47,0x45,0x44,0x55,0x4D,0x50</Item>
+		<Item extension="dmp" shortname="dmp64" version="64-bit" name="Windows Dump File">0x50,0x41,0x47,0x45,0x44,0x55,0x36,0x34</Item>
+		<Item extension="hdmp" shortname="hdmp" version="with heap" name="Windows Dump File">0x4D,0x44,0x4D,0x50,0x93,0xA7</Item>
+		<Item extension="rtf" shortname="rtf" name="Rich Text Format">0x7B,0x5C,0x72,0x74,0x66</Item>
+		<Item extension="rtf" shortname="rtf2" name="Rich Text ormat (missing F)">0x7B,0x5C,0x72,0x74</Item>
+		<Item extension="skp" shortname="skp" name="SketchUp Model">0xFF,0xFE,0xFF,0x0E,0x53,0x00,0x6B,0x00,0x65,0x00,0x74,0x00,0x63,0x00,0x68,0x00,0x55,0x00,0x70,0x00,0x20,0x00,0x4D,0x00,0x6F,0x00,0x64,0x00,0x65,0x00,0x6C,0x00</Item>
+		<Item extension="mdi" shortname="mdi" name="Microsoft Office Document Imaging">0x45,0x50,0x2a,0x00</Item>
+		<Item extension="hlp" shortname="hlp1" name="Microsoft Help File">0x3f,0x5f,0x03,0x00</Item>
+		<Item extension="hlp" shortname="hlp2" name="Ubuntu Help File">0x04,0x12,0x46,0x31,0x14</Item>
 
-	<Item extension="doc" shortname="mcw1" version="1" name="Microsoft Word for Macintosh 1.0">0xfe,0x32,0x00</Item>
-	<Item extension="doc" shortname="mcw2" version="2" name="Microsoft Word for Macintosh 2.0">0xfe,0x33,0x00</Item>
-	<Item extension="doc" shortname="mcw3" version="3" name="Microsoft Word for Macintosh 3.0">0xfe,0x34,0x00</Item>
-	<Item extension="doc" shortname="mcw4" version="4" name="Microsoft Word for Macintosh 4.0">0xfe,0x37,0x00,0x1c,0x00,0x00,0x00,0x00</Item>
-	<Item extension="doc" shortname="mcw5" version="5" name="Microsoft Word for Macintosh 5.0">0xfe,0x37,0x00,0x23,0x00,0x00,0x00,0x00</Item>
-	<Item extension="doc" shortname="pcw3" version="3" name="Microsoft PC Word">0xbe,0x31</Item>
-	<Item extension="doc" shortname="doc_old1" name="Microsoft Word OLD">0x9B,0xA5</Item>
-	<Item extension="doc" shortname="doc_old2" name="Microsoft Word OLD">0x9C,0xA5</Item>
-	<Item extension="doc" shortname="doc_old3" name="Microsoft Word OLD (MP 2.0)">0x08,0xEC</Item>
-	<Item extension="doc" shortname="doc_old4" name="Microsoft Word OLD (MP 3.0)">0x08,0xED</Item>
-	<Item extension="doc" shortname="doc_old5" name="Microsoft Word 1.0">0x22,0x43</Item>
-	<Item extension="doc" shortname="doc_old6" name="Microsoft WinWord 2.0">0xDB,0xA5</Item>
+		<Item extension="doc" shortname="mcw1" version="1" name="Microsoft Word for Macintosh 1.0">0xfe,0x32,0x00</Item>
+		<Item extension="doc" shortname="mcw2" version="2" name="Microsoft Word for Macintosh 2.0">0xfe,0x33,0x00</Item>
+		<Item extension="doc" shortname="mcw3" version="3" name="Microsoft Word for Macintosh 3.0">0xfe,0x34,0x00</Item>
+		<Item extension="doc" shortname="mcw4" version="4" name="Microsoft Word for Macintosh 4.0">0xfe,0x37,0x00,0x1c,0x00,0x00,0x00,0x00</Item>
+		<Item extension="doc" shortname="mcw5" version="5" name="Microsoft Word for Macintosh 5.0">0xfe,0x37,0x00,0x23,0x00,0x00,0x00,0x00</Item>
+		<Item extension="doc" shortname="pcw3" version="3" name="Microsoft PC Word">0xbe,0x31</Item>
+		<Item extension="doc" shortname="doc_old1" name="Microsoft Word OLD">0x9B,0xA5</Item>
+		<Item extension="doc" shortname="doc_old2" name="Microsoft Word OLD">0x9C,0xA5</Item>
+		<Item extension="doc" shortname="doc_old3" name="Microsoft Word OLD (MP 2.0)">0x08,0xEC</Item>
+		<Item extension="doc" shortname="doc_old4" name="Microsoft Word OLD (MP 3.0)">0x08,0xED</Item>
+		<Item extension="doc" shortname="doc_old5" name="Microsoft Word 1.0">0x22,0x43</Item>
+		<Item extension="doc" shortname="doc_old6" name="Microsoft WinWord 2.0">0xDB,0xA5</Item>
 
-	<Item extension="wri" shortname="wri1" version="1" name="MS Write">0x31,0xBE</Item>
-	<Item extension="wri" shortname="wri2" version="2" name="MS Write">0x32,0xBE</Item>
-	<Item extension="wri" shortname="wri3" version="3" name="MS Write">0xBE,0x00,0x00,0x00,0xAB</Item>
-	<Item extension="wps" shortname="wps" name="Microsoft Works (1-4)">0x01,0xFE</Item>
-	<Item extension="wp5" shortname="wp5" version="5" name="WordPerfect File" extra="document::wp::Detailer">0xFF,0x57,0x50,0x43</Item>
-	<Item extension="wp" shortname="wpenc" version="encrypted" name="WordPerfect Encrypted File" extra="document::wp::Detailer">0xff,0xff,0x61,0x61</Item>
-
-
-	<!-- Media -->
-	<Item extension="mp4" shortname="mp4" name="Mp4 Container" offset="4" extra="media::mp4::Detailer">0x66,0x74,0x79,0x70</Item>
-	<Item extension="asf" shortname="asf" name="ASF Container" extra="media::asf::Detailer">0x30,0x26,0xB2,0x75,0x8E,0x66,0xCF,0x11,0xA6,0xD9,0x00,0xAA,0x00,0x62,0xCE,0x6C</Item>
-	<Item extension="riff" shortname="riff" name="Riff file" extra="media::riff::RIFFHelper">0x52,0x49,0x46,0x46</Item>
-	<Item extension="mp3" shortname="mp3" name="MPEG-1 Layer 3 file">0xFF,0xFB</Item>
-	<Item extension="mp3" shortname="mp3id3v2" version="ID3v2 Tag" name="MPEG-1 Layer 3 file">0x49,0x44,0x33</Item>
-	<Item extension="flv" shortname="flv" name="Flash Video">0x46,0x4C,0x56</Item>
-	<Item extension="swf" shortname="swf" name="Shockwave Flash File">0x46,0x57,0x53</Item>
-	<Item extension="swf" shortname="cwf" version="compressed" name="Shockwave Flash File">0x43,0x57,0x53</Item>
-	<Item extension="flac" shortname="flac" name="Free Lossless Audio Codec">0x66,0x4C,0x61,0x43</Item>
-	<Item extension="midi" shortname="midi" name="MIDI Sound File">0x4D,0x54,0x68,0x64</Item>
-
-	<!-- Fonts -->
-	<Item extension="woff" shortname="woff1" name="Web Open Font Format" version="1.0">0x77,0x4f,0x46,0x46</Item>
-	<Item extension="woff" shortname="woff2" name="Web Open Font Format" version="2.0">0x77,0x4f,0x46,0x32</Item>
-	<Item extension="otf" shortname="otf" name="Open Type Font">OTTO</Item>
-	<Item extension="pfm" shortname="pfm" name="Postscript Font" version="type1">typ1</Item>
-	<Item extension="ttf" shortname="ttf1" name="True Type Font" version="OSx">true</Item>
-	<Item extension="ttf" shortname="ttf2" name="True Type Font" version="windows">0x00,0x01,0x00,0x00</Item>
-
-	<!-- Text -->
-	<Item extension="sh" shortname="sh" name="*nix shebang script">0x23,0x21</Item>
-	<Item extension="xml" shortname="xml_al" name="XML" version="ascii lowercase">0x3C,0x3F,0x78,0x6D,0x6C</Item>
-	<Item extension="xml" shortname="xml_au" name="XML" version="ascii uppercase">0x3C,0x3F,0x58,0x4D,0x4C</Item>
-	<Item extension="xml" shortname="xml_8l" name="XML" version="utf8 lowercase">0xEF,0xBB,0xBF,0x3C,0x3F,0x78,0x6D,0x6C</Item>
-	<Item extension="xml" shortname="xml_8u" name="XML" version="utf8 uppercase">0xEF,0xBB,0xBF,0x3C,0x3F,0x58,0x4D,0x4C</Item>
-	<Item extension="xml" shortname="xml_ul" name="XML" version="unicode lowercase">0xFF,0xFE,0x3C,0x00,0x3F,0x00,0x78,0x00,0x6D,0x00,0x6C,0x00</Item>
-	<Item extension="xml" shortname="xml_uu" name="XML" version="unicode uppercase">0xFF,0xFE,0x3C,0x00,0x3F,0x00,0x58,0x00,0x4D,0x00,0x4C,0x00</Item>
-	<Item extension="html" shortname="html_hal" version="ascii lowercase html" name="HTML Document">0x3C,0x68,0x74,0x6D,0x6C</Item>
-	<Item extension="html" shortname="html_dal" version="ascii lowercase doctype" name="HTML Document">0x3C,0x21,0x64,0x6F,0x63</Item>
-	<Item extension="html" shortname="html_hul" version ="unicode lowercase html" name="HTML Document">0xFF,0xFE,0x3C,0x00,0x68,0x00,0x74,0x00,0x6D,0x00,0x6C,0x00</Item>
-	<Item extension="html" shortname="html_dul" version="unicode lowercase doctype" name="HTML Document">0xFF,0xFE,0x3C,0x00,0x21,0x00,0x64,0x00,0x6F,0x00,0x63,0x00</Item>
-	<Item extension="html" shortname="html_hau" version="ascii uppercase html" name="HTML Document">0x3C,0x48,0x54,0x4d,0x4c</Item>
-	<Item extension="html" shortname="html_dau" version="ascii uppercase doctype" name="HTML Document">0x3C,0x21,0x44,0x4f,0x43</Item>
-	<Item extension="html" shortname="html_huu" version ="unicode uppercase html" name="HTML Document">0xFF,0xFE,0x3C,0x00,0x48,0x00,0x54,0x00,0x4D,0x00,0x4C,0x00</Item>
-	<Item extension="html" shortname="html_duu" version="unicode uppercase doctype" name="HTML Document">0xFF,0xFE,0x3C,0x00,0x21,0x00,0x44,0x00,0x4F,0x00,0x43,0x00</Item>
-	<Item extension="html" shortname="html_h8l" version="utf8 lowercase html" name="HTML Document">0xEF,0xBB,0xBF,0x3C,0x68,0x74,0x6D,0x6C</Item>
-	<Item extension="html" shortname="html_d8l" version="utf8 lowercase doctype" name="HTML Document">0xEF,0xBB,0xBF,0x3C,0x21,0x64,0x6F,0x63</Item>
-	<Item extension="html" shortname="html_h8u" version="utf8 uppercase html" name="HTML Document">0xEF,0xBB,0xBF,0x3C,0x48,0x54,0x4d,0x4c</Item>
-	<Item extension="html" shortname="html_d8u" version="utf8 uppercase doctype" name="HTML Document">0xEF,0xBB,0xBF,0x3C,0x21,0x44,0x4f,0x43</Item>
-	<Item extension="slk" shortname="slk1" name="Microsoft SYLK (Symbolic Link) file">ID;P</Item>
+		<Item extension="wri" shortname="wri1" version="1" name="MS Write">0x31,0xBE</Item>
+		<Item extension="wri" shortname="wri2" version="2" name="MS Write">0x32,0xBE</Item>
+		<Item extension="wri" shortname="wri3" version="3" name="MS Write">0xBE,0x00,0x00,0x00,0xAB</Item>
+		<Item extension="wps" shortname="wps" name="Microsoft Works (1-4)">0x01,0xFE</Item>
+		<Item extension="wp5" shortname="wp5" version="5" name="WordPerfect File" extra="document::wp::Detailer">0xFF,0x57,0x50,0x43</Item>
+		<Item extension="wp" shortname="wpenc" version="encrypted" name="WordPerfect Encrypted File" extra="document::wp::Detailer">0xff,0xff,0x61,0x61</Item>
 
 
-	<!--  <Item extension="txt" shortname="utf8" version="UTF8" name="Text File">0xEF,0xBB,0xBF</Item> -->
-	<!--  <Item extension="txt" shortname="utf16" version="UTF16" name="Text File">0xFE,0xFF</Item> -->
-	<!--  <Item extension="txt" shortname="utf32" version="UTF32" name="Text File">0xFF,0xFE,0x00,0x00</Item> -->
+		<!-- Media -->
+		<Item extension="mp4" shortname="mp4" name="Mp4 Container" offset="4" extra="media::mp4::Detailer">0x66,0x74,0x79,0x70</Item>
+		<Item extension="asf" shortname="asf" name="ASF Container" extra="media::asf::Detailer">0x30,0x26,0xB2,0x75,0x8E,0x66,0xCF,0x11,0xA6,0xD9,0x00,0xAA,0x00,0x62,0xCE,0x6C</Item>
+		<Item extension="riff" shortname="riff" name="Riff file" extra="media::riff::RIFFHelper">0x52,0x49,0x46,0x46</Item>
+		<Item extension="mp3" shortname="mp3" name="MPEG-1 Layer 3 file">0xFF,0xFB</Item>
+		<Item extension="mp3" shortname="mp3id3v2" version="ID3v2 Tag" name="MPEG-1 Layer 3 file">0x49,0x44,0x33</Item>
+		<Item extension="flv" shortname="flv" name="Flash Video">0x46,0x4C,0x56</Item>
+		<Item extension="swf" shortname="swf" name="Shockwave Flash File">0x46,0x57,0x53</Item>
+		<Item extension="swf" shortname="cwf" version="compressed" name="Shockwave Flash File">0x43,0x57,0x53</Item>
+		<Item extension="flac" shortname="flac" name="Free Lossless Audio Codec">0x66,0x4C,0x61,0x43</Item>
+		<Item extension="midi" shortname="midi" name="MIDI Sound File">0x4D,0x54,0x68,0x64</Item>
 
-  </Items>
-  <OlessItems>
-	<Item extension="irm" shortname="irm1" name="Microsoft Office Information Rights Managed File" subtype="drm">/DRMContent</Item>
-	<Item extension="irm" shortname="irm2" name="Microsoft Office Encrypted Office File" subtype="encrypted">/\u0006DataSpaces/DataSpaceMap</Item>
-	
-	<Item extension="doc" shortname="doc1" name="Microsoft Office Word File" extra="document::word::Detailer">/WordDocument</Item>
-	<Item extension="xls" shortname="xls1" name="Microsoft Office Excel File" ignoreCase="True" extra="oless::excel::Detailer">/Workbook</Item>
-	<Item extension="xls" shortname="xls2" name="Microsoft Office Excel File" ignoreCase="True" extra="oless::excel::Detailer">/Book</Item>
-	<Item extension="ppt" shortname="ppt1" name="Microsoft Office PowerPoint File" extra="document::powerpoint::Detailer">/PowerPoint Document</Item>
-	<Item extension="ppt" shortname="ppt4" name="Microsoft Office PowerPoint File" version="Powerpoint 4.0">/PP40</Item>
-	
-	<Item extension="pub" shortname="pub1" name="Microsoft Office Publisher File" extra="document::publisher::Detailer">/Contents</Item>
-	<Item extension="vsd" shortname="vsd1" name="Microsoft Office Visio File" extra="document::visio::Detailer">/VisioDocument</Item>
-	
-	<Item extension="msg" shortname="msg1" name="Microsoft Office Outlook Mail Message">/__properties_version1.0</Item>
-	<Item extension="obd" shortname="obd1" name="Microsoft Office Binder">/Binder</Item>
-	
-	<Item extension="mpp" shortname="mpp9" name="Microsoft Project File" version="Project 9" subtype="Office 2003">/Props9</Item>
-	<Item extension="mpp" shortname="mpp12" name="Microsoft Project File" version="Project 12" subtype="Office 2007">/Props12</Item>
-	<Item extension="mpp" shortname="mpp14" name="Microsoft Project File" version="Project 14" subtype="Office 2010">/Props14</Item>
+		<!-- Fonts -->
+		<Item extension="woff" shortname="woff1" name="Web Open Font Format" version="1.0">0x77,0x4f,0x46,0x46</Item>
+		<Item extension="woff" shortname="woff2" name="Web Open Font Format" version="2.0">0x77,0x4f,0x46,0x32</Item>
+		<Item extension="otf" shortname="otf" name="Open Type Font">OTTO</Item>
+		<Item extension="pfm" shortname="pfm" name="Postscript Font" version="type1">typ1</Item>
+		<Item extension="ttf" shortname="ttf1" name="True Type Font" version="OSx">true</Item>
+		<Item extension="ttf" shortname="ttf2" name="True Type Font" version="windows">0x00,0x01,0x00,0x00</Item>
 
-	<Item extension="bup" shortname="bup1" name="McAfee Quarantied File">/Details</Item>
-	<Item extension="wps" shortname="wps1" name="Microsoft Works File">/CONTENTS</Item>
-	<Item extension="wps" shortname="wps2" name="Microsoft Works File">/MatOST</Item>
+		<!-- Text -->
+		<Item extension="sh" shortname="sh" name="*nix shebang script">0x23,0x21</Item>
+		<Item extension="xml" shortname="xml_al" name="XML" version="ascii lowercase">0x3C,0x3F,0x78,0x6D,0x6C</Item>
+		<Item extension="xml" shortname="xml_au" name="XML" version="ascii uppercase">0x3C,0x3F,0x58,0x4D,0x4C</Item>
+		<Item extension="xml" shortname="xml_8l" name="XML" version="utf8 lowercase">0xEF,0xBB,0xBF,0x3C,0x3F,0x78,0x6D,0x6C</Item>
+		<Item extension="xml" shortname="xml_8u" name="XML" version="utf8 uppercase">0xEF,0xBB,0xBF,0x3C,0x3F,0x58,0x4D,0x4C</Item>
+		<Item extension="xml" shortname="xml_ul" name="XML" version="unicode lowercase">0xFF,0xFE,0x3C,0x00,0x3F,0x00,0x78,0x00,0x6D,0x00,0x6C,0x00</Item>
+		<Item extension="xml" shortname="xml_uu" name="XML" version="unicode uppercase">0xFF,0xFE,0x3C,0x00,0x3F,0x00,0x58,0x00,0x4D,0x00,0x4C,0x00</Item>
+		<Item extension="html" shortname="html_hal" version="ascii lowercase html" name="HTML Document">0x3C,0x68,0x74,0x6D,0x6C</Item>
+		<Item extension="html" shortname="html_dal" version="ascii lowercase doctype" name="HTML Document">0x3C,0x21,0x64,0x6F,0x63</Item>
+		<Item extension="html" shortname="html_hul" version ="unicode lowercase html" name="HTML Document">0xFF,0xFE,0x3C,0x00,0x68,0x00,0x74,0x00,0x6D,0x00,0x6C,0x00</Item>
+		<Item extension="html" shortname="html_dul" version="unicode lowercase doctype" name="HTML Document">0xFF,0xFE,0x3C,0x00,0x21,0x00,0x64,0x00,0x6F,0x00,0x63,0x00</Item>
+		<Item extension="html" shortname="html_hau" version="ascii uppercase html" name="HTML Document">0x3C,0x48,0x54,0x4d,0x4c</Item>
+		<Item extension="html" shortname="html_dau" version="ascii uppercase doctype" name="HTML Document">0x3C,0x21,0x44,0x4f,0x43</Item>
+		<Item extension="html" shortname="html_huu" version ="unicode uppercase html" name="HTML Document">0xFF,0xFE,0x3C,0x00,0x48,0x00,0x54,0x00,0x4D,0x00,0x4C,0x00</Item>
+		<Item extension="html" shortname="html_duu" version="unicode uppercase doctype" name="HTML Document">0xFF,0xFE,0x3C,0x00,0x21,0x00,0x44,0x00,0x4F,0x00,0x43,0x00</Item>
+		<Item extension="html" shortname="html_h8l" version="utf8 lowercase html" name="HTML Document">0xEF,0xBB,0xBF,0x3C,0x68,0x74,0x6D,0x6C</Item>
+		<Item extension="html" shortname="html_d8l" version="utf8 lowercase doctype" name="HTML Document">0xEF,0xBB,0xBF,0x3C,0x21,0x64,0x6F,0x63</Item>
+		<Item extension="html" shortname="html_h8u" version="utf8 uppercase html" name="HTML Document">0xEF,0xBB,0xBF,0x3C,0x48,0x54,0x4d,0x4c</Item>
+		<Item extension="html" shortname="html_d8u" version="utf8 uppercase doctype" name="HTML Document">0xEF,0xBB,0xBF,0x3C,0x21,0x44,0x4f,0x43</Item>
+		<Item extension="slk" shortname="slk1" name="Microsoft SYLK (Symbolic Link) file">ID;P</Item>
 
-	<Item extension="sdc" shortname="sdc1" name="StarOffice Calc File">/StarCalcDocument</Item>
-	<Item extension="sdw" shortname="sdw1" name="StarOffice Write File">/StarWriterDocument</Item>    
-	
-	<Item extension="hwp" shortname="hwp1" name="Hangul Word Processor File">/HwpSummaryInformation</Item>
 
-	<Item extension="wp" shortname="wp1" name="WordPerfect File" extra="document::wp::StreamDetailer">/PerfectOffice_MAIN</Item>
-	<!--<Item extension="msi" shortname="msi1" name="Microsoft Installer File" extra="document::msi::Detailer">/\u4840\u3B3F\u43F2\u4438\u45B1</Item>-->
-	<Item extension="msi" shortname="msi2" name="Microsoft Installer File" extra="document::msi::Detailer">/\u4840\u3F3F\u4577\u446C\u3B6A\u45E4\u4824</Item>
+		<!--  <Item extension="txt" shortname="utf8" version="UTF8" name="Text File">0xEF,0xBB,0xBF</Item> -->
+		<!--  <Item extension="txt" shortname="utf16" version="UTF16" name="Text File">0xFE,0xFF</Item> -->
+		<!--  <Item extension="txt" shortname="utf32" version="UTF32" name="Text File">0xFF,0xFE,0x00,0x00</Item> -->
 
-  </OlessItems>
-  <ZipItems>
+	</Items>
+	<OlessItems>
+		<Item extension="irm" shortname="irm1" name="Microsoft Office Information Rights Managed File" subtype="drm">/DRMContent</Item>
+		<Item extension="irm" shortname="irm2" name="Microsoft Office Encrypted Office File" subtype="encrypted">/\u0006DataSpaces/DataSpaceMap</Item>
 
-  </ZipItems>
+		<Item extension="doc" shortname="doc1" name="Microsoft Office Word File" extra="document::word::Detailer">/WordDocument</Item>
+		<Item extension="xls" shortname="xls1" name="Microsoft Office Excel File" ignoreCase="True" extra="oless::excel::Detailer">/Workbook</Item>
+		<Item extension="xls" shortname="xls2" name="Microsoft Office Excel File" ignoreCase="True" extra="oless::excel::Detailer">/Book</Item>
+		<Item extension="ppt" shortname="ppt1" name="Microsoft Office PowerPoint File" extra="document::powerpoint::Detailer">/PowerPoint Document</Item>
+		<Item extension="ppt" shortname="ppt4" name="Microsoft Office PowerPoint File" version="Powerpoint 4.0">/PP40</Item>
+
+		<Item extension="pub" shortname="pub1" name="Microsoft Office Publisher File" extra="document::publisher::Detailer">/Contents</Item>
+		<Item extension="vsd" shortname="vsd1" name="Microsoft Office Visio File" extra="document::visio::Detailer">/VisioDocument</Item>
+
+		<Item extension="msg" shortname="msg1" name="Microsoft Office Outlook Mail Message">/__properties_version1.0</Item>
+		<Item extension="obd" shortname="obd1" name="Microsoft Office Binder">/Binder</Item>
+
+		<Item extension="mpp" shortname="mpp9" name="Microsoft Project File" version="Project 9" subtype="Office 2003">/Props9</Item>
+		<Item extension="mpp" shortname="mpp12" name="Microsoft Project File" version="Project 12" subtype="Office 2007">/Props12</Item>
+		<Item extension="mpp" shortname="mpp14" name="Microsoft Project File" version="Project 14" subtype="Office 2010">/Props14</Item>
+
+		<Item extension="bup" shortname="bup1" name="McAfee Quarantied File">/Details</Item>
+		<Item extension="wps" shortname="wps1" name="Microsoft Works File">/CONTENTS</Item>
+		<Item extension="wps" shortname="wps2" name="Microsoft Works File">/MatOST</Item>
+
+		<Item extension="sdc" shortname="sdc1" name="StarOffice Calc File">/StarCalcDocument</Item>
+		<Item extension="sdw" shortname="sdw1" name="StarOffice Write File">/StarWriterDocument</Item>
+
+		<Item extension="hwp" shortname="hwp1" name="Hangul Word Processor File">/HwpSummaryInformation</Item>
+
+		<Item extension="wp" shortname="wp1" name="WordPerfect File" extra="document::wp::StreamDetailer">/PerfectOffice_MAIN</Item>
+		<!--<Item extension="msi" shortname="msi1" name="Microsoft Installer File" extra="document::msi::Detailer">/\u4840\u3B3F\u43F2\u4438\u45B1</Item>-->
+		<Item extension="msi" shortname="msi2" name="Microsoft Installer File" extra="document::msi::Detailer">/\u4840\u3F3F\u4577\u446C\u3B6A\u45E4\u4824</Item>
+		<Item extension="ole" shortname="ole" ignoreCase="True" name="OLE Native Stream (Embedded Object)">/\u0001Ole10Native</Item><!--https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-oleds/cc825ec3-f0ed-4023-97f6-13c323ac1172 -->
+		
+	</OlessItems>
+	<ZipItems>
+
+	</ZipItems>
 </Data>

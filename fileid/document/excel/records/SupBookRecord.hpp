@@ -31,7 +31,7 @@ namespace oless {
 					if (index < max) {
 						if (this->cch >= 0x01 && this->cch <= 0xFF) {
 							this->HasVirtPath = true;
-							this->virtPath == common::ReadString(buffer, max, index, this->cch);
+							this->virtPath = common::ReadString(buffer, max, index, this->cch);
 							index += this->cch;
 						}
 					}

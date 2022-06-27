@@ -28,26 +28,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -168,6 +168,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.hpp" />
+    <ClInclude Include="container\tar.hpp" />
+    <ClInclude Include="container\vhdx.hpp" />
     <ClInclude Include="details.hpp" />
     <ClInclude Include="document\dwg\autocad.hpp" />
     <ClInclude Include="document\msi\msi.hpp" />
@@ -176,6 +178,7 @@
     <ClInclude Include="document\visio\vsd.hpp" />
     <ClInclude Include="document\word\word.hpp" />
     <ClInclude Include="exe\Exec.hpp" />
+    <ClInclude Include="exe\macho.hpp" />
     <ClInclude Include="magic.h" />
     <ClInclude Include="media\asf\asf.hpp" />
     <ClInclude Include="document\wp\wordperfect.hpp" />
@@ -330,6 +333,7 @@
     <ClInclude Include="document\excel\structures\formulas\ExtPtgRef3D.hpp" />
     <ClInclude Include="document\excel\structures\formulas\ExtPtgRefErr3D.hpp" />
     <ClInclude Include="document\excel\structures\formulas\ExtSheetPair.hpp" />
+    <ClInclude Include="misc\javaclass.hpp" />
     <ClInclude Include="oless\excel\structures\formulas\FormulaHeader.hpp" />
     <ClInclude Include="document\excel\structures\formulas\Ftab.hpp" />
     <ClInclude Include="document\excel\structures\formulas\helper.hpp" />

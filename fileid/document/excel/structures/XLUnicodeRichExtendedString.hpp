@@ -54,6 +54,9 @@ namespace oless {
 					int byteCount = ans.cch;
 
 					//TODO: ensure we don't read past the end of the buffer
+					if (byteCount + index > max){
+						byteCount = max - index;
+					}
 					if (ans.fHighByte == 0x0) {
 						std::string name(reinterpret_cast<char const*>(buffer + index), byteCount);
 						ans.rgb = name;

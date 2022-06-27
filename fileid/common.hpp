@@ -151,6 +151,16 @@ namespace common {
 		return converted_str;
 	}
 
+	//int_to_hex - turns an int into a hex string
+	template< typename T >
+	std::string int_to_hex(T i)
+	{
+		std::stringstream stream;
+		stream << "0x"
+			<< std::setfill('0') << std::setw(sizeof(T) * 2)
+			<< std::hex << i;
+		return stream.str();
+	}
 
 	//bin2hex11 - Outputs the bytes in a HEX string 
 	std::string bin2hex11(const unsigned char* buffer, unsigned int size) {
@@ -161,7 +171,6 @@ namespace common {
 			oss << std::hex << std::setw(2) << static_cast<int>(buffer[i]);
 		}
 		return oss.str();
-
 	}
 
 	//bin2hex11 - Outputs the vector in a HEX string

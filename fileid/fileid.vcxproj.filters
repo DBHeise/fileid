@@ -896,5 +896,9 @@
     <ClInclude Include="document\msi\msi.hpp" />
     <ClInclude Include="oless\olessdetails.hpp" />
     <ClInclude Include="oless\olessmagic.h" />
+    <ClInclude Include="exe\macho.hpp" />
+    <ClInclude Include="misc\javaclass.hpp" />
+    <ClInclude Include="container\tar.hpp" />
+    <ClInclude Include="container\vhdx.hpp" />
   </ItemGroup>
 </Project>

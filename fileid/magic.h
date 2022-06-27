@@ -1,5 +1,5 @@
 // magic.h
-// Generated on: 08/14/2020 11:38:10
+// Generated on: 01/26/2022 23:39:56
 
 #pragma once
 #include "common.hpp"
@@ -13,17 +13,24 @@ unsigned char magic_lib[8] = {0x21,0x3C,0x61,0x72,0x63,0x68,0x3E,0x0A};
 unsigned char magic_obj[2] = {0x4C,0x01};
 unsigned char magic_pdb1[39] = {0x4D,0x69,0x63,0x72,0x6F,0x73,0x6F,0x66,0x74,0x20,0x43,0x2F,0x43,0x2B,0x2B,0x20,0x70,0x72,0x6F,0x67,0x72,0x61,0x6D,0x20,0x64,0x61,0x74,0x61,0x62,0x61,0x73,0x65,0x20,0x32,0x2E,0x30,0x30,0x0D,0x0A};
 unsigned char magic_pdb2[29] = {0x4D,0x69,0x63,0x72,0x6F,0x73,0x6F,0x66,0x74,0x20,0x43,0x2F,0x43,0x2B,0x2B,0x20,0x4D,0x53,0x46,0x20,0x37,0x2E,0x30,0x30,0x0D,0x0A,0x1A,0x44,0x53};
+unsigned char magic_macho1[4] = {0xfe,0xed,0xfa,0xce};
+unsigned char magic_macho2[4] = {0xce,0xfa,0xed,0xfe};
+unsigned char magic_macho3[4] = {0xfe,0xed,0xfa,0xcf};
+unsigned char magic_macho4[4] = {0xcf,0xfa,0xed,0xfe};
+unsigned char magic_javaclass[4] = {0xCA,0xFE,0xBA,0xBE};
 unsigned char magic_zip[2] = {0x50,0x4B};
 unsigned char magic_rar[6] = {0x52,0x61,0x72,0x21,0x1A,0x07};
 unsigned char magic_7z[6] = {0x37,0x7A,0xBC,0xAF,0x27,0x1C};
 unsigned char magic_tarzlzw[2] = {0x1F,0x9D};
 unsigned char magic_tarzlzh[2] = {0x1f,0xA0};
 unsigned char magic_bz2[3] = {0x42,0x5A,0x68};
+unsigned char magic_tar2[5] = {0x75,0x73,0x74,0x61,0x72};
 unsigned char magic_tar[5] = {0x75,0x73,0x74,0x61,0x72};
 unsigned char magic_gz[2] = {0x1F,0x8B};
 unsigned char magic_cab[4] = {0x4D,0x53,0x43,0x46};
 unsigned char magic_lha[3] = {0x2D,0x6C,0x68};
 unsigned char magic_vhd[8] = {0x63,0x6F,0x6E,0x65,0x63,0x74,0x69,0x78};
+unsigned char magic_vhdx[8] = {0x76,0x68,0x64,0x78,0x66,0x69,0x6C,0x65};
 unsigned char magic_xz[6] = {0xFD,0x37,0x7A,0x58,0x5A,0x00};
 unsigned char magic_iso1[5] = {0x43,0x44,0x30,0x30,0x31};
 unsigned char magic_iso2[5] = {0x43,0x44,0x30,0x30,0x31};
@@ -62,6 +69,8 @@ unsigned char magic_bmpOS2i[2] = {0x49,0x43};
 unsigned char magic_bmpOS2p[2] = {0x50,0x54};
 unsigned char magic_psp[25] = {0x50,0x61,0x69,0x6E,0x74,0x20,0x53,0x68,0x6F,0x70,0x20,0x50,0x72,0x6F,0x20,0x49,0x6D,0x61,0x67,0x65,0x20,0x46,0x69,0x6C,0x65};
 unsigned char magic_jbf[15] = {0x4A,0x41,0x53,0x43,0x20,0x42,0x52,0x4F,0x57,0x53,0x20,0x46,0x49,0x4C,0x45};
+unsigned char magic_emf[3] = {0x45,0x4D,0x46};
+unsigned char magic_eps[4] = {0x45,0x50,0x53,0x46};
 unsigned char magic_oless[4] = {0xD0,0xCF,0x11,0xE0};
 unsigned char magic_ps[4] = {0x25,0x21,0x50,0x53};
 unsigned char magic_pdf[4] = {0x25,0x50,0x44,0x46};
@@ -88,7 +97,8 @@ unsigned char magic_chm[4] = {0x49,0x54,0x53,0x46};
 unsigned char magic_dmp32[8] = {0x50,0x41,0x47,0x45,0x44,0x55,0x4D,0x50};
 unsigned char magic_dmp64[8] = {0x50,0x41,0x47,0x45,0x44,0x55,0x36,0x34};
 unsigned char magic_hdmp[6] = {0x4D,0x44,0x4D,0x50,0x93,0xA7};
-unsigned char magic_rtf[6] = {0x7B,0x5C,0x72,0x74,0x66,0x31};
+unsigned char magic_rtf[5] = {0x7B,0x5C,0x72,0x74,0x66};
+unsigned char magic_rtf2[4] = {0x7B,0x5C,0x72,0x74};
 unsigned char magic_skp[32] = {0xFF,0xFE,0xFF,0x0E,0x53,0x00,0x6B,0x00,0x65,0x00,0x74,0x00,0x63,0x00,0x68,0x00,0x55,0x00,0x70,0x00,0x20,0x00,0x4D,0x00,0x6F,0x00,0x64,0x00,0x65,0x00,0x6C,0x00};
 unsigned char magic_mdi[4] = {0x45,0x50,0x2a,0x00};
 unsigned char magic_hlp1[4] = {0x3f,0x5f,0x03,0x00};
@@ -158,17 +168,24 @@ void initList() {
 	list.push_back(new common::MagicInfo("obj", "Microsoft Common Object File Format relocatable object code", "", 0, 2, magic_obj, nullptr));
 	list.push_back(new common::MagicInfo("pdb", "Microsoft Program Database 2.0", "2", 0, 39, magic_pdb1, nullptr));
 	list.push_back(new common::MagicInfo("pdb", "Microsoft Program Database 7.0", "7", 0, 29, magic_pdb2, nullptr));
+	list.push_back(new common::MagicInfo("o", "Mach-O Executable", "32-bit, big-endian", 0, 4, magic_macho1, Exec::MachO::Detailer));
+	list.push_back(new common::MagicInfo("o", "Mach-O Executable", "32-bit, little-endian", 0, 4, magic_macho2, Exec::MachO::Detailer));
+	list.push_back(new common::MagicInfo("o", "Mach-O Executable", "64-bit, big-endian", 0, 4, magic_macho3, Exec::MachO::Detailer));
+	list.push_back(new common::MagicInfo("o", "Mach-O Executable", "64-bit, little-endian", 0, 4, magic_macho4, Exec::MachO::Detailer));
+	list.push_back(new common::MagicInfo("class", "Java Class File", "", 0, 4, magic_javaclass, nullptr));
 	list.push_back(new common::MagicInfo("zip", "Zip Archive", "", 0, 2, magic_zip, zip::Detailer));
 	list.push_back(new common::MagicInfo("rar", "Rar Archive", "", 0, 6, magic_rar, nullptr));
 	list.push_back(new common::MagicInfo("7z", "7z Archive", "", 0, 6, magic_7z, nullptr));
 	list.push_back(new common::MagicInfo("tar.z", "Tar.Zip Container", "LZW Compression", 0, 2, magic_tarzlzw, nullptr));
 	list.push_back(new common::MagicInfo("tar.z", "Tar.Zip Container", "LZH Compression", 0, 2, magic_tarzlzh, nullptr));
 	list.push_back(new common::MagicInfo("bz2", "BZip2 Container", "", 0, 3, magic_bz2, nullptr));
+	list.push_back(new common::MagicInfo("tar", "TAR Container", "", 257, 5, magic_tar2, nullptr));
 	list.push_back(new common::MagicInfo("tar", "Tar Archive", "", 0, 5, magic_tar, nullptr));
 	list.push_back(new common::MagicInfo("gz", "GZIP Archive", "", 0, 2, magic_gz, nullptr));
 	list.push_back(new common::MagicInfo("cab", "Microsoft Cabinet file", "", 0, 4, magic_cab, nullptr));
 	list.push_back(new common::MagicInfo("lha", "LHArc (lha/lzh) Archive", "", 2, 3, magic_lha, nullptr));
 	list.push_back(new common::MagicInfo("vhd", "Microsoft Virtual HardDisk", "", 0, 8, magic_vhd, nullptr));
+	list.push_back(new common::MagicInfo("vhdx", "Microsoft Virtual HardDisk v2", "", 0, 8, magic_vhdx, nullptr));
 	list.push_back(new common::MagicInfo("xz", "XZ Compressed File", "", 0, 6, magic_xz, nullptr));
 	list.push_back(new common::MagicInfo("iso", "ISO 9660 Disk Image", "", 32769, 5, magic_iso1, nullptr));
 	list.push_back(new common::MagicInfo("iso", "ISO 9660 Disk Image", "", 34817, 5, magic_iso2, nullptr));
@@ -207,6 +224,8 @@ void initList() {
 	list.push_back(new common::MagicInfo("bmp", "Bitmap Image", "OS/2 Pointer", 0, 2, magic_bmpOS2p, nullptr));
 	list.push_back(new common::MagicInfo("psp", "Corel Paint Shop Pro Image file", "", 0, 25, magic_psp, nullptr));
 	list.push_back(new common::MagicInfo("jbf", "Corel Paint Shop Pro browse file", "", 0, 15, magic_jbf, nullptr));
+	list.push_back(new common::MagicInfo("emf", "Microsoft Enchanced Metafile", "", 41, 3, magic_emf, nullptr));
+	list.push_back(new common::MagicInfo("eps", "Encapsulated PostScript", "", 41, 4, magic_eps, nullptr));
 	list.push_back(new common::MagicInfo("oless", "OLE Structured Storage", "", 0, 4, magic_oless, oless::Detailer));
 	list.push_back(new common::MagicInfo("ps", "PostScript document", "", 0, 4, magic_ps, nullptr));
 	list.push_back(new common::MagicInfo("pdf", "PDF document", "", 0, 4, magic_pdf, nullptr));
@@ -233,7 +252,8 @@ void initList() {
 	list.push_back(new common::MagicInfo("dmp", "Windows Dump File", "32-bit", 0, 8, magic_dmp32, nullptr));
 	list.push_back(new common::MagicInfo("dmp", "Windows Dump File", "64-bit", 0, 8, magic_dmp64, nullptr));
 	list.push_back(new common::MagicInfo("hdmp", "Windows Dump File", "with heap", 0, 6, magic_hdmp, nullptr));
-	list.push_back(new common::MagicInfo("rtf", "Rich Text Format", "", 0, 6, magic_rtf, nullptr));
+	list.push_back(new common::MagicInfo("rtf", "Rich Text Format", "", 0, 5, magic_rtf, nullptr));
+	list.push_back(new common::MagicInfo("rtf", "Rich Text ormat (missing F)", "", 0, 4, magic_rtf2, nullptr));
 	list.push_back(new common::MagicInfo("skp", "SketchUp Model", "", 0, 32, magic_skp, nullptr));
 	list.push_back(new common::MagicInfo("mdi", "Microsoft Office Document Imaging", "", 0, 4, magic_mdi, nullptr));
 	list.push_back(new common::MagicInfo("hlp", "Microsoft Help File", "", 0, 4, magic_hlp1, nullptr));

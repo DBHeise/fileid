@@ -1,5 +1,5 @@
-﻿// olessmagic.h
-// Generated on: 08/14/2020 11:38:10
+// olessmagic.h
+// Generated on: 01/26/2022 23:39:56
 
 #pragma once
 #include "../common.hpp"
@@ -32,6 +32,7 @@ namespace oless {
             list.push_back(new oless::OlessInfo("hwp","Hangul Word Processor File","","",false,L"/HwpSummaryInformation",nullptr));
             list.push_back(new oless::OlessInfo("wp","WordPerfect File","","",false,L"/PerfectOffice_MAIN",document::wp::StreamDetailer));
             list.push_back(new oless::OlessInfo("msi","Microsoft Installer File","","",false,L"/\u4840\u3F3F\u4577\u446C\u3B6A\u45E4\u4824",document::msi::Detailer));
+            list.push_back(new oless::OlessInfo("ole","OLE Native Stream (Embedded Object)","","",true,L"/\u0001Ole10Native",nullptr));
         
 		}
 	}
