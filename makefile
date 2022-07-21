@@ -35,16 +35,13 @@ OBJS_2 = \
 
 
 # Rules
-all: $(EXECUTABLE) $(SO_LIBRARY)
+all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJS_1)
 	$(CXX) $(CXXFLAGS_1) $(LDFLAGS) $(CPP_FILES) -o $@ $^
 
 $(EXECUTABLE): $(OBJS_2)
 	$(CXX) $(CXXFLAGS_2) $(LDFLAGS) $(CPP_FILES) $^ -lstdc++fs -o $@
-
-$(SO_LIBRARY): $(OBJS)
-	$(CXX) $(LDFLAGS) -shared -o $@ $^
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
