@@ -1,7 +1,7 @@
 [CmdletBinding()] 
 param(
 	[ValidateSet("x64", "x86")][String[]]$Platforms = @("x64", "x86"),
-	[ValidateSet("Debug", "Release")][String[]]$Flavors = @("Debug", "Release"),
+	[ValidateSet("Debug", "Release")][String[]]$Flavors = @("Release"),
 	[Switch]$KeepPDB
 )
 
