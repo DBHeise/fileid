@@ -1,6 +1,6 @@
 #~/user/bin/make -f
-EXECUTABLE = Bin/fid
-SO_LIBRARY = Bin/fid.so
+EXECUTABLE = bin/fid
+SO_LIBRARY = bin/fid.so
 
 CC         = gcc
 CXX        = g++
