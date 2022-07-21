@@ -17,7 +17,12 @@ $Platforms | ForEach-Object {
 		Write-Progress -Activity "Building" -Status ($platform + "," + $config)
 		msbuild -noLogo -m -verbosity:detailed -restore -target:Rebuild -property:Configuration=$config -property:Platform=$platform -clp:"ErrorsOnly;NoSummary" fileid.sln
 		Write-Progress -Activity "Building" -Status ($platform + "," + $config) -Completed
-		if ($LASTEXITCODE) { exit $LASTEXITCODE }
+		if ($LASTEXITCODE) { 
+			exit $LASTEXITCODE 
+		} else {
+			Write-Host "Build Successful: $platform, $config"
+		}
+		
 	}
 }
 
