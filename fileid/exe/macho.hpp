@@ -61,7 +61,7 @@ namespace Exec {
 			}
 		};
 
-		typedef struct mach_header {
+		struct mach_header {
 			unsigned int magic;
 			unsigned int cputype;
 			unsigned int cpusubtype;

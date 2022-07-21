@@ -16,17 +16,46 @@
 #include <codecvt>
 #include <chrono>
 #include <fstream>
+#include <random>
+
+#ifdef WIN32
+#include <filesystem>
+namespace fs = std::filesystem;
+#else
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#endif
 
 #define STD_BUFFER_SIZE 512
 
 
 namespace common {
+	std::string random_string(const std::string charset, const unsigned int length)
+	{
+		std::random_device rd;
+		std::mt19937 generator(rd());
+		std::uniform_int_distribution<> distribution(0, charset.size() - 1);
+
+		std::string ans(length, '\0');
+		for (unsigned int i = 0; i < length; i++) {
+			int index = distribution(generator);
+			ans[i] = charset[index];
+		}
+		return ans;
+	}
+
+	std::string get_temp_file()
+	{
+		auto tmp = fs::temp_directory_path() / random_string("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", 24);
+		return tmp.string();
+	}
+
 
 	//displayDuration - turns a FILETIME into a duration string (i.e. HH:MM:SS)
 	std::string displayDuration(unsigned long long filetime) {
 		using namespace std::chrono;
-		
-		microseconds micro(filetime/10);
+
+		microseconds micro(filetime / 10);
 		auto ms = duration_cast<milliseconds>(micro);
 		micro -= duration_cast<microseconds>(ms);
 		auto secs = duration_cast<seconds>(ms);
@@ -34,7 +63,7 @@ namespace common {
 		auto mins = duration_cast<minutes>(secs);
 		secs -= duration_cast<seconds>(mins);
 		auto hour = duration_cast<hours>(mins);
-		mins -= duration_cast<minutes>(hour);		
+		mins -= duration_cast<minutes>(hour);
 
 		std::ostringstream str;
 		str << std::setfill('0') << std::setw(2) << hour.count();
@@ -55,11 +84,11 @@ namespace common {
 	}
 
 	//FileTimeToString - turns a FILETIME into a human readable ISO8601 string
-	std::string FileTimeToString(unsigned long long time) {		
+	std::string FileTimeToString(unsigned long long time) {
 		time_t t = convertFILETIME(time);
 		if (t > 0) {
 			struct tm dt;
-			char buffer[STD_BUFFER_SIZE] = { 0 };		
+			char buffer[STD_BUFFER_SIZE] = { 0 };
 			bool localTimeErr = false;
 #ifdef WIN32
 			localtime_s(&dt, &t);
@@ -291,7 +320,7 @@ namespace common {
 		}
 		return ans;
 	}
-	
+
 	//ReadSInt - reads a four-byte signed int
 	signed int ReadSInt(const unsigned char* buffer, std::size_t max, const unsigned int offset, bool bigEndian = false) {
 		signed int ans = 0;
@@ -313,7 +342,7 @@ namespace common {
 		return ans;
 	}
 
-	
+
 	unsigned long ReadULong(const unsigned char* buffer, std::size_t max, const unsigned int offset) {
 		if (offset + sizeof(unsigned long) > max) {
 			throw std::range_error("Offset would read past end of buffer");
@@ -352,7 +381,7 @@ namespace common {
 			throw std::range_error("Offset would read past end of buffer");
 		}
 
-		std::wstring str((wchar_t*)&buffer[offset], (wchar_t*)&buffer[offset+strLength]);
+		std::wstring str((wchar_t*)&buffer[offset], (wchar_t*)&buffer[offset + strLength]);
 		return str;
 	}
 
@@ -492,7 +521,7 @@ namespace common {
 	public:
 		virtual std::string ToXml() const = 0;
 	};
-	class IMiniExportable: public IJsonExportable, public IXmlExportable {
+	class IMiniExportable : public IJsonExportable, public IXmlExportable {
 
 	};
 	class ICsvExportable {
@@ -651,7 +680,8 @@ namespace common {
 			if (i != v.begin()) result << token;
 			if (useQuotes) {
 				result << "\"" << *i << "\"";
-			} else {
+			}
+			else {
 				result << *i;
 			}
 		}

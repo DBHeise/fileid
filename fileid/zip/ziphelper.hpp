@@ -418,7 +418,7 @@ namespace zip {
 
 			std::istream* stream = entry->GetDecompressionStream();
 			std::ofstream outFile;
-			const char* tmpFile = tmpnam(nullptr);
+			auto tmpFile = common::get_temp_file();
 			outFile.open(tmpFile);			
 			
 			utils::stream::copy(*stream, outFile);
@@ -426,7 +426,7 @@ namespace zip {
 			outFile.flush();
 			outFile.close();
 
-			POLE::Storage *storage = new POLE::Storage(tmpFile);
+			POLE::Storage *storage = new POLE::Storage(tmpFile.c_str());
 			try {
 				ei = vba->Analyze(L"/", storage);
 			}
@@ -436,7 +436,7 @@ namespace zip {
 				((oless::VBA::VbaExtensionInfo*)ei)->SubType = "ERROR";
 			}
 
-			remove(tmpFile);
+			remove(tmpFile.c_str());
 		}
 		return ei;
 	}
