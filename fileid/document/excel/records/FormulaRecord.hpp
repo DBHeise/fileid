@@ -49,9 +49,8 @@ namespace oless {
 
 					this->val.Parse(buffer, max, index);
 					index += this->val.bytesRead;
-
-					auto flags = new fakeFormulaRecordFlags();
-					flags = reinterpret_cast<fakeFormulaRecordFlags*>(buffer + index);
+					
+					auto flags = reinterpret_cast<fakeFormulaRecordFlags*>(buffer + index);
 					this->flags = *flags;
 					index += 6;
 

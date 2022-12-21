@@ -18,6 +18,8 @@ namespace Exec {
 
 			MachOExtensionInfo() : ExtensionInfo() {
 				this->Extension = "o";
+				this->NumberLoadCommands = 0;
+				this->SizeLoadCommands = 0;
 			}
 			virtual std::string ToJson() const override {
 				std::ostringstream str;

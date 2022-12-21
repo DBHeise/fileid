@@ -44,7 +44,7 @@ namespace common {
 		return ans;
 	}
 
-	std::string get_temp_file()
+	std::string temp_filename()
 	{
 		auto tmp = fs::temp_directory_path() / random_string("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", 24);
 		return tmp.string();
@@ -91,10 +91,10 @@ namespace common {
 			char buffer[STD_BUFFER_SIZE] = { 0 };
 			bool localTimeErr = false;
 #ifdef WIN32
-			localtime_s(&dt, &t);
+			gmtime_s(&dt, &t);
 			localTimeErr = dt.tm_mon == -1;
 #else
-			localtime_r(&t, &dt);
+			gmtime_r(&t, &dt);
 			localTimeErr = errno == EOVERFLOW;
 #endif
 			if (!localTimeErr) {

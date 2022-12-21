@@ -116,7 +116,7 @@
 		<Item extension="doc" shortname="doc_old2" name="Microsoft Word OLD">0x9C,0xA5</Item>
 		<Item extension="doc" shortname="doc_old3" name="Microsoft Word OLD (MP 2.0)">0x08,0xEC</Item>
 		<Item extension="doc" shortname="doc_old4" name="Microsoft Word OLD (MP 3.0)">0x08,0xED</Item>
-		<Item extension="doc" shortname="doc_old5" name="Microsoft Word 1.0">0x22,0x43</Item>
+		<!--<Item extension="doc" shortname="doc_old5" name="Microsoft Word 1.0">0x22,0x43</Item> #too vague '"C'-->
 		<Item extension="doc" shortname="doc_old6" name="Microsoft WinWord 2.0">0xDB,0xA5</Item>
 
 		<Item extension="wri" shortname="wri1" version="1" name="MS Write">0x31,0xBE</Item>
@@ -168,6 +168,7 @@
 		<Item extension="html" shortname="html_h8u" version="utf8 uppercase html" name="HTML Document">0xEF,0xBB,0xBF,0x3C,0x48,0x54,0x4d,0x4c</Item>
 		<Item extension="html" shortname="html_d8u" version="utf8 uppercase doctype" name="HTML Document">0xEF,0xBB,0xBF,0x3C,0x21,0x44,0x4f,0x43</Item>
 		<Item extension="slk" shortname="slk1" name="Microsoft SYLK (Symbolic Link) file">ID;P</Item>
+		<Item extension="vbe" shortname="vbe" name="Microsoft Encoded Script (JScript.Encoded)">0x23,0x40,0x7E,0x5E</Item>
 
 
 		<!--  <Item extension="txt" shortname="utf8" version="UTF8" name="Text File">0xEF,0xBB,0xBF</Item> -->
@@ -203,11 +204,16 @@
 		<Item extension="sdw" shortname="sdw1" name="StarOffice Write File">/StarWriterDocument</Item>
 
 		<Item extension="hwp" shortname="hwp1" name="Hangul Word Processor File">/HwpSummaryInformation</Item>
+		<Item extension="hwp" shortname="hwp2" name="Hangul Word Processor File">/\u0005HwpSummaryInformation</Item>
 
 		<Item extension="wp" shortname="wp1" name="WordPerfect File" extra="document::wp::StreamDetailer">/PerfectOffice_MAIN</Item>
+		
 		<!--<Item extension="msi" shortname="msi1" name="Microsoft Installer File" extra="document::msi::Detailer">/\u4840\u3B3F\u43F2\u4438\u45B1</Item>-->
 		<Item extension="msi" shortname="msi2" name="Microsoft Installer File" extra="document::msi::Detailer">/\u4840\u3F3F\u4577\u446C\u3B6A\u45E4\u4824</Item>
-		<Item extension="ole" shortname="ole" ignoreCase="True" name="OLE Native Stream (Embedded Object)">/\u0001Ole10Native</Item><!--https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-oleds/cc825ec3-f0ed-4023-97f6-13c323ac1172 -->
+		
+		<Item extension="ole_embedded" shortname="ole" ignoreCase="True" name="OLE Native Stream (Embedded Object)">/\u0001Ole10Native</Item><!--https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-oleds/cc825ec3-f0ed-4023-97f6-13c323ac1172 -->
+		<Item extension="ole_dat" shortname="recoverystore" ignoreCase="False" name="Internet Explorer Recovery Store">/TravelLog</Item>
+		<Item extension="ole_eq" shortname="equation" ignoreCase="True" name="OLE Equation Editor">/Equation Native</Item>
 		
 	</OlessItems>
 	<ZipItems>

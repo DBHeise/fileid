@@ -1,5 +1,5 @@
 // magic.h
-// Generated on: 01/26/2022 23:39:56
+// Generated on: 11/26/2022 18:07:18
 
 #pragma once
 #include "common.hpp"
@@ -113,7 +113,6 @@ unsigned char magic_doc_old1[2] = {0x9B,0xA5};
 unsigned char magic_doc_old2[2] = {0x9C,0xA5};
 unsigned char magic_doc_old3[2] = {0x08,0xEC};
 unsigned char magic_doc_old4[2] = {0x08,0xED};
-unsigned char magic_doc_old5[2] = {0x22,0x43};
 unsigned char magic_doc_old6[2] = {0xDB,0xA5};
 unsigned char magic_wri1[2] = {0x31,0xBE};
 unsigned char magic_wri2[2] = {0x32,0xBE};
@@ -157,6 +156,7 @@ unsigned char magic_html_d8l[8] = {0xEF,0xBB,0xBF,0x3C,0x21,0x64,0x6F,0x63};
 unsigned char magic_html_h8u[8] = {0xEF,0xBB,0xBF,0x3C,0x48,0x54,0x4d,0x4c};
 unsigned char magic_html_d8u[8] = {0xEF,0xBB,0xBF,0x3C,0x21,0x44,0x4f,0x43};
 unsigned char magic_slk1[4] = {0x49,0x44,0x3B,0x50};
+unsigned char magic_vbe[4] = {0x23,0x40,0x7E,0x5E};
 
 std::vector<common::MagicInfo*> list;
 
@@ -268,7 +268,6 @@ void initList() {
 	list.push_back(new common::MagicInfo("doc", "Microsoft Word OLD", "", 0, 2, magic_doc_old2, nullptr));
 	list.push_back(new common::MagicInfo("doc", "Microsoft Word OLD (MP 2.0)", "", 0, 2, magic_doc_old3, nullptr));
 	list.push_back(new common::MagicInfo("doc", "Microsoft Word OLD (MP 3.0)", "", 0, 2, magic_doc_old4, nullptr));
-	list.push_back(new common::MagicInfo("doc", "Microsoft Word 1.0", "", 0, 2, magic_doc_old5, nullptr));
 	list.push_back(new common::MagicInfo("doc", "Microsoft WinWord 2.0", "", 0, 2, magic_doc_old6, nullptr));
 	list.push_back(new common::MagicInfo("wri", "MS Write", "1", 0, 2, magic_wri1, nullptr));
 	list.push_back(new common::MagicInfo("wri", "MS Write", "2", 0, 2, magic_wri2, nullptr));
@@ -312,4 +311,5 @@ void initList() {
 	list.push_back(new common::MagicInfo("html", "HTML Document", "utf8 uppercase html", 0, 8, magic_html_h8u, nullptr));
 	list.push_back(new common::MagicInfo("html", "HTML Document", "utf8 uppercase doctype", 0, 8, magic_html_d8u, nullptr));
 	list.push_back(new common::MagicInfo("slk", "Microsoft SYLK (Symbolic Link) file", "", 0, 4, magic_slk1, nullptr));
+	list.push_back(new common::MagicInfo("vbe", "Microsoft Encoded Script (JScript.Encoded)", "", 0, 4, magic_vbe, nullptr));
 }}

@@ -485,11 +485,11 @@ namespace oless {
 				unsigned int compressedEnd = 0;
 
 				unsigned int decompressedBufferLength = compressedBufferLength * 1024;
-				unsigned char* decompressedBuffer = new unsigned char[decompressedBufferLength];
 
 				if (compressedBuffer[compressedCurrent] != 0x01) {
 					return std::make_tuple<unsigned int, unsigned char*>(0, NULL);
 				}
+				unsigned char* decompressedBuffer = new unsigned char[decompressedBufferLength] {0};
 				compressedCurrent++;
 
 				while (compressedCurrent < compressedRecordEnd) {

@@ -418,7 +418,7 @@ namespace zip {
 
 			std::istream* stream = entry->GetDecompressionStream();
 			std::ofstream outFile;
-			auto tmpFile = common::get_temp_file();
+			auto tmpFile = common::temp_filename();
 			outFile.open(tmpFile);			
 			
 			utils::stream::copy(*stream, outFile);

@@ -15,6 +15,7 @@ namespace media {
 			Mp4ExtensionInfo() : ExtensionInfo() {
 				this->Extension = "mp4";
 				this->VersionName = "MPEG-4 Media File";
+				this->Version = 0;
 			};
 			virtual std::string ToJson() {
 				std::ostringstream str;

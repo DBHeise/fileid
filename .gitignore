@@ -228,3 +228,4 @@ pip-log.txt
 
 *-cppcheck-build-dir/
 *.cppcheck
+*.o

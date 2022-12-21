@@ -24,6 +24,7 @@ namespace Exec {
 		ExecExtensionInfo() : ExtensionInfo() {
 			this->Extension = "exe";
 			this->VersionName = "Executable";
+			this->Win32Version = 0;
 		};
 		virtual std::string ToJson() {
 			std::ostringstream str;
