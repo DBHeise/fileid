@@ -1,4 +1,4 @@
-﻿#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+﻿#pragma once
 #include "doctest.h"
 #include "testhelp.hpp"
 #include "../fileid/common.hpp"
@@ -41,11 +41,7 @@ TEST_SUITE("common") {
 				CHECK_EQ(common::FileTimeToString(1), "1601-01-01 00:00:00");
 			}
 			SUBCASE("normal") {
-#ifdef WIN32
-				CHECK_EQ(common::FileTimeToString(132223284000000000), "2020-01-01 00:00:00");
-#else
 				CHECK_EQ(common::FileTimeToString(132223284000000000), "2020-01-01 05:00:00");
-#endif
 			}
 			SUBCASE("real") {
 #ifdef WIN32
@@ -246,7 +242,7 @@ TEST_SUITE("common") {
 	TEST_CASE("getFileSize") {
 		
 		//create file
-		std::string file(tmpnam(NULL));
+		auto file = common::temp_filename();
 		std::ofstream fout;
 		fout.open(file, std::ios::binary | std::ios::out);
 
@@ -272,7 +268,7 @@ TEST_SUITE("common") {
 	TEST_CASE("readFile") {
 
 		//create file
-		std::string file(tmpnam(NULL));
+		auto file = common::temp_filename();
 		std::ofstream fout;
 		fout.open(file, std::ios::binary | std::ios::out);
 
@@ -380,6 +376,15 @@ TEST_SUITE("common") {
 		}
 	}
 
+
+	TEST_CASE("random_string") {
+		common::random_string("0123456789", 42);
+		common::random_string("abc", 24);
+	}
+
+	TEST_CASE("temp_filename") {
+		common::temp_filename();
+	}
 
 	TEST_CASE("ReadUShort") {
 		WARN("Not Implemented");

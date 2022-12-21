@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include=".\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="doctest.h" />
+    <ClInclude Include="oless\excel\structures\LongRGB_test.hpp">
+      <Filter>oless\excel\structures</Filter>
+    </ClInclude>
+    <ClInclude Include="testhelp.hpp" />
+    <ClInclude Include="common_test.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="oless">
+      <UniqueIdentifier>{953f04ff-75d3-41ce-a39b-72538bbfacdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oless\excel">
+      <UniqueIdentifier>{a57d9d28-8406-4acb-a72b-25499749f2b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="oless\excel\structures">
+      <UniqueIdentifier>{d7a38d21-32ea-41b7-b24c-8d6ec6bdc762}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

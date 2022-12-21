@@ -1,5 +1,4 @@
-#pragma
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#pragma once
 #include "../../../doctest.h"
 #include "../../../../fileid/document/excel/structures/LongRGB.hpp"
 

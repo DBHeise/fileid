@@ -1,42 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29102.190
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fileid", "fileid\fileid.vcxproj", "{535EE90E-4021-45DE-A76E-4D93FA564CA0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7EAD1358-3E72-4FB6-A212-25D462B5C1E9} = {7EAD1358-3E72-4FB6-A212-25D462B5C1E9}
 		{DBBF348D-C221-4F2E-8A0D-24EFA0D98E71} = {DBBF348D-C221-4F2E-8A0D-24EFA0D98E71}
 		{BAEB16B3-DB4C-432F-9E6A-2ACADEA0691D} = {BAEB16B3-DB4C-432F-9E6A-2ACADEA0691D}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{A1585E1D-F218-4F9F-94A9-5D3EBCDC31ED}"
-	ProjectSection(ProjectDependencies) = postProject
-		{535EE90E-4021-45DE-A76E-4D93FA564CA0} = {535EE90E-4021-45DE-A76E-4D93FA564CA0}
-		{7EAD1358-3E72-4FB6-A212-25D462B5C1E9} = {7EAD1358-3E72-4FB6-A212-25D462B5C1E9}
-		{DBBF348D-C221-4F2E-8A0D-24EFA0D98E71} = {DBBF348D-C221-4F2E-8A0D-24EFA0D98E71}
-		{BAEB16B3-DB4C-432F-9E6A-2ACADEA0691D} = {BAEB16B3-DB4C-432F-9E6A-2ACADEA0691D}
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5BC60D97-3AEB-44E2-AC9C-1A11451A3546}"
-	ProjectSection(SolutionItems) = preProject
-		.gitattributes = .gitattributes
-		.gitignore = .gitignore
-		.gitmodules = .gitmodules
-		build.ps1 = build.ps1
-		.github\workflows\build.yml = .github\workflows\build.yml
-		buildtests.ps1 = buildtests.ps1
-		buildtests.sh = buildtests.sh
-		coverage.csv = coverage.csv
-		coverage.md = coverage.md
-		Create-CoverageMD.ps1 = Create-CoverageMD.ps1
-		LICENSE = LICENSE
-		makefile = makefile
-		notes.txt = notes.txt
-		publish.ps1 = publish.ps1
-		README.md = README.md
-		runtests.ps1 = runtests.ps1
-		runtests.py = runtests.py
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZipLib", "ziplib\Source\ZipLib\ZipLib.vcxproj", "{5C9FD859-DDF9-4510-8397-B329B0AE8C48}"
@@ -48,6 +19,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lzma", "ziplib\Source\ZipLib\extlibs\lzma\lzma.vcxproj", "{7EAD1358-3E72-4FB6-A212-25D462B5C1E9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "ziplib\Source\ZipLib\extlibs\zlib\zlib.vcxproj", "{BAEB16B3-DB4C-432F-9E6A-2ACADEA0691D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unit_tests", "test\unit_tests.vcxproj", "{A1585E1D-F218-4F9F-94A9-5D3EBCDC31ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,10 +38,6 @@ Global
 		{535EE90E-4021-45DE-A76E-4D93FA564CA0}.Release|x64.Build.0 = Release|x64
 		{535EE90E-4021-45DE-A76E-4D93FA564CA0}.Release|x86.ActiveCfg = Release|Win32
 		{535EE90E-4021-45DE-A76E-4D93FA564CA0}.Release|x86.Build.0 = Release|Win32
-		{A1585E1D-F218-4F9F-94A9-5D3EBCDC31ED}.Debug|x64.ActiveCfg = Debug|x64
-		{A1585E1D-F218-4F9F-94A9-5D3EBCDC31ED}.Debug|x86.ActiveCfg = Debug|Win32
-		{A1585E1D-F218-4F9F-94A9-5D3EBCDC31ED}.Release|x64.ActiveCfg = Release|x64
-		{A1585E1D-F218-4F9F-94A9-5D3EBCDC31ED}.Release|x86.ActiveCfg = Release|Win32
 		{5C9FD859-DDF9-4510-8397-B329B0AE8C48}.Debug|x64.ActiveCfg = Debug|x64
 		{5C9FD859-DDF9-4510-8397-B329B0AE8C48}.Debug|x64.Build.0 = Debug|x64
 		{5C9FD859-DDF9-4510-8397-B329B0AE8C48}.Debug|x86.ActiveCfg = Debug|Win32
@@ -101,6 +70,14 @@ Global
 		{BAEB16B3-DB4C-432F-9E6A-2ACADEA0691D}.Release|x64.Build.0 = Release|x64
 		{BAEB16B3-DB4C-432F-9E6A-2ACADEA0691D}.Release|x86.ActiveCfg = Release|Win32
 		{BAEB16B3-DB4C-432F-9E6A-2ACADEA0691D}.Release|x86.Build.0 = Release|Win32
+		{A1585E1D-F218-4F9F-94A9-5D3EBCDC31ED}.Debug|x64.ActiveCfg = Debug|x64
+		{A1585E1D-F218-4F9F-94A9-5D3EBCDC31ED}.Debug|x64.Build.0 = Debug|x64
+		{A1585E1D-F218-4F9F-94A9-5D3EBCDC31ED}.Debug|x86.ActiveCfg = Debug|Win32
+		{A1585E1D-F218-4F9F-94A9-5D3EBCDC31ED}.Debug|x86.Build.0 = Debug|Win32
+		{A1585E1D-F218-4F9F-94A9-5D3EBCDC31ED}.Release|x64.ActiveCfg = Release|x64
+		{A1585E1D-F218-4F9F-94A9-5D3EBCDC31ED}.Release|x64.Build.0 = Release|x64
+		{A1585E1D-F218-4F9F-94A9-5D3EBCDC31ED}.Release|x86.ActiveCfg = Release|Win32
+		{A1585E1D-F218-4F9F-94A9-5D3EBCDC31ED}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

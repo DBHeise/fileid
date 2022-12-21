@@ -1,3 +1,4 @@
+from pkg_resources import require
 import requests, json, argparse, os, subprocess, xmltodict
 
 envDict = {}
@@ -61,8 +62,8 @@ def testfile(fid, file, format = "json"):
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description="Run FILEID tests")    
-	parser.add_argument("--build", help="path to build output")
-	parser.add_argument("--files", help="path to directory containing test files")
+	parser.add_argument("--build", required=True, help="path to build output")
+	parser.add_argument("--files", required=True, help="path to directory containing test files")
 	args = parser.parse_args()
 
 	fileids, testbins = findBinaries(args.build)

@@ -2,7 +2,15 @@
 #include <fstream>
 #include <random>
 #include <vector>
+
+#ifdef WIN32
 #include <filesystem>
+namespace fs = std::filesystem;
+#else
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#endif
+
 #include "doctest.h"
 
 namespace testhelper {
@@ -37,9 +45,9 @@ namespace testhelper {
 
 	//GetTestFile - returns the path to the requested file; should be called from within a TEST_CASE as it does assert
 	std::string GetTestFile(std::string filekey) {
-		std::filesystem::path p = GetTestFileFolder();
+		fs::path p = GetTestFileFolder();
 		p /= filekey;
-		REQUIRE_MESSAGE(std::filesystem::exists(p), "The requested test file does not exist!");
+		REQUIRE_MESSAGE(fs::exists(p), "The requested test file does not exist!");
 		return p.generic_string();
 	}
 }

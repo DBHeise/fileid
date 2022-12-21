@@ -1,6 +1,6 @@
 #~/user/bin/make -f
-EXECUTABLE = bin/fid
-SO_LIBRARY = bin/fid.so
+EXECUTABLE = bin/linux/fid
+EXECUTABLE_UNIT = bin/linux/unit_tests
 
 CC         = gcc
 CXX        = g++
@@ -22,6 +22,8 @@ SRC_ZIPLIB = \
 SRC_FILEID = \
 	fileid/fileid.cpp	
 
+SRC_UNIT = \
+	test/main.cpp
 
 # Object files			
 OBJS_1 = \
@@ -33,9 +35,11 @@ OBJS_1 = \
 OBJS_2 = \
 		$(SRC_FILEID:.cpp=.o) \
 
+OBJS_UNIT = \
+		$(SRC_UNIT:.cpp=.o) \
 
 # Rules
-all: $(EXECUTABLE)
+all: $(EXECUTABLE) $(EXECUTABLE_UNIT)
 
 $(EXECUTABLE): $(OBJS_1)
 	$(CXX) $(CXXFLAGS_1) $(LDFLAGS) $(CPP_FILES) -o $@ $^
@@ -43,14 +47,21 @@ $(EXECUTABLE): $(OBJS_1)
 $(EXECUTABLE): $(OBJS_2)
 	$(CXX) $(CXXFLAGS_2) $(LDFLAGS) $(CPP_FILES) $^ -lstdc++fs -o $@
 
+$(EXECUTABLE_UNIT): $(OBJS_UNIT)
+	$(CXX) $(CXXFLAGS_2) $(LDFLAGS) $(CPP_FILES) $^ -lstdc++fs -o $@
+
 %.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+test/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+.PHONY: clean
 clean:
-	rm -rf $(EXECUTABLE) $(SO_LIBRARY) $(OBJS)
+	rm -rf $(EXECUTABLE) $(EXECUTABLE_UNIT) $(SO_LIBRARY) $(OBJS_1) $(OBJS_2) $(OBJS_UNIT)
 
 
 BINDIR ?= ${PREFIX}/bin
