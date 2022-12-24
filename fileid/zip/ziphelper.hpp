@@ -44,7 +44,7 @@ namespace zip {
 			this->VersionName = "";
 		};
 
-		virtual std::string ToJson() {
+		virtual std::string ToJson() const override {
 			std::ostringstream str;
 			str << "{ \"extension\" : \"" << this->Extension << "\"";
 			if (this->Name.size() > 0) {
@@ -73,7 +73,7 @@ namespace zip {
 			str << "}";
 			return str.str();
 		}
-		virtual std::string ToXml() {
+		virtual std::string ToXml() const override {
 			std::ostringstream str;
 			str << "<item>";
 			str << "<extension>" << this->Extension << "</extension>";
@@ -101,7 +101,7 @@ namespace zip {
 			str << "</item>";
 			return str.str();
 		}
-		virtual std::string ToText() {
+		virtual std::string ToText() const override {
 			std::ostringstream str;
 			str << this->Extension;
 			str << "\t" << this->Name;
@@ -110,7 +110,7 @@ namespace zip {
 			str << "\t" << this->VersionName;
 			return str.str();
 		}
-		virtual std::string ToCsv() {
+		virtual std::string ToCsv() const override {
 			std::ostringstream str;
 			str << this->Extension;
 			str << "," << this->Name;
