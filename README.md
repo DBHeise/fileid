@@ -2,22 +2,38 @@
 
 Generic file identifier (for linux and windows)
 
+[![Linux](https://svgshare.com/i/Zhy.svg)](https://svgshare.com/i/Zhy.svg) [![Windows](https://svgshare.com/i/ZhY.svg)](https://svgshare.com/i/ZhY.svg) [![License](https://badgen.net/github/license/DBHeise/fileid)](https://github.com/DBHeise/fileid/blob/master/LICENSE)
+
+[![last-tag](https://badgen.net/github/tag/DBHeise/fileid)]() [![last-commit](https://badgen.net/github/last-commit/DBHeise/fileid)]()
+
+[![Stars](https://badgen.net/github/stars/DBHeise/fileid)](https://github.com/DBHeise/fileid/stargazers)
+[![Open-Issues](https://badgen.net/github/open-issues/DBHeise/fileid)](https://github.com/DBHeise/fileid/issues?q=is%3Aopen+is%3Aissue)
+[![Commits](https://badgen.net/github/commits/DBHeise/fileid)](https://github.com/DBHeise/fileid/commits) ![GitHub all releases](https://img.shields.io/github/downloads/DBHeise/fileid/total) [![GitHub watchers](https://badgen.net/github/watchers/DBHeise/fileid/)](https://GitHub.com/DBHeise/fileid/watchers/)
+
+[![Build & Push](https://github.com/DBHeise/fileid/actions/workflows/build.yml/badge.svg)](https://github.com/DBHeise/fileid/actions/workflows/build.yml)[![Analysis](https://github.com/DBHeise/fileid/actions/workflows/analysis.yml/badge.svg)](https://github.com/DBHeise/fileid/actions/workflows/analysis.yml)[![Run File Tests](https://github.com/DBHeise/fileid/actions/workflows/test.yml/badge.svg)](https://github.com/DBHeise/fileid/actions/workflows/test.yml)
+
 Like the linux utility "file", this tool will take an arbirtrary file blob and attempt to identify the file type/extension based on magic numbers. In addition it will attempt to pull as much pertinant details as it knows from the file about its format.
 
 It will identify specific formats in container formats. For example it will identify Microsoft Office file types specifically for OLE Structured Storage files (doc, xls, ppt, pub, vsd, etc), and ZIP files (docx, docm, xlsx, xlsm, pptx, pptm, jar, war, xpi, xap, apk,   etc)
 
-## Binaries
-Binaries availabe at the build server: [![Continuous Integration](https://github.com/DBHeise/fileid/actions/workflows/build.yml/badge.svg)](https://github.com/DBHeise/fileid/actions/workflows/build.yml)
+## Contributors
 
-Build scripts are included for both gcc/g++ (>=5.1) (via makefile) and Microsoft Visual Studio (>=2015) builds (via sln)
+[![Contributors](https://contrib.rocks/image?repo=DBHeise/fileid)](https://github.com/DBHeise/fileid/graphs/contributors)
+
+## Binaries
+
+Binaries availabe as artifacts in the [github actions](https://github.com/DBHeise/fileid/actions/workflows/build.yml) and in the [releases](https://github.com/DBHeise/fileid/releases)
+
+
+Build scripts are included for both gcc/g++ (>=5.1) (via [makefile](https://github.com/DBHeise/fileid/blob/master/makefile)) and Microsoft Visual Studio (>=2015) builds (via [sln](https://github.com/DBHeise/fileid/blob/master/fileid.sln))
 
 ## Levels of Coverage
 
 There are three levels of coverage for a file format:
 
-1. Identification - we are able to identify the file format from a binary blob, sometimes this is as simple as matching the magic number/bytes, but for many formats it is not as simple
-2. Metadata - we are able to identify the file format and extract some or all of the associated meta data included in the format. For example, we can tell its an Microsoft Office Binary Document and tell you the specific version of DOC file. This level is further broken down to a rating of how much metadata can be extracted on a scale of 1 to 10 (1 being very basic metadata, 10 be all available meta data fully extracted)
-3. Full Extraction - we are able to identify pretty much every byte in the file, what it does and why its there.
+1. **Identification** - we are able to identify the file format from a binary blob, sometimes this is as simple as matching the magic number/bytes, but for many formats it is not as simple
+2. **Metadata** - we are able to identify the file format and extract some or all of the associated meta data included in the format. For example, we can tell its an Microsoft Office Binary Document and tell you the specific version of DOC file. This level is further broken down to a rating of how much metadata can be extracted on a scale of 1 to 10 (1 being very basic metadata, 10 be all available meta data fully extracted)
+3. **Full Extraction** - we are able to identify pretty much every byte in the file, what it does and why its there.
 
 ## File Format Coverage
 
@@ -25,30 +41,39 @@ There are three levels of coverage for a file format:
 
 ## Usage
 
-```
-  fileid {file} [format]
-	 {file} - required path the file in question
-	 [format] - optional output format (TEXT [default], CSV, JSON, XML)
+```text
+fileid {file} [format]
+   {file} - required path the file in question
+   [format] - optional output format (TEXT [default], CSV, JSON, XML)
 ```
 
 ## Examples
 
-* Exe with JSON output
+<details>
+<summary>Exe with Json Output</summary>
 
-```
-	fileid c:\windows\notepad.exe json
-	{
-	 "name": "C:\\Windows\\notepad.exe",
-	 "extensions": [
-		  { "extension": "exe", "name": "Executable", "machinetype": "x64", "LinkerVersion": "12.10", "OsVersion": "10.0", "ImageVersion": "10.0", "Characteristics": [ "Executable Image","LARGE_ADDRESS_AWARE"]}
-	 ]
-	}
+```shell
+fileid c:\windows\notepad.exe json
 ```
 
-* XLS with XML output
-
+```json
+{	"name": "C:\\Windows\\notepad.exe",
+	"extensions": [
+		{ "extension": "exe", "name": "Executable", "machinetype": "x64", "LinkerVersion": "12.10", "OsVersion": "10.0", "ImageVersion": "10.0", "Characteristics": [ "Executable Image","LARGE_ADDRESS_AWARE"]}
+	]
+}
 ```
-	fileid C:\TestFiles\Sample\Good.macro.xls xml
+
+</details>
+
+<details>
+<summary>XLS (with vba) with XML Output</summary>
+
+```shell
+fileid C:\TestFiles\Sample\Good.macro.xls xml
+```
+
+```xml
 	<file>
 	<name>C:\TestFiles\Sample\Good.macro.xls</name>
 	<extensions>
@@ -146,5 +171,6 @@ Attribute VB_Customizable = True
 ]]></Code></Module>,<Module><Name></Name><StreamName></StreamName><Offset>0</Offset><isPrivate>0</isPrivate><isReadOnly>0</isReadOnly><Code><![CDATA[]]></Code></Module></Modules></item>
 	</extensions>
 </file>
-
 ```
+
+</details>
