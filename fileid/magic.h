@@ -1,5 +1,5 @@
 // magic.h
-// Generated on: 11/26/2022 18:07:18
+// Generated on: 01/17/2023 16:30:41
 
 #pragma once
 #include "common.hpp"

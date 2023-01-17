@@ -1,5 +1,5 @@
 // olessmagic.h
-// Generated on: 11/26/2022 18:07:18
+// Generated on: 01/17/2023 16:30:41
 
 #pragma once
 #include "../common.hpp"
@@ -35,7 +35,7 @@ namespace oless {
             list.push_back(new oless::OlessInfo("msi","Microsoft Installer File","","",false,L"/\u4840\u3F3F\u4577\u446C\u3B6A\u45E4\u4824",document::msi::Detailer));
             list.push_back(new oless::OlessInfo("ole_embedded","OLE Native Stream (Embedded Object)","","",true,L"/\u0001Ole10Native",nullptr));
             list.push_back(new oless::OlessInfo("ole_dat","Internet Explorer Recovery Store","","",false,L"/TravelLog",nullptr));
-            list.push_back(new oless::OlessInfo("ole_eq","","","",true,L"/Equation Native",nullptr));
+            list.push_back(new oless::OlessInfo("ole_eq","OLE Equation Editor","","",true,L"/Equation Native",nullptr));
         
 		}
 	}

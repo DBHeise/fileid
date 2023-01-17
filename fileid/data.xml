@@ -28,7 +28,8 @@
 		<Item extension="cab" shortname="cab" name="Microsoft Cabinet file">0x4D,0x53,0x43,0x46</Item>
 		<Item extension="lha" shortname="lha" offset="2" name="LHArc (lha/lzh) Archive">0x2D,0x6C,0x68</Item>
 		<Item extension="vhd" shortname="vhd" name="Microsoft Virtual HardDisk">0x63,0x6F,0x6E,0x65,0x63,0x74,0x69,0x78</Item>
-		<Item extension="vhdx" shortname="vhdx" name="Microsoft Virtual HardDisk v2">0x76,0x68,0x64,0x78,0x66,0x69,0x6C,0x65</Item>
+		<Item extension="vhdx" shortname="vhdx" name="Microsoft Virtual HardDisk v2">vhdxfile</Item>
+		
 		<Item extension="xz" shortname="xz" name="XZ Compressed File">0xFD,0x37,0x7A,0x58,0x5A,0x00</Item>
 		<Item extension="iso" shortname="iso1" name="ISO 9660 Disk Image" offset="32769">0x43,0x44,0x30,0x30,0x31</Item>
 		<Item extension="iso" shortname="iso2" name="ISO 9660 Disk Image" offset="34817">0x43,0x44,0x30,0x30,0x31</Item>
