@@ -67,10 +67,9 @@ jobs:
           fetch-tags: true
       - name: calculate version
         id: calculate-version
-        uses: bitshifted/git-auto-semver@v1
+        uses: bitshifted/git-auto-semver@v2
         with:
-          main_branch: master
-          initial_version: 1.5.0
+          main_branch: master          
           create_tag: true
           tag_prefix: 'v'
       - name: Use version
