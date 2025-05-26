@@ -7,7 +7,7 @@ jobs:
     name: Run CPPCheck
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
       with:
         submodules: true
     - name: cppcheck-action
@@ -19,7 +19,7 @@ jobs:
         other_options: --xml
         output_file: ./cppcheck.results.xml
     - name: Publish Report
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: CPP_Check_Results
         path: ./cppcheck.results.xml
