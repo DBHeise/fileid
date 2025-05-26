@@ -7,45 +7,45 @@ jobs:
     name: Run CPPCheck
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: true
-    - name: cppcheck-action
-      uses: deep5050/cppcheck-action@v3.0
-      with:
-        enable: warning,unusedFunction,missingInclude
-        std: c++17
-        exclude_check: ./ziplib
-        other_options: --xml
-        output_file: ./cppcheck.results.xml
-    - name: Publish Report
-      uses: actions/upload-artifact@v4
-      with:
-        name: CPP_Check_Results
-        path: ./cppcheck.results.xml
-  # codeql:
-  #   name: CodeQL Analyze
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     actions: read
-  #     contents: read
-  #     security-events: write
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       language: [ 'cpp']
-  #   steps:
-  #   - name: Checkout repository
-  #     uses: actions/checkout@v3
-  #   - name: Initialize CodeQL
-  #     uses: github/codeql-action/init@v2
-  #     with:
-  #       languages: ${{ matrix.language }}
-  #   - name: Perform CodeQL Analysis
-  #     uses: github/codeql-action/analyze@v2
-  #     with:
-  #       category: "/language:${{matrix.language}}"
-  flawfinder:  
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: cppcheck-action
+        uses: deep5050/cppcheck-action@v3.0
+        with:
+          enable: warning,unusedFunction,missingInclude
+          std: c++17
+          exclude_check: ./ziplib
+          other_options: --xml
+          output_file: ./cppcheck.results.xml
+      - name: Publish Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: CPP_Check_Results
+          path: ./cppcheck.results.xml
+  codeql:
+    name: CodeQL Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ["cpp"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{matrix.language}}"
+  flawfinder:
     name: Flawfinder
     runs-on: ubuntu-latest
     permissions:
@@ -57,16 +57,16 @@ jobs:
         uses: actions/checkout@v3
 
       - name: flawfinder_scan
-        uses: david-a-wheeler/flawfinder@8e4a779ad59dbfaee5da586aa9210853b701959c        
+        uses: david-a-wheeler/flawfinder@2.0.19
         with:
-          arguments: '--sarif ./'
-          output: 'flawfinder_results.sarif'
+          arguments: "--minlevel 3 --sarif ./"
+          output: "flawfinder_results.sarif"
       - name: Upload analysis results
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: Flawfinder.Results
-          path: ${{github.workspace}}/flawfinder_results.sarif 
-      #- name: Upload analysis results to GitHub Security tab
-      #  uses: github/codeql-action/upload-sarif@v2
-      #  with:
-      #    sarif_file: ${{github.workspace}}/flawfinder_results.sarif
+          path: ${{github.workspace}}/flawfinder_results.sarif
+      - name: Upload analysis results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{github.workspace}}/flawfinder_results.sarif
